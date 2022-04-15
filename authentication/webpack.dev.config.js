@@ -4,6 +4,18 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const deps = require('./package.json').dependencies
+const sharedReduced = ["react", "react-dom", "antd"].reduce((shared, pkg) => {
+  Object.assign(shared, {
+    [pkg]: {
+      singleton: true,
+      eager: true,
+      requiredVersion: deps[pkg],
+    },
+  });
+  return shared;
+}, {});
+
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
   resolve: {
@@ -24,7 +36,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        type: "style-loader",
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.svg$/,
@@ -38,6 +50,14 @@ module.exports = {
               jsx: true,
             },
           },
+        ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          { loader: "css-loader?url=false" },
+          { loader: "sass-loader", options: { sourceMap: true } },
         ],
       },
       {
@@ -56,7 +76,6 @@ module.exports = {
   },
   devServer: {
     port: 3001,
-    open: true,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -69,9 +88,9 @@ module.exports = {
       name: "authentication",
       filename: "remoteEntry.js",
       exposes: {
-        './App': "./src/App",
+        "./App": "./src/App",
       },
-      shared: require('./package.json').dependencies
+      shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
     }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({

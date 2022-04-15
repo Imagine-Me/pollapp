@@ -4,14 +4,21 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const sharedReduce = ['react', 'react-dom'].reduce((shared, pkg) => {
-  Object.assign(shared, { [`${pkg}-${require(pkg).version}`]: pkg });
+const deps = require("./package.json").dependencies;
+const sharedReduce = ["react", "react-dom", "antd"].reduce((shared, pkg) => {
+  Object.assign(shared, {
+    [pkg]: {
+      singleton: true,
+      eager: true,
+      requiredVersion: deps[pkg],
+    },
+  });
+
   return shared;
 }, {});
-console.log(sharedReduce)
 
 module.exports = {
-  entry: path.resolve(__dirname, "src", "index.tsx"),
+  entry: path.resolve(__dirname, "src", "index.js"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
@@ -21,7 +28,10 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-react"],
+        },
       },
       {
         test: /\.tsx?$/,
@@ -29,8 +39,23 @@ module.exports = {
         use: "ts-loader",
       },
       {
+        test: /bootstrap\.jsx$/,
+        use: [
+          {
+            loader: "bundle-loader",
+          },
+          {
+            loader: "babel-loader",
+
+            options: {
+              presets: ["@babel/preset-react"],
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
-        type: "style-loader",
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.svg$/,
@@ -44,6 +69,14 @@ module.exports = {
               jsx: true,
             },
           },
+        ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          { loader: "css-loader?url=false" },
+          { loader: "sass-loader", options: { sourceMap: true } },
         ],
       },
       {
@@ -74,12 +107,12 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "pollapp",
       remotes: {
-        authentication: 'authentication@http://localhost:3001/remoteEntry.js'
+        authentication: "authentication@http://localhost:3001/remoteEntry.js",
       },
       exposes: {
-        './App': "./src/App",
+        "./App": "./src/App",
       },
-      shared: sharedReduce
+      shared: { react: { singleton: true }, "react-dom": { singleton: true } },
     }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({

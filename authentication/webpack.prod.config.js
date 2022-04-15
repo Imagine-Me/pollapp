@@ -2,12 +2,13 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
+const {ModuleFederationPlugin} = require('webpack').container
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -53,6 +54,14 @@ module.exports = {
     filename: "bundle.[contenthash].js",
   },
   plugins: [
+    new ModuleFederationPlugin({
+      name: "authentication",
+      filename: 'remoteEntry.js',
+      exposes:{
+        './App': './src/App',
+      },
+      shared: require('./package.json').dependencies
+    }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
