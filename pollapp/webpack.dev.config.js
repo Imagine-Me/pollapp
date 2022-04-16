@@ -4,21 +4,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const deps = require("./package.json").dependencies;
-const sharedReduce = ["react", "react-dom", "antd"].reduce((shared, pkg) => {
-  Object.assign(shared, {
-    [pkg]: {
-      singleton: true,
-      eager: true,
-      requiredVersion: deps[pkg],
-    },
-  });
-
-  return shared;
-}, {});
-
 module.exports = {
-  entry: path.resolve(__dirname, "src", "index.js"),
+  entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
@@ -112,7 +99,11 @@ module.exports = {
       exposes: {
         "./App": "./src/App",
       },
-      shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+      shared: {
+        react: { singleton: true },
+        "react-dom": { singleton: true },
+        recoil: { singleton: true },
+      },
     }),
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({

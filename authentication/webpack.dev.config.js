@@ -1,25 +1,21 @@
 const path = require("path");
 const { ModuleFederationPlugin } = require("webpack").container;
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { DefinePlugin } = require("webpack");
+const { config } = require("dotenv");
 
-const deps = require('./package.json').dependencies
-const sharedReduced = ["react", "react-dom", "antd"].reduce((shared, pkg) => {
-  Object.assign(shared, {
-    [pkg]: {
-      singleton: true,
-      eager: true,
-      requiredVersion: deps[pkg],
-    },
-  });
-  return shared;
-}, {});
+const deps = require("./package.json").dependencies;
 
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    fallback: {
+      fs: false,
+      os: false,
+      path: false,
+    },
   },
   mode: "development",
   module: {
@@ -90,15 +86,21 @@ module.exports = {
       exposes: {
         "./App": "./src/App",
       },
-      shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
+      shared: {
+        react: { singleton: true },
+        "react-dom": { singleton: true },
+        recoil: { singleton: true },
+      },
     }),
-    new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
       chunkFilename: "[id].css",
+    }),
+    new DefinePlugin({
+      "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
     }),
   ],
   stats: "errors-only",

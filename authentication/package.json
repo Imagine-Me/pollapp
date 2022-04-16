@@ -35,8 +35,11 @@
   "dependencies": {
     "antd": "^4.19.5",
     "css-loader": "^6.7.1",
+    "dotenv": "^16.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-google-login": "^5.2.2",
+    "recoil": "^0.7.2",
     "style-loader": "^3.3.1"
   }
 }
