@@ -90,6 +90,7 @@ module.exports = {
         react: { singleton: true },
         "react-dom": { singleton: true },
         recoil: { singleton: true },
+        "styled-components": { singleton: true },
       },
     }),
     new HtmlWebPackPlugin({
