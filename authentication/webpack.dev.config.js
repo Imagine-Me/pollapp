@@ -5,8 +5,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
 
-const deps = require("./package.json").dependencies;
-
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.tsx"),
   resolve: {
@@ -85,6 +83,7 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App",
+        "./recoil/user": "./src/recoil/atom/user",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },

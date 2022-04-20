@@ -7,6 +7,8 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:sonarjs/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -16,11 +18,16 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: [
+    "react",
+    "@typescript-eslint",
+    "testing-library",
+    "sonarjs",
+    "airbnb",
+    "airbnb/hooks",
+  ],
   rules: {
     "react/react-in-jsx-scope": "off",
   },
-  exclude: [
-    
-  ]
+  exclude: [],
 };

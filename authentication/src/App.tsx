@@ -146,7 +146,7 @@ const App = () => {
       <RightSideStyled>
         <div>
           <Typography style={{ marginBottom: "20px" }}>
-            <Title level={3}>{user.isLoggedIn ? "Go to profile ": "Login "}to create your own poll.</Title>
+            <Title level={3}>{user.isLoggedIn ? `Hi ${user.name}, go to profile to create poll`: "Login to create your own poll."}</Title>
           </Typography>
           {user.isLoggedIn ? (
             <Button size="large" shape="round" type="primary">PROFILE</Button>
