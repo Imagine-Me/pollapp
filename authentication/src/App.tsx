@@ -4,11 +4,10 @@ import "./App.css";
 import { useRecoilState } from "recoil";
 import { userState } from "./recoil/atom/user";
 import styled from "styled-components";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
 import { useSpring, animated, config, useTransition } from "@react-spring/web";
 import data from "./animatedData";
-import Item from "antd/lib/list/Item";
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 const HomePageStyled = styled((props) => {
   return <div {...props} />;
@@ -22,9 +21,7 @@ const AnimatedPoll = styled((props) => {
   return <div {...props} />;
 })`
   position: absolute;
-  margin-top: 50%;
   left: 0;
-  transform: translateY(-50%);
 `;
 
 const Bar = styled((props) => {
@@ -39,7 +36,7 @@ const Bar = styled((props) => {
 const LeftSideStyled = styled((props) => {
   return <div {...props} />;
 })`
-  width: 70%;
+  width: 55%;
   height: 100%;
   display: flex;
   justify-content: end;
@@ -71,11 +68,12 @@ const LeftSideStyled = styled((props) => {
 const RightSideStyled = styled((props) => {
   return <div {...props} />;
 })`
-  width: 65%;
+  width: 45%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+  padding: 0 120px;
 `;
 
 const GoogleLoginStyled = styled((props) => {
@@ -105,8 +103,6 @@ const App = () => {
     trail: 300,
   });
   const responseGoogle = (response: any) => {
-    console.log(response);
-
     const { name, tokenId, email, imageUrl } = response.profileObj;
     setUser({
       name,
@@ -114,6 +110,7 @@ const App = () => {
       userImage: imageUrl,
       email,
       isLoading: false,
+      tokenId,
     });
   };
 
@@ -130,7 +127,7 @@ const App = () => {
                   borderTopRightRadius: "10px",
                   borderBottomRightRadius: "10px",
                   backgroundColor: item.color,
-                  opacity: 0.6,
+                  opacity: 0.7,
                   margin: "20px 0",
                 }}
               >
@@ -147,14 +144,23 @@ const App = () => {
         </animated.div>
       </LeftSideStyled>
       <RightSideStyled>
-        <GoogleLoginStyled
-          clientId={process.env.GOOGLE_CLIENT_ID ?? ""}
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-          isSignedIn
-        />
+        <div>
+          <Typography style={{ marginBottom: "20px" }}>
+            <Title level={3}>{user.isLoggedIn ? "Go to profile ": "Login "}to create your own poll.</Title>
+          </Typography>
+          {user.isLoggedIn ? (
+            <Button size="large" shape="round" type="primary">PROFILE</Button>
+          ) : (
+            <GoogleLoginStyled
+              clientId={process.env.GOOGLE_CLIENT_ID ?? ""}
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+              isSignedIn
+            />
+          )}
+        </div>
       </RightSideStyled>
     </HomePageStyled>
   );

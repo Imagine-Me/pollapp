@@ -6,6 +6,7 @@ interface UserProps {
   userImage: string;
   email: string;
   isLoading: boolean;
+  tokenId: string | null;
 }
 
 export const userState = atom({
@@ -16,5 +17,6 @@ export const userState = atom({
     userImage: "",
     email: "",
     isLoading: false,
+    tokenId: null,
   } as UserProps,
 });
