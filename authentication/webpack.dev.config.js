@@ -69,7 +69,7 @@ module.exports = {
     filename: "bundle.[contenthash].js",
   },
   devServer: {
-    port: 3001,
+    port: 3002,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },

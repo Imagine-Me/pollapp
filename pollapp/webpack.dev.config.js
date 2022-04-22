@@ -81,7 +81,7 @@ module.exports = {
     filename: "bundle.[contenthash].js",
   },
   devServer: {
-    port: 3002,
+    port: 3001,
     open: true,
     static: {
       directory: path.resolve(__dirname, "dist"),
@@ -94,11 +94,12 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "pollapp",
       remotes: {
-        authentication: "authentication@http://localhost:3001/remoteEntry.js",
+        authentication: "authentication@http://localhost:3002/remoteEntry.js",
+        profile: "authentication@http://localhost:3003/remoteEntry.js",
       },
-      exposes: {
-        "./App": "./src/App",
-      },
+      // exposes: {
+      //   "./App": "./src/App",
+      // },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
