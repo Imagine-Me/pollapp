@@ -1,11 +1,15 @@
 import React from "react";
 import { Layout } from "antd";
 
-const { Sider, Content } = Layout;
+import ContentStyled from "./components/Content";
+import SiderStyled from "./components/Sider";
+
+import "./App.css"
+
 const App = () => {
   return <Layout>
-      <Sider>This is sider</Sider>
-      <Content>This is content</Content>
+      <SiderStyled />
+      <ContentStyled>This is ContentStyled</ContentStyled>
   </Layout>;
 };
 
