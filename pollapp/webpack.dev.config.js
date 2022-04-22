@@ -83,6 +83,7 @@ module.exports = {
   devServer: {
     port: 3001,
     open: true,
+    historyApiFallback: true,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -95,7 +96,7 @@ module.exports = {
       name: "pollapp",
       remotes: {
         authentication: "authentication@http://localhost:3002/remoteEntry.js",
-        profile: "authentication@http://localhost:3003/remoteEntry.js",
+        profile: "profile@http://localhost:3003/remoteEntry.js",
       },
       // exposes: {
       //   "./App": "./src/App",
