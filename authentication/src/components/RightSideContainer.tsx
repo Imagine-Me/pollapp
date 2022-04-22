@@ -2,6 +2,7 @@ import { Button, Typography } from "antd";
 import React from "react";
 import GoogleLogin from "react-google-login";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 interface RightSideContentProps {
   isLoggedIn: boolean;
@@ -45,9 +46,11 @@ export const RightSideContent = ({
         </Title>
       </Typography>
       {isLoggedIn ? (
-        <Button size="large" shape="round" type="primary">
-          PROFILE
-        </Button>
+        <Link to="/profile">
+          <Button size="large" shape="round" type="primary">
+            PROFILE
+          </Button>
+        </Link>
       ) : (
         <GoogleLoginStyled
           clientId={process.env.GOOGLE_CLIENT_ID ?? ""}

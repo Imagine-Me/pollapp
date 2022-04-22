@@ -89,6 +89,7 @@ module.exports = {
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
+        "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
     }),
     new HtmlWebPackPlugin({
