@@ -6,7 +6,7 @@ const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
 
 module.exports = {
-  entry: path.resolve(__dirname, "src", "index.tsx"),
+  entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
@@ -27,6 +27,20 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: "ts-loader",
+      },
+      {
+        test: /bootstrap\.jsx$/,
+        use: [
+          {
+            loader: "bundle-loader",
+          },
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-react"],
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,

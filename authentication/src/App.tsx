@@ -29,6 +29,7 @@ const App = () => {
     }
   };
 
+  //? This is required in order to work react spring from React v18. IDK why?
   useEffect(() => {
     setTimeout(() => {
       setShow(true);
