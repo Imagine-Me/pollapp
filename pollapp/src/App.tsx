@@ -11,7 +11,7 @@ const App = () => {
     <React.Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<Authentication />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/*" element={<Profile />} />
       </Routes>
     </React.Suspense>
   );
