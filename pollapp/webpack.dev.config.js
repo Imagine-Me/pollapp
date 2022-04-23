@@ -33,7 +33,6 @@ module.exports = {
           },
           {
             loader: "babel-loader",
-
             options: {
               presets: ["@babel/preset-react"],
             },
@@ -79,10 +78,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.[contenthash].js",
+    publicPath: "/"
   },
   devServer: {
-    port: 3002,
+    port: 3001,
     open: true,
+    historyApiFallback: true,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -94,16 +95,18 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "pollapp",
       remotes: {
-        authentication: "authentication@http://localhost:3001/remoteEntry.js",
+        authentication: "authentication@http://localhost:3002/remoteEntry.js",
+        profile: "profile@http://localhost:3003/remoteEntry.js",
       },
-      exposes: {
-        "./App": "./src/App",
-      },
+      // exposes: {
+      //   "./App": "./src/App",
+      // },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
+        "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
     }),
     new CleanWebpackPlugin(),

@@ -4,6 +4,10 @@ declare module "authentication/App" {
   import { FC } from "react";
   export = FC;
 }
+declare module "profile/App" {
+  import { FC } from "react";
+  export = FC;
+}
 declare module "authentication/recoil/user" {
   import { RecoilState } from "recoil";
   interface UserProps {

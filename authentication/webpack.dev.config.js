@@ -6,7 +6,7 @@ const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
 
 module.exports = {
-  entry: path.resolve(__dirname, "src", "index.tsx"),
+  entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     fallback: {
@@ -27,6 +27,20 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: "ts-loader",
+      },
+      {
+        test: /bootstrap\.jsx$/,
+        use: [
+          {
+            loader: "bundle-loader",
+          },
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-react"],
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -69,7 +83,7 @@ module.exports = {
     filename: "bundle.[contenthash].js",
   },
   devServer: {
-    port: 3001,
+    port: 3002,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -90,6 +104,7 @@ module.exports = {
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
+        "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
     }),
     new HtmlWebPackPlugin({
