@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
-import { db } from "./db/index.db";
+import { initializeDatabase } from "./db/index.db";
 
 dotenv.config();
 
@@ -36,8 +36,6 @@ app.get("/", (req, res) => {
   res.send("HELLO WORLD");
 });
 
-Object.keys(db).forEach((model) => {
-  db[model].sync();
-});
+initializeDatabase();
 
 export default app;

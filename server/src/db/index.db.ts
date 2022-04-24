@@ -1,4 +1,4 @@
-import { Model,ModelStatic, Options, Sequelize } from "sequelize";
+import { Model, ModelStatic, Options, Sequelize } from "sequelize";
 
 import models from "../models/index.model";
 import dbConfig from "../config/db.config";
@@ -12,8 +12,17 @@ const db = {} as Databases;
 const env = process.env.NODE_ENV ?? "development";
 const sequelize = new Sequelize(dbConfig[env] as Options);
 
-Object.keys(models).forEach((model) => {
-  db[model] = models[model](sequelize);
-});
+const initializeDatabase = async () => {
+  const modelKeys = Object.keys(models);
+  for (let i = 0; i < modelKeys.length; i++) {
+    const model = modelKeys[i];
+    db[model] = models[model].model(sequelize);
+    if (models[model].hasMany) {
+      console.log(`${models[model].hasMany} have hasMany on ${model}`);
+      db[model].hasMany(db[models[model].hasMany]);
+    }
+    await db[model].sync();
+  }
+};
 
-export { db };
+export { db, initializeDatabase };
