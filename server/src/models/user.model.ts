@@ -1,5 +1,10 @@
 import { Sequelize, DataTypes } from "sequelize";
 
+export interface UserModelType {
+  name: string;
+  email: string;
+}
+
 const UserModel = (sequelize: Sequelize) => {
   return sequelize.define("user", {
     id: {
@@ -19,10 +24,10 @@ const UserModel = (sequelize: Sequelize) => {
       allowNull: false,
       validate: {
         isEmail: true,
+        notNull: { msg: "Email cannot be empty" },
       },
     },
   });
 };
-
 
 export default UserModel;

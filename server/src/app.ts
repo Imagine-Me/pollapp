@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import { initializeDatabase } from "./db/index.db";
+import v1Routes from "./routes/v1/index.route";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ const corsOptions: CorsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use("/api/v1", v1Routes);
 
 app.get("/", (req, res) => {
   res.send("HELLO WORLD");
