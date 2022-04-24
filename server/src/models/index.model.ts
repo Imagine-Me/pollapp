@@ -3,16 +3,16 @@ import PollModel from "./poll.model";
 import QuestionModel from "./question.model";
 
 export default {
-  question: {
-    model: QuestionModel,
+  user: {
+    model: UserModel,
     hasMany: null,
   },
   poll: {
     model: PollModel,
-    hasMany: "question",
+    hasMany: "user",
   },
-  user: {
-    model: UserModel,
+  question: {
+    model: QuestionModel,
     hasMany: "poll",
   },
 } as any;

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import { initializeDatabase } from "./db/index.db";
 import v1Routes from "./routes/v1/index.route";
+import authMiddleware from "./middlewares/auth.middelware";
+import userMiddleWare from "./middlewares/user.middleware";
 
 dotenv.config();
 
@@ -32,6 +34,7 @@ const corsOptions: CorsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(authMiddleware, userMiddleWare);
 app.use("/api/v1", v1Routes);
 
 app.get("/", (req, res) => {
