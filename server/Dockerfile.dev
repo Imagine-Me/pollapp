@@ -4,7 +4,7 @@ WORKDIR /home/pollapp
 
 COPY ./package.json .
 
-RUN npm install
+RUN yarn install
 
 RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
@@ -14,4 +14,4 @@ RUN chown node:node .
 
 USER node
 
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "run", "start" ]
