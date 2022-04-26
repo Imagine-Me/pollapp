@@ -8,9 +8,10 @@ const userMiddleWare = async (
   next: NextFunction
 ) => {
   const email = res.locals.email;
-  const result = await getUser(email);
+  const result = await getUser(email);  
+  let userId : number;
   if (result) {
-    console.log("EXISTS", result.get("id"));
+    userId = result.get('id') as number;
   } else {
     const name = res.locals.name;
     const userData: UserModelType = {
@@ -18,9 +19,10 @@ const userMiddleWare = async (
       email,
     };
     const result = await createUser(userData);
-    console.log("NEW", result.get("id"));
+    userId = result.get("id") as number;
     // TODO - add to redis
   }
+  res.locals.userId = userId
   next()
 };
 
