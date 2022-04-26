@@ -1,5 +1,12 @@
 import { Sequelize, DataTypes } from "sequelize";
 
+export interface QuestionModelType {
+  question: string;
+  options: string[];
+  answer: number;
+  pollId: string;
+}
+
 const QuestionModel = (sequelize: Sequelize) => {
   return sequelize.define("question", {
     id: {

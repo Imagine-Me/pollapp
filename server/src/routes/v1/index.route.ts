@@ -1,6 +1,7 @@
 import { Router } from "express";
 import userRoute from "./user.route";
 import pollsRoute from "./polls.route";
+import questionRoute from "./question.route";
 
 interface RouteInterface {
   route: Router;
@@ -17,6 +18,10 @@ const defaultRoutes: RouteInterface[] = [
   {
     route: pollsRoute,
     path: "/polls",
+  },
+  {
+    route: questionRoute,
+    path: "/question",
   },
 ];
 

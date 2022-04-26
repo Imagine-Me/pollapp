@@ -2,7 +2,7 @@ import { Sequelize, DataTypes } from "sequelize";
 
 export interface PollsModelType {
   title: string;
-  userId: number;
+  userId: string;
 }
 
 const PollModel = (sequelize: Sequelize) => {

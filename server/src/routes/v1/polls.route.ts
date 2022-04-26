@@ -17,8 +17,8 @@ router.post("/create", async (req, res) => {
     userId,
     ...body,
   } as PollsModelType;
-  await createPoll(poll);
-  res.send({ msg: "poll created" });
+  const result = await createPoll(poll);
+  res.send({ msg: "poll created", id: result.get("id") });
 });
 
 export default router;
