@@ -20,7 +20,7 @@ const initializeDatabase = async () => {
     if (models[model].hasMany) {
       db[models[model].hasMany].hasMany(db[model]);
     }
-    await db[model].sync({ force: true });
+    await db[model].sync();
   }
 };
 

@@ -1,16 +1,16 @@
 import { Sequelize, DataTypes } from "sequelize";
 
 export interface PollsModelType {
-  question: string;
-  options: string[];
+  title: string;
+  userId: number;
 }
 
 const PollModel = (sequelize: Sequelize) => {
   return sequelize.define("poll", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
     },
     title: {
       type: DataTypes.STRING,
@@ -20,7 +20,7 @@ const PollModel = (sequelize: Sequelize) => {
       },
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       references: {
         model: "users",
         key: "id",

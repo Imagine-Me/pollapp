@@ -8,9 +8,9 @@ export interface UserModelType {
 const UserModel = (sequelize: Sequelize) => {
   return sequelize.define("user", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,

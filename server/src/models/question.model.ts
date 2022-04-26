@@ -24,8 +24,15 @@ const QuestionModel = (sequelize: Sequelize) => {
         },
       },
     },
-    pollId: {
+    answer: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: "Answer cannot be empty" },
+      },
+    },
+    pollId: {
+      type: DataTypes.UUID,
       references: {
         model: "polls",
         key: "id",
