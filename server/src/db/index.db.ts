@@ -9,8 +9,9 @@ export interface Databases {
 
 const db = {} as Databases;
 
-const env = process.env.NODE_ENV ?? "development";
-const sequelize = new Sequelize(dbConfig[env] as Options);
+const env: string = process.env.NODE_ENV ?? "development";
+const configurations: any = dbConfig;
+const sequelize = new Sequelize(configurations[env] as Options);
 
 const initializeDatabase = async () => {
   const modelKeys = Object.keys(models);

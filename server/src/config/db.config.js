@@ -1,6 +1,8 @@
-import path from "path";
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
+const path = require("path");
 
-export default {
+module.exports = {
   development: {
     username: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
@@ -33,12 +35,19 @@ export default {
     logging: false,
   },
   test: {
-    dialect: "sqlite",
-    host: "localhost",
-    username: "prince",
-    password: "password",
-    database: process.env.PG_DATABASE,
-    storage: path.resolve(__dirname, "../..", "db.sqlite"),
+    username: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE_TEST,
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000,
+    },
+    dialect: "postgres",
+    dialectOptions: {
+      setUTC: true,
+    },
     logging: false,
   },
-} as any;
+};

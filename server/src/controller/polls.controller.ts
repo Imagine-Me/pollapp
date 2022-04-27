@@ -10,3 +10,7 @@ export const getPolls = (id: number) => {
 export const createPoll = (poll: PollsModelType) => {
   return db.poll.create({ ...poll });
 };
+
+export const truncatePolls = () => {
+  return db.poll.destroy({ where: {} });
+};
