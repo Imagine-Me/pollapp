@@ -23,7 +23,6 @@ const userMiddleWare = async (
     // TODO - add to redis
   }
   res.locals.userId = userId;
-  
   next();
 };
 

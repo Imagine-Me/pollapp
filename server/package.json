@@ -4,7 +4,7 @@
   "description": "Backend for pollapp",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "start": "cross-env NODE_ENV=development nodemon ./src/index.ts"
   },
   "author": "Prince Thomas",

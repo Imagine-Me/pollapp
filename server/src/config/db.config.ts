@@ -1,3 +1,4 @@
+import path from "path";
 
 export default {
   development: {
@@ -29,6 +30,15 @@ export default {
     dialectOptions: {
       setUTC: true,
     },
+    logging: false,
+  },
+  test: {
+    dialect: "sqlite",
+    host: "localhost",
+    username: "prince",
+    password: "password",
+    database: process.env.PG_DATABASE,
+    storage: path.resolve(__dirname, "../..", "db.sqlite"),
     logging: false,
   },
 } as any;
