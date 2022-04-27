@@ -12,3 +12,7 @@ export const getQuestions = (pollId: string) => {
 export const createQuestion = (data: QuestionModelType) => {
   return db.question.upsert({ ...data });
 };
+
+export const truncateQuestions = () => {
+  return db.question.destroy({ where: {} });
+};

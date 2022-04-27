@@ -32,7 +32,7 @@ describe("Test suit for polls route", () => {
   test("should get all polls", async () => {
     const result = await requestWithSuperTest.get("/api/v1/polls/");
     expect(result.status).toEqual(200);
-    expect(result.body).toHaveLength(1);
+    expect(result.body.length).toBeGreaterThan(0);
     const poll = result.body[0];
     expect(poll).toHaveProperty("title");
     expect(poll.title).toBe("first poll");
