@@ -1,8 +1,15 @@
-import { db } from "../db/index.db";
+import { db, sequelize } from "../db/index.db";
 import { PollsModelType } from "../models/poll.model";
 
 export const getPolls = (id: number) => {
   return db.poll.findAll({
+    attributes: {
+      include: [
+        [
+          sequelize.literal('(SELECT COUNT("questions"."id") FROM "questions" WHERE "questions"."pollId" = "poll"."id")'), 'totalAmount'
+        ],
+      ],
+    },
     where: { userId: id },
   });
 };

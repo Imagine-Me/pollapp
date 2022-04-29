@@ -25,4 +25,4 @@ const initializeDatabase = async () => {
   }
 };
 
-export { db, initializeDatabase };
+export { db, initializeDatabase, sequelize };
