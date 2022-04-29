@@ -6,7 +6,10 @@ export const getPolls = (id: number) => {
     attributes: {
       include: [
         [
-          sequelize.literal('(SELECT COUNT("questions"."id") FROM "questions" WHERE "questions"."pollId" = "poll"."id")'), 'totalAmount'
+          sequelize.literal(
+            '(SELECT COUNT("questions"."id") FROM "questions" WHERE "questions"."pollId" = "poll"."id")'
+          ),
+          "questionCount",
         ],
       ],
     },

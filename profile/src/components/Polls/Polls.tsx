@@ -13,12 +13,13 @@ const BreadCrumpStyled = () => (
   </Breadcrumb>
 );
 
-interface PollsType {
+export interface PollsType {
   id: string;
   title: string;
   userId: string;
   createdAt: string;
   updatedAt: string;
+  questionCount: string;
 }
 
 const Polls = () => {
@@ -48,7 +49,7 @@ const Polls = () => {
       <BreadCrumpStyled />
       <Row gutter={16} style={{ marginTop: "10px" }}>
         {polls.map((poll) => (
-          <PollCard>{poll.title}</PollCard>
+          <PollCard key={poll.id} {...poll} />
         ))}
       </Row>
     </>
