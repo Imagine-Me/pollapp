@@ -4,21 +4,29 @@ import { createPoll, getPolls } from "../../controller/polls.controller";
 
 const router = Router();
 
-router.get("", async (req, res) => {
+router.get("", async (req, res, next) => {
   const userId = res.locals.userId as number;
-  const allPolls = await getPolls(userId);
-  res.send(allPolls);
+  try {
+    const allPolls = await getPolls(userId);
+    res.send(allPolls);
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", async (req, res, next) => {
   const userId = res.locals.userId as number;
   const { body } = req;
   const poll = {
     userId,
     ...body,
   } as PollsModelType;
-  const result = await createPoll(poll);
-  res.send({ msg: "poll created", id: result.get("id") });
+  try {
+    const result = await createPoll(poll);
+    res.send({ msg: "poll created", id: result.get("id") });
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;
