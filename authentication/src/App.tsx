@@ -17,7 +17,8 @@ const App = () => {
 
   const responseGoogle = (response: any) => {
     if (response.profileObj) {
-      const { name, tokenId, email, imageUrl } = response.profileObj;
+      const { tokenId, profileObj } = response;
+      const { name, email, imageUrl } = profileObj;
       setUser({
         name,
         isLoggedIn: true,

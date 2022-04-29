@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - POSTGRES_DB=${PG_DATABASE}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+  pollapp-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "${PORT}:${PORT}"
+    volumes:
+      - /home/pollapp/node_modules
+      - .:/home/pollapp
+    environment:
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_DATABASE=${PG_DATABASE}
+      - PG_DATABASE_TEST=${PG_DATABASE_TEST}
+      - PORT=${PORT}
+      - NODE_ENV=development
+    depends_on:
+      - postgres
+      - test
+  test:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/pollapp/node_modules
+      - .:/home/pollapp
+    command: ["npm", "run", "test"]
+    environment:
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_DATABASE=${PG_DATABASE}
+      - PG_DATABASE_TEST=${PG_DATABASE_TEST}
+      - NODE_ENV=test
+    depends_on:
+      - postgres

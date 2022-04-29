@@ -1,10 +1,9 @@
-import { Button, Layout, Typography } from "antd";
+import { Layout } from "antd";
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const { Sider } = Layout;
-const { Title } = Typography;
 
 const NavLinkStyled = styled((props) => <NavLink {...props} />)`
   display: block;
@@ -34,15 +33,20 @@ const SiderStyled = styled((props) => (
     </div>
   </Sider>
 ))`
-> div {
-    background-color: #f0f2f5;
+  background-color: #f0f2f5 !important;
+  > div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 90%;
+    transform: translateY(-50%);
     display: flex;
-    height: 100vh;
     align-items: center;
-    justify-content: end;
-    padding: 20px;
+    width: 100%;
+    border-right: 1px solid #d9d9d9;
     > div {
-      min-width: 150px;
+      width: 100%;
     }
   }
 `;

@@ -100,12 +100,16 @@ module.exports = {
       exposes: {
         "./App": "./src/App",
       },
+      remotes: {
+        authentication: "authentication@http://localhost:3002/remoteEntry.js",
+      },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
+        axios: { singleton: true, requiredVersion: "0.27.2" },
       },
     }),
     new HtmlWebPackPlugin({
