@@ -22,7 +22,7 @@ const App = () => {
         <Routes>
           <Route path="/user" element={<Profile />} />
           <Route path="/polls" element={<Polls />} />
-          <Route path="/polls/:id" element={<Questions />} />
+          <Route path="/polls/:pollId" element={<Questions />} />
         </Routes>
       </ContentStyled>
     </Layout>
