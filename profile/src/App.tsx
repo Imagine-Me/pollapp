@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Polls from "./components/Polls/Polls";
 import Profile from "./components/Profile/Profile";
