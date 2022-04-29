@@ -5,6 +5,7 @@ import { initializeDatabase } from "./db/index.db";
 import v1Routes from "./routes/v1/index.route";
 import authMiddleware from "./middlewares/auth.middelware";
 import userMiddleWare from "./middlewares/user.middleware";
+import errorMiddleware from "./middlewares/error.middleware";
 
 dotenv.config();
 
@@ -43,4 +44,5 @@ app.get("/", (req, res) => {
 
 initializeDatabase();
 
+app.use(errorMiddleware);
 export default app;

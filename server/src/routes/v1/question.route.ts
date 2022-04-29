@@ -7,16 +7,24 @@ import {
 
 const router = Router();
 
-router.get("/:pollId", async (req, res) => {
+router.get("/:pollId", async (req, res, next) => {
   const pollId = req.params.pollId;
-  const result = await getQuestions(pollId);
-  res.send(result);
+  try {
+    const result = await getQuestions(pollId);
+    res.send(result);
+  } catch (e) {
+    next(e);
+  }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", async (req, res, next) => {
   const { body } = req;
-  await createQuestion(body as QuestionModelType);
-  res.send({ msg: "question created" });
+  try {
+    await createQuestion(body as QuestionModelType);
+    res.send({ msg: "question created" });
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;
