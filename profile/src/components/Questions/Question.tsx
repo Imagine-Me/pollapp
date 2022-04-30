@@ -7,16 +7,18 @@ import notify from "../notify";
 import BreadCrumpStyled from "./BreadCrump";
 import SiderStyled from "./Sider";
 import { axiosInstance } from "../../axios/instance";
+import QuestionContent from "./QuestionContent";
 
 export interface QuestionsType {
-  id: number;
+  id?: number;
   question: string;
   options: string[];
-  answer: number;
+  answer?: number;
 }
 
 const Questions = () => {
-  const [questions, setQuestion] = useState<QuestionsType[]>([]);
+  const [questions, setQuestions] = useState<QuestionsType[]>([]);
+  const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const { pollId } = useParams();
   const user = useRecoilValue<UserProps>(userState);
 
@@ -35,7 +37,7 @@ const Questions = () => {
     if (pollId) {
       try {
         const { data } = await axiosInstance.get(`/question/${pollId}`);
-        setQuestion(data);
+        setQuestions(data);
       } catch (e) {
         notify("Server error", `${e}`);
       }
@@ -44,14 +46,36 @@ const Questions = () => {
     }
   };
 
-  const breadCrumpProps = {
-    pollId,
-    title: "Hello title",
+  const selectQuestion = (id: number) => {
+    setSelectedQuestion(id);
   };
+
+  const addNewQuestion = () => {
+    const data = {
+      question: "",
+      options: [],
+      answer: 0,
+    };
+    setQuestions((prev) => {
+      const temp = [...prev];
+      temp.push(data);
+      return temp;
+    });
+  };
+
   return (
     <>
-      <BreadCrumpStyled {...breadCrumpProps} />
-      <SiderStyled questions={questions} />
+      <BreadCrumpStyled pollId={pollId} />
+      <QuestionContent
+        addNewQuestion={addNewQuestion}
+        question={questions[selectedQuestion]}
+      />
+      <SiderStyled
+        selectedQuestion={selectedQuestion}
+        setSelectQuestion={selectQuestion}
+        addNewQuestion={addNewQuestion}
+        questions={questions}
+      />
     </>
   );
 };
