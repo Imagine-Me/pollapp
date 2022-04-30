@@ -29,12 +29,17 @@ describe("Test suit for polls route", () => {
     expect(result.status).toEqual(200);
     expect(result.body).toMatchObject({ msg: "poll created" });
   });
-  test("should get all polls", async () => {
+  test("should get all polls and single poll", async () => {
     const result = await requestWithSuperTest.get("/api/v1/polls/");
     expect(result.status).toEqual(200);
     expect(result.body.length).toBeGreaterThan(0);
     const poll = result.body[0];
     expect(poll).toHaveProperty("title");
     expect(poll.title).toBe("first poll");
+    const pollResult = await requestWithSuperTest.get(
+      `/api/v1/polls/${poll.id}`
+    );
+    expect(pollResult.status).toEqual(200);
+    expect(pollResult.body).toHaveProperty("title");
   });
 });
