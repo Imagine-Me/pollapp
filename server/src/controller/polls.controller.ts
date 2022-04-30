@@ -14,6 +14,7 @@ export const getPolls = (id: string) => {
       ],
     },
     where: { userId: id },
+    order: [["createdAt", "ASC"]],
   });
 };
 

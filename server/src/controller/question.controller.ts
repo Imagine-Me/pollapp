@@ -6,6 +6,7 @@ export const getQuestions = (pollId: string) => {
     where: {
       pollId,
     },
+    order: [["createdAt", "ASC"]],
   });
 };
 
