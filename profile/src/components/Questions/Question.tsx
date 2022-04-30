@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { userState, UserProps } from "authentication/recoil/user";
-import { notification } from "antd";
+import { useRecoilValue } from "recoil";
 
+import notify from "../notify";
 import BreadCrumpStyled from "./BreadCrump";
 import SiderStyled from "./Sider";
 import { axiosInstance } from "../../axios/instance";
-import { useRecoilValue } from "recoil";
 
 export interface QuestionsType {
   id: number;
@@ -44,15 +44,13 @@ const Questions = () => {
     }
   };
 
-  const notify = (message: string, description: string) => {
-    notification.error({
-      message,
-      description,
-    });
+  const breadCrumpProps = {
+    pollId,
+    title: "Hello title",
   };
   return (
     <>
-      <BreadCrumpStyled />
+      <BreadCrumpStyled {...breadCrumpProps} />
       <SiderStyled questions={questions} />
     </>
   );

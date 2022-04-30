@@ -47,7 +47,7 @@ const Polls = () => {
   return (
     <>
       <BreadCrumpStyled />
-      <Row gutter={16} style={{ marginTop: "10px" }}>
+      <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
         {polls.map((poll) => (
           <PollCard key={poll.id} {...poll} />
         ))}
