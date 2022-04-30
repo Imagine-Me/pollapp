@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { PollsModelType } from "../../models/poll.model";
-import { createPoll, getPolls } from "../../controller/polls.controller";
+import {
+  createPoll,
+  getPoll,
+  getPolls,
+} from "../../controller/polls.controller";
 
 const router = Router();
 
 router.get("", async (req, res, next) => {
-  const userId = res.locals.userId as number;
+  const userId = res.locals.userId as string;
   try {
     const allPolls = await getPolls(userId);
     res.send(allPolls);
@@ -13,17 +17,27 @@ router.get("", async (req, res, next) => {
     next(e);
   }
 });
+router.get("/:pollId", async (req, res, next) => {
+  const userId = res.locals.userId as string;
+  const pollId = req.params.pollId;
+  try {
+    const allPolls = await getPoll(userId, pollId);
+    res.send(allPolls);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.post("/create", async (req, res, next) => {
-  const userId = res.locals.userId as number;
+  const userId = res.locals.userId as string;
   const { body } = req;
   const poll = {
     userId,
     ...body,
   } as PollsModelType;
   try {
-    const result = await createPoll(poll);
-    res.send({ msg: "poll created", id: result.get("id") });
+    const result: any = await createPoll(poll);
+    res.send({ msg: "poll created", id: result[0].id });
   } catch (e) {
     next(e);
   }

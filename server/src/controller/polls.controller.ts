@@ -1,7 +1,7 @@
 import { db, sequelize } from "../db/index.db";
 import { PollsModelType } from "../models/poll.model";
 
-export const getPolls = (id: number) => {
+export const getPolls = (id: string) => {
   return db.poll.findAll({
     attributes: {
       include: [
@@ -17,8 +17,17 @@ export const getPolls = (id: number) => {
   });
 };
 
+export const getPoll = (id: string, pollId: string) => {
+  return db.poll.findOne({
+    where: {
+      userId: id,
+      id: pollId,
+    },
+  });
+};
+
 export const createPoll = (poll: PollsModelType) => {
-  return db.poll.create({ ...poll });
+  return db.poll.upsert({ ...poll });
 };
 
 export const truncatePolls = () => {
