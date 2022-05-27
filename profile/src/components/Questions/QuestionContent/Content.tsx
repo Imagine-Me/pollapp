@@ -60,6 +60,30 @@ const Content = ({ question, fetchQuestions }: Props) => {
   };
 
   const saveQuestion = async () => {
+    // Validation
+    const errors = [];
+    if (data.question.length === 0) {
+      errors.push("Question is required");
+    }
+    if (data.options.length < 2) {
+      errors.push("Atleast 2 options are required.");
+    }
+    if (data.answer === undefined) {
+      errors.push(
+        "Select the right answer from options (use the radio button)"
+      );
+    }
+    if (errors.length > 0) {
+      notify(
+        "Form error",
+        <ul>
+          {errors.map((error, id) => (
+            <li key={`error_id_${id}`}>{error}</li>
+          ))}
+        </ul>
+      );
+      return;
+    }
     try {
       setLoading(true);
       await axiosInstance.post("/question/create", data);

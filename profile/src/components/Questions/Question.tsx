@@ -54,7 +54,7 @@ const Questions = () => {
     const data = {
       question: "",
       options: [],
-      answer: 0,
+      answer: undefined,
       pollId,
     };
     const questionLength = questions.length;
