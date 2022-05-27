@@ -8,6 +8,8 @@ import BreadCrumpStyled from "./QuestionContent/BreadCrump";
 import SiderStyled from "./QuestionList/Sider";
 import { axiosInstance } from "../../axios/instance";
 import QuestionContent from "./QuestionContent";
+import { Modal } from "antd";
+import MDEditor from "@uiw/react-md-editor";
 
 export interface QuestionsType {
   id?: number;
@@ -75,6 +77,17 @@ const Questions = () => {
     }
   };
 
+  const showDialog = (id: number) => {
+    const questionId = questions[id].id;
+    if (id && questionId) {
+      Modal.error({
+        title: "Are you sure you want to delete following question?",
+        content: <MDEditor.Markdown source={questions[id].question} />,
+        onOk: () => deleteQuestion(questionId),
+      });
+    }
+  };
+
   return (
     <>
       <BreadCrumpStyled pollId={pollId} />
@@ -88,7 +101,7 @@ const Questions = () => {
         setSelectQuestion={selectQuestion}
         addNewQuestion={addNewQuestion}
         questions={questions}
-        deleteQuestion={deleteQuestion}
+        deleteQuestion={showDialog}
       />
     </>
   );

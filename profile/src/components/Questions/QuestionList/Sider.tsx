@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import { Button, Drawer, Typography } from "antd";
 import React from "react";
 import DeleteButton from "../DeleteButton";
@@ -11,27 +12,34 @@ interface Props {
   selectedQuestion: number;
   setSelectQuestion: (id: number) => void;
   addNewQuestion: () => void;
-  deleteQuestion: (id: number | undefined) => Promise<void>;
+  deleteQuestion: (id: number) => void;
 }
 
 const QuestionSider = (props: Props) => {
-  const { questions } = props;
+  const {
+    questions,
+    selectedQuestion,
+    addNewQuestion,
+    setSelectQuestion,
+    deleteQuestion,
+  } = props;
   return (
     <Drawer closeIcon visible mask={false} placement="right">
       {questions.map((question, id) => (
         <QuestionCard
           key={`question_card_${id}`}
           bordered={false}
-          className={props.selectedQuestion === id ? "selected" : ""}
-          onClick={() => props.setSelectQuestion(id)}
+          className={selectedQuestion === id ? "selected" : ""}
+          onClick={() => setSelectQuestion(id)}
         >
-          <Title level={5}>
-            {id + 1}. {question.question}
-          </Title>
-          <DeleteButton onClick={() => props.deleteQuestion(question.id)} />
+          <MDEditor.Markdown
+            source={question.question}
+            style={{ padding: "15px" }}
+          />
+          <DeleteButton onClick={() => deleteQuestion(id)} />
         </QuestionCard>
       ))}
-      <Button onClick={props.addNewQuestion} size="large" block type="dashed">
+      <Button onClick={addNewQuestion} size="large" block type="dashed">
         Add question
       </Button>
     </Drawer>

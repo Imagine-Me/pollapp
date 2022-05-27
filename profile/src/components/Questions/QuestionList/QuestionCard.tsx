@@ -7,6 +7,10 @@ const QuestionCard = styled(Card)`
   transition: transform 0.5s ease-in-out;
   margin-bottom: 7px !important;
   position: relative;
+  border: 2px solid #00000000;
+  .ant-card-body {
+    padding: 0 !important;
+  }
   &.selected {
     border: 2px solid green;
   }
