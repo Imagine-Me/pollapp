@@ -37,10 +37,11 @@ const TopButton = styled((props) => {
 
 interface Props {
   question: QuestionsType;
+  questionRef: React.MutableRefObject<QuestionsType | undefined>;
   fetchQuestions: () => Promise<void>;
 }
 
-const Content = ({ question, fetchQuestions }: Props) => {
+const Content = ({ question, questionRef, fetchQuestions }: Props) => {
   const [data, setData] = useState<QuestionsType>(question);
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,6 +49,12 @@ const Content = ({ question, fetchQuestions }: Props) => {
   useEffect(() => {
     setData(question);
   }, [question]);
+  
+  useEffect(() => {
+    if (questionRef) {
+      questionRef.current = data;
+    }
+  }, [data]);
 
   const questionChange = (question: string | undefined) => {
     const tempData = { ...data };

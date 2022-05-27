@@ -9,18 +9,29 @@ const { Title } = Typography;
 
 interface Props {
   question: QuestionsType;
+  questionRef: React.MutableRefObject<QuestionsType | undefined>;
   addNewQuestion: () => void;
   fetchQuestions: () => Promise<void>;
 }
 
 const QuestionContent = styled((props: Props) => {
-  const { question, addNewQuestion, fetchQuestions, ...styledProps } = props;
+  const {
+    question,
+    addNewQuestion,
+    fetchQuestions,
+    questionRef,
+    ...styledProps
+  } = props;
 
   return (
     <div {...styledProps}>
       <div>
         {question ? (
-          <Content question={question} fetchQuestions={fetchQuestions} />
+          <Content
+            question={question}
+            questionRef={questionRef}
+            fetchQuestions={fetchQuestions}
+          />
         ) : (
           <>
             <Title level={3}>No questions added yet. Add now.</Title>

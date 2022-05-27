@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { userState, UserProps } from "authentication/recoil/user";
 import { useRecoilValue } from "recoil";
@@ -23,6 +23,7 @@ const Questions = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const { pollId } = useParams();
   const user = useRecoilValue<UserProps>(userState);
+  const questionRef = useRef<QuestionsType>();
 
   useEffect(() => {
     axiosInstance.interceptors.request.use(function (config) {
@@ -40,6 +41,7 @@ const Questions = () => {
       try {
         const { data } = await axiosInstance.get(`/question/${pollId}`);
         setQuestions(data);
+        questionRef.current = data[selectedQuestion];
       } catch (e) {
         notify("Server error", `${e}`);
       }
@@ -49,7 +51,22 @@ const Questions = () => {
   };
 
   const selectQuestion = (id: number) => {
-    setSelectedQuestion(id);
+    // check if user changed if question
+    if (
+      JSON.stringify(questionRef.current) !==
+      JSON.stringify(questions[selectedQuestion])
+    ) {
+      Modal.confirm({
+        title: "Caution",
+        content:
+          "You have made changes to the question. Are you sure you want to move to another question?",
+        onOk() {
+          setSelectedQuestion(id);
+        },
+      });
+    } else {
+      setSelectedQuestion(id);
+    }
   };
 
   const addNewQuestion = () => {
@@ -95,6 +112,7 @@ const Questions = () => {
         addNewQuestion={addNewQuestion}
         question={questions[selectedQuestion]}
         fetchQuestions={fetchQuestions}
+        questionRef={questionRef}
       />
       <SiderStyled
         selectedQuestion={selectedQuestion}
