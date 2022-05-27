@@ -1,5 +1,6 @@
 import { Button, Drawer, Typography } from "antd";
 import React from "react";
+import DeleteButton from "../DeleteButton";
 
 import { QuestionsType } from "../Question";
 import QuestionCard from "./QuestionCard";
@@ -10,6 +11,7 @@ interface Props {
   selectedQuestion: number;
   setSelectQuestion: (id: number) => void;
   addNewQuestion: () => void;
+  deleteQuestion: (id: number | undefined) => Promise<void>;
 }
 
 const QuestionSider = (props: Props) => {
@@ -26,6 +28,7 @@ const QuestionSider = (props: Props) => {
           <Title level={5}>
             {id + 1}. {question.question}
           </Title>
+          <DeleteButton onClick={() => props.deleteQuestion(question.id)} />
         </QuestionCard>
       ))}
       <Button onClick={props.addNewQuestion} size="large" block type="dashed">

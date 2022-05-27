@@ -1,7 +1,7 @@
 import { Button, Card, Radio, RadioChangeEvent } from "antd";
 import React from "react";
 import styled from "styled-components";
-import AnswerDeleteButton from "../DeleteButton";
+import DeleteButton from "../DeleteButton";
 import Editor from "./Editor";
 
 const AnswerCard = styled(Card)`
@@ -76,7 +76,7 @@ const Options = ({
               />
             </div>
           </Radio>
-          <AnswerDeleteButton onClick={() => deleteOption(id)} />
+          <DeleteButton onClick={() => deleteOption(id)} />
         </AnswerCard>
       ))}
       <Button

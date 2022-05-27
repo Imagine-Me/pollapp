@@ -6,12 +6,16 @@ export const getQuestions = (pollId: string) => {
     where: {
       pollId,
     },
-    order: [["createdAt", "DESC"]],
+    order: [["createdAt", "ASC"]],
   });
 };
 
 export const createQuestion = (data: QuestionModelType) => {
   return db.question.upsert({ ...data });
+};
+
+export const deleteQuestion = (id: string) => {
+  return db.question.destroy({ where: { id } });
 };
 
 export const truncateQuestions = () => {

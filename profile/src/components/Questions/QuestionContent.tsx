@@ -10,25 +10,21 @@ const { Title } = Typography;
 interface Props {
   question: QuestionsType;
   addNewQuestion: () => void;
+  fetchQuestions: () => Promise<void>;
 }
 
 const QuestionContent = styled((props: Props) => {
-  const { question, addNewQuestion, ...styledProps } = props;
+  const { question, addNewQuestion, fetchQuestions, ...styledProps } = props;
 
   return (
     <div {...styledProps}>
       <div>
         {question ? (
-          <Content {...question} />
+          <Content question={question} fetchQuestions={fetchQuestions} />
         ) : (
           <>
             <Title level={3}>No questions added yet. Add now.</Title>
-            <Button
-              onClick={addNewQuestion}
-              size="large"
-              block
-              type="dashed"
-            >
+            <Button onClick={addNewQuestion} size="large" block type="dashed">
               Add question
             </Button>
           </>

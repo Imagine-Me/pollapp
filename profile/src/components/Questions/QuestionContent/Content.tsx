@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import { QuestionsType } from "../Question";
@@ -35,10 +35,19 @@ const TopButton = styled((props) => {
   z-index: 1000;
 `;
 
-const Content = (props: QuestionsType) => {
-  const [data, setData] = useState<QuestionsType>(props);
+interface Props {
+  question: QuestionsType;
+  fetchQuestions: () => Promise<void>;
+}
+
+const Content = ({ question, fetchQuestions }: Props) => {
+  const [data, setData] = useState<QuestionsType>(question);
   const [isPreview, setIsPreview] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setData(question);
+  }, [question]);
 
   const questionChange = (question: string | undefined) => {
     const tempData = { ...data };
@@ -54,6 +63,7 @@ const Content = (props: QuestionsType) => {
     try {
       setLoading(true);
       await axiosInstance.post("/question/create", data);
+      await fetchQuestions();
       notify("Success", "Question updated", "success");
     } catch (e) {
       notify("Error", "Server error");

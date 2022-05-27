@@ -6,6 +6,7 @@ const QuestionCard = styled(Card)`
   cursor: pointer;
   transition: transform 0.5s ease-in-out;
   margin-bottom: 7px !important;
+  position: relative;
   &.selected {
     border: 2px solid green;
   }

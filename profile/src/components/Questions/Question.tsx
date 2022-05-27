@@ -55,12 +55,24 @@ const Questions = () => {
       question: "",
       options: [],
       answer: 0,
+      pollId,
     };
+    const questionLength = questions.length;
     setQuestions((prev) => {
       const temp = [...prev];
       temp.push(data);
       return temp;
     });
+    setSelectedQuestion(questionLength);
+  };
+
+  const deleteQuestion = async (id: number | undefined) => {
+    if (id) {
+      await axiosInstance.delete(`/question/delete/${id}`);
+      const questionLength = questions.length - 2;
+      await fetchQuestions();
+      setSelectedQuestion(questionLength);
+    }
   };
 
   return (
@@ -69,12 +81,14 @@ const Questions = () => {
       <QuestionContent
         addNewQuestion={addNewQuestion}
         question={questions[selectedQuestion]}
+        fetchQuestions={fetchQuestions}
       />
       <SiderStyled
         selectedQuestion={selectedQuestion}
         setSelectQuestion={selectQuestion}
         addNewQuestion={addNewQuestion}
         questions={questions}
+        deleteQuestion={deleteQuestion}
       />
     </>
   );

@@ -3,7 +3,7 @@ import { Button } from "antd";
 import React from "react";
 import styled from "styled-components";
 
-const AnswerDeleteButton = styled((props) => (
+const DeleteButton = styled((props) => (
   <Button {...props} type="primary" danger icon={<DeleteOutlined />}></Button>
 ))`
   position: absolute !important;
@@ -11,4 +11,4 @@ const AnswerDeleteButton = styled((props) => (
   top: 50%;
   transform: translateY(-50%);
 `;
-export default AnswerDeleteButton;
+export default DeleteButton;
