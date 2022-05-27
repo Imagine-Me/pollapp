@@ -4,8 +4,8 @@ import { userState, UserProps } from "authentication/recoil/user";
 import { useRecoilValue } from "recoil";
 
 import notify from "../notify";
-import BreadCrumpStyled from "./BreadCrump";
-import SiderStyled from "./Sider";
+import BreadCrumpStyled from "./QuestionContent/BreadCrump";
+import SiderStyled from "./QuestionList/Sider";
 import { axiosInstance } from "../../axios/instance";
 import QuestionContent from "./QuestionContent";
 

@@ -1,7 +1,7 @@
 import { Button, Drawer, Typography } from "antd";
 import React from "react";
 
-import { QuestionsType } from "./Question";
+import { QuestionsType } from "../Question";
 import QuestionCard from "./QuestionCard";
 
 const { Title } = Typography;

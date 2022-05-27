@@ -8,6 +8,7 @@ const { Title } = Typography;
 
 const CardStyled = styled(Card)`
   transition: transform 0.3s ease-in-out;
+  background: #e1e1e1 !important;
   &:hover {
     transform: scale(1.05);
   }

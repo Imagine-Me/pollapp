@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Typography, Button } from "antd";
 
 import { QuestionsType } from "./Question";
+import Content from "./QuestionContent/Content";
 
 const { Title } = Typography;
 
@@ -18,11 +19,16 @@ const QuestionContent = styled((props: Props) => {
     <div {...styledProps}>
       <div>
         {question ? (
-          question.question
+          <Content {...question} />
         ) : (
           <>
             <Title level={3}>No questions added yet. Add now.</Title>
-            <Button onClick={addNewQuestion} size="large" block type="dashed">
+            <Button
+              onClick={addNewQuestion}
+              size="large"
+              block
+              type="dashed"
+            >
               Add question
             </Button>
           </>
@@ -32,7 +38,9 @@ const QuestionContent = styled((props: Props) => {
   );
 })`
   overflow-y: auto;
-  margin: 30px 380px 30px 0;
+  margin: 30px 350px 30px 0;
+  position: relative;
+  height: calc(100% - 35px);
   > div {
     max-width: 720px;
     margin: auto;

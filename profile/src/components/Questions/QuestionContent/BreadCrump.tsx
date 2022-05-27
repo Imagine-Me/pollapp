@@ -2,8 +2,8 @@ import { EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Input, Typography } from "antd";
 import React, { ChangeEvent, useEffect } from "react";
 import { useState } from "react";
-import { axiosInstance } from "../../axios/instance";
-import notify from "../notify";
+import { axiosInstance } from "../../../axios/instance";
+import notify from "../../notify";
 
 const { Paragraph } = Typography;
 
