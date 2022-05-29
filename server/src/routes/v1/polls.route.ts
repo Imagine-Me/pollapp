@@ -2,6 +2,7 @@ import { Router } from "express";
 import { PollsModelType } from "../../models/poll.model";
 import {
   createPoll,
+  deletePoll,
   getPoll,
   getPolls,
 } from "../../controller/polls.controller";
@@ -38,6 +39,16 @@ router.post("/create", async (req, res, next) => {
   try {
     const result: any = await createPoll(poll);
     res.send({ msg: "poll created", id: result[0].id });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.delete("/delete/:id", async (req, res, next) => {
+  const pollId = req.params.id;
+  try {
+    await deletePoll(pollId);
+    res.send({ msg: "poll deleted" });
   } catch (e) {
     next(e);
   }

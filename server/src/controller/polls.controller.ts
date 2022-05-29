@@ -31,6 +31,10 @@ export const createPoll = (poll: PollsModelType) => {
   return db.poll.upsert({ ...poll });
 };
 
+export const deletePoll = (id: string) => {
+  return db.poll.destroy({ where: { id } });
+};
+
 export const truncatePolls = () => {
   return db.poll.destroy({ where: {} });
 };
