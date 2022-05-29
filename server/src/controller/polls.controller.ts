@@ -14,6 +14,7 @@ export const getPolls = (id: string) => {
       ],
     },
     where: { userId: id },
+    order: [["createdAt", "DESC"]],
   });
 };
 
@@ -28,6 +29,10 @@ export const getPoll = (id: string, pollId: string) => {
 
 export const createPoll = (poll: PollsModelType) => {
   return db.poll.upsert({ ...poll });
+};
+
+export const deletePoll = (id: string) => {
+  return db.poll.destroy({ where: { id } });
 };
 
 export const truncatePolls = () => {

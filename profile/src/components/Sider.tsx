@@ -29,7 +29,7 @@ const SiderStyled = styled((props) => (
   <Sider {...props}>
     <div>
       <NavLinkStyled to="polls">Polls</NavLinkStyled>
-      <NavLinkStyled to="user">Profile</NavLinkStyled>
+      <NavLinkStyled to="profile">Profile</NavLinkStyled>
     </div>
   </Sider>
 ))`
