@@ -46,7 +46,7 @@ const Polls = () => {
   const [pollNameError, setPollNameError] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [pollLoading, setPollLoading] = useState<boolean>(false);
-  const user: UserProps = useRecoilValue(userState);
+  
   useEffect(() => {
     fetchPolls();
   }, []);
@@ -91,7 +91,7 @@ const Polls = () => {
           </AddPollButton>
         </Col>
         {polls.map((poll) => (
-          <PollCard key={poll.id} {...poll} />
+          <PollCard key={poll.id} poll={poll} fetchPolls={fetchPolls} />
         ))}
       </Row>
       <Modal
