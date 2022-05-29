@@ -22,17 +22,9 @@ const Questions = () => {
   const [questions, setQuestions] = useState<QuestionsType[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const { pollId } = useParams();
-  const user = useRecoilValue<UserProps>(userState);
   const questionRef = useRef<QuestionsType>();
 
   useEffect(() => {
-    axiosInstance.interceptors.request.use(function (config) {
-      if (!config.headers) {
-        config.headers = {};
-      }
-      config.headers.Authorization = `Bearer ${user.tokenId}`;
-      return config;
-    });
     fetchQuestions();
   }, []);
 

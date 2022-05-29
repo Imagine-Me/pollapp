@@ -26,7 +26,7 @@ const TopButton = styled((props) => {
   );
 })`
   position: absolute;
-  right: 0;
+  right: 10px;
   > button {
     &:last-child {
       margin-left: 10px;
@@ -49,7 +49,7 @@ const Content = ({ question, questionRef, fetchQuestions }: Props) => {
   useEffect(() => {
     setData(question);
   }, [question]);
-  
+
   useEffect(() => {
     if (questionRef) {
       questionRef.current = data;
@@ -103,7 +103,7 @@ const Content = ({ question, questionRef, fetchQuestions }: Props) => {
   };
 
   const editOption = (id: number, option: string | undefined) => {
-    if (option) {
+    if (option !== undefined) {
       const tempOptions = [...data.options];
       tempOptions[id] = option;
       setData((prev) => ({

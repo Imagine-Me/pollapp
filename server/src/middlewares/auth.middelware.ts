@@ -6,6 +6,16 @@ const authMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  // ? JUST FOR TESTING
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[0] === "Bearer"
+  ) {
+    const bearerToken = req.headers.authorization.split(" ")[1];
+    console.log(bearerToken);
+  }
+
+
   if (
     process.env.NODE_ENV === "test" ||
     process.env.NODE_ENV === "development"
