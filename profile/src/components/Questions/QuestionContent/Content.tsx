@@ -147,7 +147,7 @@ const Content = ({ question, questionRef, fetchQuestions }: Props) => {
         onSourceChange={questionChange}
         source={data.question}
         isPreview={isPreview}
-        height="medium"
+        height="large"
       />
       <Options
         options={data.options}

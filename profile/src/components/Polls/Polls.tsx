@@ -86,7 +86,7 @@ const Polls = () => {
         <Col xs={6}>
           <AddPollButton onClick={() => setModalVisible(true)}>
             <div>
-              <PlusOutlined size={24} /> Add Question
+              <PlusOutlined size={24} /> Add Poll
             </div>
           </AddPollButton>
         </Col>
