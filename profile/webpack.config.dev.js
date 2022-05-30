@@ -99,6 +99,7 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App",
+        "./axios/instance": "./src/axios/instance"
       },
       remotes: {
         authentication: "authentication@http://localhost:3002/remoteEntry.js",

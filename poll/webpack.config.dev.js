@@ -98,10 +98,15 @@ module.exports = {
       exposes: {
         "./App": "./src/App",
       },
+      remotes: {
+        profile: "profile@http://localhost:3003/remoteEntry.js",
+        utils: "utils@http://localhost:3000/remoteEntry.js"
+      },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
+        axios: { singleton: true, requiredVersion: "0.27.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
