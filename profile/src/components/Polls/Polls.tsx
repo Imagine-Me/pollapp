@@ -1,12 +1,10 @@
 import { Breadcrumb, Col, notification, Row, Modal, Input } from "antd";
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { UserProps, userState } from "authentication/recoil/user";
+import { axiosInstance } from "utils/axios/instance";
 import styled from "styled-components";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 import PollCard from "./PollCard";
-import { axiosInstance } from "../../axios/instance";
 
 const BreadCrumpStyled = () => (
   <Breadcrumb>

@@ -3,8 +3,8 @@ import { Button, Card, Col, Modal, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { PollsType } from "./Polls";
 import styled from "styled-components";
-import { axiosInstance } from "../../axios/instance";
-import notify from "../notify";
+import { axiosInstance } from "utils/axios/instance";
+import { notify } from "utils/notify";
 
 const { Title } = Typography;
 const CardStyled = styled(Card)`

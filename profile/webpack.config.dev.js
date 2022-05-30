@@ -99,10 +99,10 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App",
-        "./axios/instance": "./src/axios/instance"
       },
       remotes: {
         authentication: "authentication@http://localhost:3002/remoteEntry.js",
+        utils: "utils@http://localhost:3000/remoteEntry.js",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },

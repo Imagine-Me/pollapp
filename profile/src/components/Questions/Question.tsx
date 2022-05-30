@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { userState, UserProps } from "authentication/recoil/user";
-import { useRecoilValue } from "recoil";
+import { axiosInstance } from "utils/axios/instance";
+import { notify } from "utils/notify";
 
-import notify from "../notify";
 import BreadCrumpStyled from "./QuestionContent/BreadCrump";
 import SiderStyled from "./QuestionList/Sider";
-import { axiosInstance } from "../../axios/instance";
 import QuestionContent from "./QuestionContent";
 import { Modal } from "antd";
 import MDEditor from "@uiw/react-md-editor";

@@ -2,12 +2,12 @@ import { Button } from "antd";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import { axiosInstance } from "utils/axios/instance";
+import { notify } from "utils/notify";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { QuestionsType } from "../Question";
 import Editor from "./Editor";
-import { axiosInstance } from "../../../axios/instance";
 import Options from "./Options";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import notify from "../../notify";
 
 const TopButton = styled((props) => {
   const { isPreview, loading, saveQuestion, setPreview, ...styles } = props;
