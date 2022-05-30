@@ -12,7 +12,7 @@ const Poll = React.lazy(() => import("poll/App"));
 const App = () => {
   const setUserState = useSetRecoilState(userState);
   React.useEffect(() => {
-    const userData = localStorage.getItem("pollapp");
+    const userData = sessionStorage.getItem("pollapp");
     if (userData) {
       setUserState(JSON.parse(userData));
     }

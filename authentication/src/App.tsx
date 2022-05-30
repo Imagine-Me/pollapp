@@ -27,7 +27,7 @@ const App = () => {
         isLoading: false,
         tokenId,
       };
-      localStorage.setItem("pollapp", JSON.stringify(data));
+      sessionStorage.setItem("pollapp", JSON.stringify(data));
       setUser(data);
     }
   };

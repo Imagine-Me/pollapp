@@ -23,6 +23,7 @@ services:
       - PG_DATABASE=${PG_DATABASE}
       - PG_DATABASE_TEST=${PG_DATABASE_TEST}
       - PORT=${PORT}
+      - CLIENT_ID=${CLIENT_ID}
       - NODE_ENV=development
     depends_on:
       - postgres

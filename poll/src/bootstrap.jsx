@@ -6,11 +6,9 @@ import Wrapper from "./App";
 
 const root = document.getElementById("root");
 createRoot(root).render(
-  <React.StrictMode>
-    <Router>
-      <RecoilRoot>
-        <Wrapper />
-      </RecoilRoot>
-    </Router>
-  </React.StrictMode>
+  <Router>
+    <RecoilRoot>
+      <Wrapper />
+    </RecoilRoot>
+  </Router>
 );
