@@ -46,7 +46,7 @@ const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
         pollId: id,
       });
       const roomId = data.id;
-      navigate(`/${roomId}`);
+      navigate(`/poll/${roomId}`);
     } catch (e) {
       notify("Error", "Server error");
     }

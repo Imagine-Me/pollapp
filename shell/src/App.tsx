@@ -5,6 +5,7 @@ import "./App.css";
 
 const Authentication = React.lazy(() => import("authentication/App"));
 const Profile = React.lazy(() => import("profile/App"));
+const Poll = React.lazy(() => import("poll/App"));
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Authentication />} />
         <Route path="/user/*" element={<Profile />} />
+        <Route path="/poll/*" element={<Poll />} />
       </Routes>
     </React.Suspense>
   );

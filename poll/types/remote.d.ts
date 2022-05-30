@@ -1,17 +1,4 @@
 
-
-declare module "authentication/App" {
-  import { FC } from "react";
-  export = FC;
-}
-declare module "profile/App" {
-  import { FC } from "react";
-  export = FC;
-}
-declare module "poll/App" {
-  import { FC } from "react";
-  export = FC;
-}
 declare module "authentication/recoil/user" {
   import { RecoilState } from "recoil";
   interface UserProps {
@@ -25,3 +12,5 @@ declare module "authentication/recoil/user" {
   type UserState = RecoilState<UserProps>;
   export const userState = UserState;
 }
+
+declare module "*.css";

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "cross-env NODE_ENV=dev webpack serve --config webpack.dev.config.js --hot",
+    "dev": "cross-env NODE_ENV=dev webpack serve --config webpack.config.dev.js --hot",
     "build": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js"
   },
   "author": "",

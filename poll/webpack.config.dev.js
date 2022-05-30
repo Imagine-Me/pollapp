@@ -1,13 +1,19 @@
 const path = require("path");
 const { ModuleFederationPlugin } = require("webpack").container;
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { DefinePlugin } = require("webpack");
+const { config } = require("dotenv");
 
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    fallback: {
+      fs: false,
+      os: false,
+      path: false,
+    },
   },
   mode: "development",
   module: {
@@ -15,10 +21,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
-        options: {
-          presets: ["@babel/preset-react"],
-        },
+        use: ["babel-loader"],
       },
       {
         test: /\.tsx?$/,
@@ -78,12 +81,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.[contenthash].js",
-    publicPath: "/"
   },
   devServer: {
-    port: 3001,
-    open: true,
-    historyApiFallback: true,
+    port: 3004,
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
@@ -93,10 +93,10 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "pollapp",
-      remotes: {
-        authentication: "authentication@http://localhost:3002/remoteEntry.js",
-        profile: "profile@http://localhost:3003/remoteEntry.js",
+      name: "poll",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./App": "./src/App",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
@@ -106,13 +106,15 @@ module.exports = {
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
     }),
-    new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
       chunkFilename: "[id].css",
+    }),
+    new DefinePlugin({
+      "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
     }),
   ],
   stats: "errors-only",
