@@ -105,10 +105,12 @@ module.exports = {
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
+        antd: { singleton: true, requiredVersion: "4.19.5" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
         axios: { singleton: true, requiredVersion: "0.27.2" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
+        "socket.io-client": { singleton: true, requiredVersion: "4.5.1" },
       },
     }),
     new HtmlWebPackPlugin({

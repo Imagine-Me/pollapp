@@ -26,5 +26,9 @@ declare module "utils/notify" {
     type?: keyof NotificationInstanceE
   ) => {};
 }
+declare module "utils/hooks/socket" {
+  import { Socket,DefaultEventsMap } from "socket.io-client";
+  export const useSocket:() => Socket<DefaultEventsMap, DefaultEventsMap>;;
+}
 
 declare module "*.css";

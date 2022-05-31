@@ -33,8 +33,8 @@ const authMiddleware = async (
         res.locals.name = data?.name;
         next();
       } catch (e: any) {
-        console.log("error", e);
-        next(e);
+        res.status(401);
+        next();
       }
     } else {
       console.log("NO BEARER TOKEN");

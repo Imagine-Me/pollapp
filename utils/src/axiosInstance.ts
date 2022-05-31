@@ -1,5 +1,6 @@
 import { UserProps } from "authentication/recoil/user";
 import axios from "axios";
+import { notify } from "./notify";
 
 const userData = sessionStorage.getItem("pollapp");
 let tokenId = "";
@@ -16,4 +17,13 @@ const axiosInstance = axios.create({
   },
 });
 
+axiosInstance.interceptors.response.use(
+  (onFullFill) => onFullFill,
+  (onReject) => {
+    if (onReject.response.status == 401) {
+      notify("ERROR", "Authorization error");
+    }
+    return onReject;
+  }
+);
 export { axiosInstance };
