@@ -16,7 +16,6 @@ const authMiddleware = async (
     res.locals.name = " John Doe";
     next();
   } else {
-    console.log('DEVELOPMENT OK')
     if (
       req.headers.authorization &&
       req.headers.authorization.split(" ")[0] === "Bearer"
@@ -38,7 +37,7 @@ const authMiddleware = async (
         next(e);
       }
     } else {
-      console.log('NO BEARER TOKEN')
+      console.log("NO BEARER TOKEN");
       next();
     }
   }

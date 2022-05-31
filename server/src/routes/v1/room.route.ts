@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getQuestionsLength } from "../../controller/question.controller";
 import { createRoom, joinRoom } from "../../controller/room.controller";
 
 const router = Router();
@@ -11,8 +12,13 @@ router.post("/create", async (req, res, next) => {
     pollId,
   };
   try {
-    const result: any = await createRoom(data);
-    res.send({ msg: "Room created", id: result[0].id });
+    const questionLength = await getQuestionsLength(pollId);
+    if (questionLength.count > 0) {
+      const result: any = await createRoom(data);
+      res.send({ status: true, msg: "Room created", id: result[0].id });
+    } else {
+      res.send({ msg: "Add atleast one question", status: false });
+    }
   } catch (e) {
     next(e);
   }

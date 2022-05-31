@@ -10,6 +10,14 @@ export const getQuestions = (pollId: string) => {
   });
 };
 
+export const getQuestionsLength = (pollId: string) => {
+  return db.question.findAndCountAll({
+    where: {
+      pollId,
+    },
+  });
+};
+
 export const createQuestion = (data: QuestionModelType) => {
   return db.question.upsert({ ...data });
 };

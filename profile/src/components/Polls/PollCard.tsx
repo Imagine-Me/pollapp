@@ -45,11 +45,16 @@ const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
       const { data } = await axiosInstance.post(`/room/create`, {
         pollId: id,
       });
-      const roomId = data.id;
-      navigate(`/poll/${roomId}`);
+      if (data.status) {
+        const roomId = data.id;
+        navigate(`/poll/${roomId}`);
+      } else {
+        notify("Error", data.msg);
+      }
     } catch (e) {
       notify("Error", "Server error");
     }
+    setLoading(false);
   };
   return (
     <Col xs={6}>
