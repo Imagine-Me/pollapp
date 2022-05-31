@@ -27,8 +27,15 @@ declare module "utils/notify" {
   ) => {};
 }
 declare module "utils/hooks/socket" {
-  import { Socket,DefaultEventsMap } from "socket.io-client";
-  export const useSocket:() => Socket<DefaultEventsMap, DefaultEventsMap>;;
+  import { Socket, DefaultEventsMap } from "socket.io-client";
+  interface Props {
+    id: string;
+    type: "host" | "join";
+    [x: string]: string;
+  }
+  export const useSocket: (
+    x: Props
+  ) => Socket<DefaultEventsMap, DefaultEventsMap>;
 }
 
 declare module "*.css";
