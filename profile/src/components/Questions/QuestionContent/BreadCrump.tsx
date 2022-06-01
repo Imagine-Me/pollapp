@@ -1,8 +1,9 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Input, Typography } from "antd";
+import { Button, Input, Typography, Breadcrumb } from "antd";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
+import styled from "styled-components";
 
 const { Paragraph } = Typography;
 
@@ -10,7 +11,7 @@ interface Props {
   pollId?: string;
 }
 
-const BreadCrumpStyled = ({ pollId }: Props) => {
+const BreadCrumpStyled = styled(({ pollId, ...props }: Props) => {
   const [title, setTitle] = useState("");
   const [edit, setEdit] = useState<boolean>(false);
 
@@ -51,9 +52,11 @@ const BreadCrumpStyled = ({ pollId }: Props) => {
   };
 
   return (
-    <Breadcrumb>
+    <Breadcrumb {...props} separator="">
       <Breadcrumb.Item>Profile</Breadcrumb.Item>
+      <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
       <Breadcrumb.Item>Poll</Breadcrumb.Item>
+      <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
       <Breadcrumb.Item>
         {edit ? (
           <Input
@@ -61,6 +64,7 @@ const BreadCrumpStyled = ({ pollId }: Props) => {
             value={title}
             onChange={onChange}
             onBlur={updatePoll}
+            autoFocus
           />
         ) : (
           <>
@@ -75,6 +79,15 @@ const BreadCrumpStyled = ({ pollId }: Props) => {
       </Breadcrumb.Item>
     </Breadcrumb>
   );
-};
+})`
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: center;
+  }
+`;
 
 export default BreadCrumpStyled;

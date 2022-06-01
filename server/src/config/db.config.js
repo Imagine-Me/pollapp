@@ -32,6 +32,7 @@ module.exports = {
     dialectOptions: {
       setUTC: true,
     },
+    logging: false,
   },
   production: {
     username: process.env.PG_USER,

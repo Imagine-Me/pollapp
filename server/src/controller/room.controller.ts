@@ -8,3 +8,12 @@ export const createRoom = (data: RoomModelsType) => {
 export const joinRoom = (id: string) => {
   return db.room.findOne({ where: { id } });
 };
+
+export const getRoom = (id: string, userId: string) => {
+  return db.room.findOne({
+    where: {
+      id,
+      userId,
+    },
+  });
+};

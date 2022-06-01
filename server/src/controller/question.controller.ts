@@ -10,6 +10,15 @@ export const getQuestions = (pollId: string) => {
   });
 };
 
+export const getQuestionIds = (pollId: string) => {
+  return db.question.findAll({
+    where: { pollId },
+    attributes: ["id"],
+    order: [["createdAt", "ASC"]],
+    raw: true,
+  });
+};
+
 export const getQuestionsLength = (pollId: string) => {
   return db.question.findAndCountAll({
     where: {
