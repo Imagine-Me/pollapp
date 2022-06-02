@@ -18,4 +18,24 @@ export const createRedisRoom = async (
   await client.set(roomId, JSON.stringify(data));
 };
 
+export const getRedisRoom = async (roomId: string) => {
+  const result = await client.GET(roomId);
+  if (result) {
+    return JSON.parse(result);
+  }
+  return {};
+};
+
+export const updateRedisRoom = async (
+  roomId: string,
+  data: Record<string, any>
+) => {
+  const roomData = await getRedisRoom(roomId);
+  const newData = {
+    ...roomData,
+    ...data,
+  };
+  await client.set(roomId, JSON.stringify(newData));
+};
+
 client.on("error", (err) => console.log("Redis Client Error", err));

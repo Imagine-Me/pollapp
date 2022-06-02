@@ -5,6 +5,7 @@ import { authMiddleware } from "./../middlewares/authSocket.middleware";
 import { getRoom } from "../controller/room.controller";
 import { getQuestionIds } from "./../controller/question.controller";
 import { codes } from "./codes";
+import { getRedisRoom } from "../redis";
 
 interface ConnectionQuery {
   id: string;
@@ -15,6 +16,11 @@ interface ConnectionQuery {
 interface DataInterface {
   code: number;
   result: any;
+}
+
+interface PacketInterface {
+  _redis: Record<string, any>;
+  [x: string]: any;
 }
 
 export default function initializeSocket(app: Express) {
@@ -41,25 +47,36 @@ export default function initializeSocket(app: Express) {
       if (query.type === "host") {
         // SEND QUESTION
         const questionList = await getQuestionList(query);
+        const selectedQuestion = await getRedisRoom(roomId);
+        questionList.result.currentQuestion = selectedQuestion.question;
         io.to(roomId).emit("update", questionList);
       } else {
         console.log("JOIN JOINED", roomId);
       }
 
-      socket.on("room", function (this: typeof socket, data) {
-        const query = this.handshake.query as ConnectionQuery;
-        if (query) {
-          const result = {
-            ...data,
-            userData: query,
-          };
-          const roomId = query.id;
-          socket.broadcast.to(roomId).emit("update", result);
+      socket.on(
+        "room",
+        function (this: typeof socket, packet: PacketInterface) {
+          const query = this.handshake.query as ConnectionQuery;
+          const { _redis, ...data } = packet;
+          if (query) {
+            const result = {
+              ...data,
+              userData: query,
+            };
+            const roomId = query.id;
+            socket.broadcast.to(roomId).emit("update", result);
+          }
         }
-      });
+      );
 
       socket.on("disconnect", function (this: typeof socket) {
         const query = this.handshake.query as ConnectionQuery;
+        const userCount = io.sockets.adapter.rooms.get(roomId)?.size;
+        io.to(roomId).emit("update", {
+          code: codes.USER_COUNT,
+          result: userCount,
+        } as DataInterface);
         if (query) {
           if (query.type === "host") {
             console.log("HOST DISCONNECTED");
@@ -90,6 +107,8 @@ const getQuestionList = async (query: ConnectionQuery) => {
   }
   return {
     code: codes.INITIAL_HOST_DATA,
-    result,
+    result: {
+      questions: result,
+    },
   } as DataInterface;
 };
