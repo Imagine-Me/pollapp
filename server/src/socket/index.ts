@@ -42,9 +42,6 @@ export default function initializeSocket(app: Express) {
         // SEND QUESTION
         const questionList = await getQuestionList(query);
         io.to(roomId).emit("update", questionList);
-        socket.on("disconnect", () => {
-          console.log("HOST DISCONNECTED");
-        });
       } else {
         console.log("JOIN JOINED", roomId);
       }
@@ -58,6 +55,17 @@ export default function initializeSocket(app: Express) {
           };
           const roomId = query.id;
           socket.broadcast.to(roomId).emit("update", result);
+        }
+      });
+
+      socket.on("disconnect", function (this: typeof socket) {
+        const query = this.handshake.query as ConnectionQuery;
+        if (query) {
+          if (query.type === "host") {
+            console.log("HOST DISCONNECTED");
+          } else {
+            console.log("JOIN DISCONNECTED");
+          }
         }
       });
     }
