@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
-import { DataInterface } from "../common.interface";
+import { DataInterface, QuestionInterface } from "../common.interface";
 import CenterComponent from "../components/Center";
 import UserCountComponent from "../components/UserCount";
 
@@ -13,11 +13,6 @@ interface StatusProps {
   isPollStarted: boolean;
 }
 
-interface QuestionInterface {
-  id: number;
-  question: string;
-  options: string[];
-}
 
 const HostComponent = () => {
   const [userCount, setUserCount] = useState<number>(0);
