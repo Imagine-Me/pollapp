@@ -13,7 +13,7 @@ export const getQuestions = (pollId: string) => {
 export const getQuestionIds = (pollId: string) => {
   return db.question.findAll({
     where: { pollId },
-    attributes: ["id"],
+    attributes: ["id", "question", "options"],
     order: [["createdAt", "ASC"]],
     raw: true,
   });
@@ -24,6 +24,15 @@ export const getQuestionsLength = (pollId: string) => {
     where: {
       pollId,
     },
+  });
+};
+
+export const getFirstQuestionId = (pollId: string) => {
+  return db.question.findOne({
+    where: {
+      pollId,
+    },
+    attributes: ["id"],
   });
 };
 

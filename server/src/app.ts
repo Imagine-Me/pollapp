@@ -7,10 +7,12 @@ import authMiddleware from "./middlewares/auth.middelware";
 import userMiddleWare from "./middlewares/user.middleware";
 import errorMiddleware from "./middlewares/error.middleware";
 import initializeSocket from "./socket";
+import { connectRedis } from "./redis/index";
 
 dotenv.config();
-
 const app = express();
+
+connectRedis();
 
 const whiteList = [
   "http://localhost:3000",

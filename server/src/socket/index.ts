@@ -57,7 +57,7 @@ export default function initializeSocket(app: Express) {
             userData: query,
           };
           const roomId = query.id;
-          socket.broadcast.to(roomId).emit("update", result)
+          socket.broadcast.to(roomId).emit("update", result);
         }
       });
     }
@@ -67,13 +67,17 @@ export default function initializeSocket(app: Express) {
 }
 
 const getQuestionList = async (query: ConnectionQuery) => {
-  let result = [];
+  let result: any = [];
   const { id, userId } = query;
   if (userId) {
     const room = await getRoom(id, userId);
     if (room && room.get("pollId")) {
       const questions = await getQuestionIds(room.get("pollId") as string);
-      result = questions.map((question: any) => question.id);
+      result = questions.map(({ id, question, options }: any) => ({
+        id,
+        question,
+        options,
+      }));
     }
   }
   return {
