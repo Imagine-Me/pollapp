@@ -4,26 +4,32 @@ import { useParams } from "react-router-dom";
 
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
-import { DataInterface, QuestionInterface } from "../common.interface";
+import {
+  DataInterface,
+  PacketInterface,
+  QuestionInterface,
+} from "../common.interface";
 import CenterComponent from "../components/Center";
 import UserCountComponent from "../components/UserCount";
 
 interface StatusProps {
   isSocketConnected: boolean;
   isPollStarted: boolean;
+  isUsersJoined: boolean;
 }
-
 
 const HostComponent = () => {
   const [userCount, setUserCount] = useState<number>(0);
-  const [selectedQuestion, setSelectedQuestion] = useState<number | string>(0);
+  const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const [questions, setQuestions] = useState<QuestionInterface[]>([]);
   const [status, setStatus] = useState<StatusProps>({
     isPollStarted: false,
     isSocketConnected: false,
+    isUsersJoined: false,
   });
   const params = useParams();
-  const socket = useSocket({ id: params.pollId as string, type: "host" });
+  const roomId = params.pollId as string;
+  const socket = useSocket({ id: roomId, type: "host" });
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => {
@@ -43,7 +49,7 @@ const HostComponent = () => {
   useEffect(() => {
     setStatus((prev) => ({
       ...prev,
-      isPollStarted: userCount > 1,
+      isUsersJoined: userCount > 1,
     }));
   }, [userCount]);
 
@@ -55,23 +61,48 @@ const HostComponent = () => {
       }
       case codes.INITIAL_HOST_DATA: {
         const tempQuestions = data.result.questions as QuestionInterface[];
-        const tempSelectedQuestion = data.result.currentQuestion;
+        const tempSelectedQuestion = data.result.selectedQuestion;
         setQuestions(tempQuestions);
-        setSelectedQuestion(tempQuestions.findIndex((val) => val.id === tempSelectedQuestion));
+        if (tempSelectedQuestion !== undefined) {
+          setSelectedQuestion(tempSelectedQuestion);
+          setStatus((prev) => ({ ...prev, isPollStarted: true }));
+        }
         return;
       }
     }
   };
 
+  const startPoll = () => {
+    console.log("CURRENT QUESTION IS", questions[selectedQuestion]);
+    setStatus((prev) => ({ ...prev, isPollStarted: true }));
+    const data = {
+      selectedQuestion,
+      ...questions[selectedQuestion],
+    };
+    socket.emit("room", {
+      data: questions[selectedQuestion],
+      execute: {
+        function: "createPollRoom",
+        args: [roomId, data],
+      },
+    } as PacketInterface);
+  };
+
   let content = <>Please wait....</>;
-  if (status.isSocketConnected) {
+
+  console.log(status);
+
+  if (status.isSocketConnected && status.isPollStarted) {
+    content = <>Poll started</>;
+  } else if (status.isSocketConnected) {
     content = (
       <Button
         size="large"
-        disabled={!status.isPollStarted}
+        disabled={!status.isUsersJoined}
         style={{ margin: "auto", display: "block" }}
+        onClick={startPoll}
       >
-        {status.isPollStarted ? "Start Poll" : "Waiting for atleast two users"}
+        {status.isUsersJoined ? "Start Poll" : "Waiting for atleast two users"}
       </Button>
     );
   }

@@ -4,6 +4,15 @@ export interface DataInterface {
 }
 
 
+export interface PacketInterface {
+  execute?: {
+    function: string;
+    args: any[];
+  };
+  data: any;
+}
+
+
 export interface QuestionInterface {
   id: number;
   question: string;

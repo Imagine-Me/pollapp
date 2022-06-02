@@ -6,6 +6,7 @@ import { getRoom } from "../controller/room.controller";
 import { getQuestionIds } from "./../controller/question.controller";
 import { codes } from "./codes";
 import { getRedisRoom } from "../redis";
+import pollFunctions from "./poll";
 
 interface ConnectionQuery {
   id: string;
@@ -18,9 +19,20 @@ interface DataInterface {
   result: any;
 }
 
+const appFunctions = {
+  ...pollFunctions,
+};
 interface PacketInterface {
-  _redis: Record<string, any>;
-  [x: string]: any;
+  execute: {
+    function: keyof typeof appFunctions;
+    args: any[];
+  };
+  data: any;
+}
+
+export interface ExecuteFunctionResult {
+  shouldEmit: boolean;
+  data?: Record<string, any>;
 }
 
 export default function initializeSocket(app: Express) {
@@ -44,11 +56,13 @@ export default function initializeSocket(app: Express) {
         result: userCount,
       } as DataInterface);
 
+      const selectedQuestion = await getRedisRoom(roomId);
       if (query.type === "host") {
         // SEND QUESTION
         const questionList = await getQuestionList(query);
-        const selectedQuestion = await getRedisRoom(roomId);
-        questionList.result.currentQuestion = selectedQuestion.question;
+        if (selectedQuestion.question) {
+          questionList.result.selectedQuestion = selectedQuestion.selectedQuestion;
+        }
         io.to(roomId).emit("update", questionList);
       } else {
         console.log("JOIN JOINED", roomId);
@@ -56,16 +70,26 @@ export default function initializeSocket(app: Express) {
 
       socket.on(
         "room",
-        function (this: typeof socket, packet: PacketInterface) {
+        async function (this: typeof socket, packet: PacketInterface) {
           const query = this.handshake.query as ConnectionQuery;
-          const { _redis, ...data } = packet;
+          const { execute, data } = packet;
           if (query) {
-            const result = {
-              ...data,
-              userData: query,
-            };
-            const roomId = query.id;
-            socket.broadcast.to(roomId).emit("update", result);
+            if (data) {
+              const result = {
+                ...data,
+                code: codes.PACKET,
+              };
+              const roomId = query.id;
+              socket.broadcast.to(roomId).emit("update", result);
+            }
+            if (execute) {
+              const executeResult = await appFunctions[execute.function](
+                execute.args
+              );
+              if (executeResult.shouldEmit) {
+                socket.broadcast.to(roomId).emit("update", executeResult.data);
+              }
+            }
           }
         }
       );
