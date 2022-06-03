@@ -6,10 +6,13 @@ import { codes } from "../codes";
 import { DataInterface, QuestionInterface } from "../common.interface";
 import CenterComponent from "../components/Center";
 import PollContent from "../components/Poll";
+import JoinFooter from "../components/JoinFooter";
 
 const { Title } = Typography;
 
 const JoinComponent = () => {
+  const [showChart, setShowChart] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<number | null>(null);
   const [userCount, setUserCount] = useState<number>(0);
   const [question, setQuestion] = useState<QuestionInterface>();
   const params = useParams();
@@ -40,6 +43,12 @@ const JoinComponent = () => {
     }
   };
 
+  const selectOption = (ans: number) => {
+    if (ans !== undefined) {
+      setAnswer(ans);
+    }
+  };
+
   let content = (
     <CenterComponent>
       <div>
@@ -53,7 +62,16 @@ const JoinComponent = () => {
     </CenterComponent>
   );
   if (question) {
-    content = <PollContent question={question} isHost={false} />;
+    content = (
+      <PollContent
+        question={question}
+        isHost={false}
+        showChart={showChart}
+        footer={<JoinFooter canPoll={answer !== null} />}
+        answer={answer}
+        selectOption={selectOption}
+      />
+    );
   }
 
   return content;

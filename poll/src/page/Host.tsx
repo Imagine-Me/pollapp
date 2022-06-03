@@ -96,7 +96,7 @@ const HostComponent = () => {
     </CenterComponent>
   );
   if (status.isSocketConnected && status.isPollStarted) {
-    content = <PollContent question={questions[selectedQuestion]} />;
+    content = <PollContent question={questions[selectedQuestion]} footer={<>asdasdas</>} />;
   } else if (status.isSocketConnected) {
     content = (
       <CenterComponent>

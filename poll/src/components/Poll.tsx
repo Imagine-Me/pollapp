@@ -1,5 +1,5 @@
 import { Card, Col, RadioChangeEvent, Row } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { QuestionInterface } from "../common.interface";
 import QuestionComponent from "./Questions";
@@ -25,16 +25,28 @@ const QuestionContent = styled((props) => <div {...props} />)`
 interface Props {
   question: QuestionInterface;
   isHost?: boolean;
+  showChart?: boolean;
+  footer: React.ReactNode;
+  answer?: number | null;
+  selectOption?: (ans: number) => void;
 }
 
-const PollContent = ({ question, isHost = true }: Props) => {
-  const [answer, setAnswer] = useState();
+const PollContent = ({
+  question,
+  footer,
+  isHost = true,
+  showChart = true,
+  answer,
+  selectOption,
+}: Props) => {
   const onSelectOption = (e: RadioChangeEvent) => {
-    setAnswer(e.target.value);
+    if (selectOption && e.target.value !== undefined) {
+      selectOption(e.target.value);
+    }
   };
   return (
     <RowStyled align="middle">
-      <Col xs={10}>Chart Content</Col>
+      {showChart && <Col xs={10}>Chart Content</Col>}
       <Col flex="auto">
         <CardStyled>
           <QuestionContent>
@@ -44,7 +56,7 @@ const PollContent = ({ question, isHost = true }: Props) => {
               onSelectOption={onSelectOption}
               value={answer}
             />
-            <div>footer</div>
+            {footer}
           </QuestionContent>
         </CardStyled>
       </Col>
