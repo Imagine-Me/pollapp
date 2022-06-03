@@ -11,7 +11,6 @@ import {
 } from "../common.interface";
 import CenterComponent from "../components/Center";
 import PollContent from "../components/Poll";
-import UserCountComponent from "../components/UserCount";
 
 const { Title } = Typography;
 

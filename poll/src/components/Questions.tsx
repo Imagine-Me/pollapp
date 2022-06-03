@@ -2,7 +2,7 @@ import React from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { QuestionInterface } from "../common.interface";
 import styled from "styled-components";
-import { Card, Radio } from "antd";
+import { Card, Radio, RadioChangeEvent } from "antd";
 
 const AnswerCard = styled(Card)`
   box-sizing: border-size;
@@ -33,13 +33,20 @@ const AnswerCard = styled(Card)`
 interface Props {
   isHost?: boolean;
   question: QuestionInterface;
+  onSelectOption?: (e: RadioChangeEvent) => void;
+  value?: any;
 }
 
-const QuestionComponent = ({ question, isHost = true }: Props) => {
+const QuestionComponent = ({
+  question,
+  isHost = true,
+  onSelectOption,
+  value,
+}: Props) => {
   return (
     <>
       <MDEditor.Markdown source={question.question} />
-      <Radio.Group>
+      <Radio.Group onChange={onSelectOption} value={value}>
         {question.options.map((option, id) => (
           <AnswerCard key={`option_id_${id}`}>
             {isHost ? (

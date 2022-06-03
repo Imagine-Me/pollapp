@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Typography } from "antd";
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
 import { DataInterface, QuestionInterface } from "../common.interface";
 import CenterComponent from "../components/Center";
-import UserCountComponent from "../components/UserCount";
+import PollContent from "../components/Poll";
+
+const { Title } = Typography;
 
 const JoinComponent = () => {
   const [userCount, setUserCount] = useState<number>(0);
@@ -37,17 +40,23 @@ const JoinComponent = () => {
     }
   };
 
-  let content = <>Waiting to admin to start poll</>;
-  if (question) {
-    content = <>Poll started {question.question}</>;
-  }
-
-  return (
+  let content = (
     <CenterComponent>
-      <UserCountComponent userCount={userCount} />
-      {content}
+      <div>
+        <Title level={3} style={{ margin: "auto" }}>
+          Users joined: {userCount}
+        </Title>
+        <Title level={4} style={{ margin: "auto" }}>
+          Waiting for host to begin poll
+        </Title>
+      </div>
     </CenterComponent>
   );
+  if (question) {
+    content = <PollContent question={question} isHost={false} />;
+  }
+
+  return content;
 };
 
 export default JoinComponent;
