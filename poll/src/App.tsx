@@ -10,7 +10,7 @@ import JoinComponent from "./page/Join";
 import CenterComponent from "./components/Center";
 
 if (process.env.NODE_ENV) {
-  import("./App.css");
+  // import("./App.css");
 }
 
 const { Title } = Typography;

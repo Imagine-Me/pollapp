@@ -109,6 +109,7 @@ module.exports = {
         "react-dom": { singleton: true, requiredVersion: "18.0.0" },
         antd: { singleton: true, requiredVersion: "4.19.5" },
         recoil: { singleton: true, requiredVersion: "0.7.2" },
+        "@uiw/react-md-editor": { singleton: true, requiredVersion: "3.12.1" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
         axios: { singleton: true, requiredVersion: "0.27.2" },

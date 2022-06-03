@@ -10,6 +10,7 @@ import {
   QuestionInterface,
 } from "../common.interface";
 import CenterComponent from "../components/Center";
+import PollContent from "../components/Poll";
 import UserCountComponent from "../components/UserCount";
 
 const { Title } = Typography;
@@ -90,14 +91,13 @@ const HostComponent = () => {
     } as PacketInterface);
   };
 
-
   let content = (
     <CenterComponent>
       <Title level={3}>Connecting.....</Title>
     </CenterComponent>
   );
   if (status.isSocketConnected && status.isPollStarted) {
-    content = <>Poll started</>;
+    content = <PollContent question={questions[selectedQuestion]} />;
   } else if (status.isSocketConnected) {
     content = (
       <CenterComponent>
