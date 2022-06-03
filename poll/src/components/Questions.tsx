@@ -2,7 +2,7 @@ import React from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { QuestionInterface } from "../common.interface";
 import styled from "styled-components";
-import { Card, Radio, RadioChangeEvent } from "antd";
+import { Card, Radio, RadioChangeEvent, Row, Typography } from "antd";
 
 const AnswerCard = styled(Card)`
   box-sizing: border-size;
@@ -36,6 +36,7 @@ interface Props {
   question: QuestionInterface;
   onSelectOption?: (e: RadioChangeEvent) => void;
   value?: any;
+  questionLegend?: string;
 }
 
 const QuestionComponent = ({
@@ -43,9 +44,13 @@ const QuestionComponent = ({
   isHost = true,
   onSelectOption,
   value,
+  questionLegend,
 }: Props) => {
   return (
     <>
+      <Row justify="end">
+        <Typography.Title level={5}>{questionLegend}</Typography.Title>
+      </Row>
       <MDEditor.Markdown source={question.question} />
       <Radio.Group onChange={onSelectOption} value={value}>
         {question.options.map((option, id) => (

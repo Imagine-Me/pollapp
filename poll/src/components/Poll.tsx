@@ -29,6 +29,7 @@ interface Props {
   footer: React.ReactNode;
   answer?: number | null;
   selectOption?: (ans: number) => void;
+  questionLegend?: string;
 }
 
 const PollContent = ({
@@ -38,6 +39,7 @@ const PollContent = ({
   showChart = true,
   answer,
   selectOption,
+  questionLegend
 }: Props) => {
   const onSelectOption = (e: RadioChangeEvent) => {
     if (selectOption && e.target.value !== undefined) {
@@ -55,6 +57,7 @@ const PollContent = ({
               isHost={isHost}
               onSelectOption={onSelectOption}
               value={answer}
+              questionLegend={questionLegend}
             />
             {footer}
           </QuestionContent>

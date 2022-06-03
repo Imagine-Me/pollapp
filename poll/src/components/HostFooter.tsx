@@ -11,7 +11,7 @@ const HostFooter = ({ revealAnswer, footer }: Props) => {
   return (
     <Row style={{ marginTop: "10px" }}>
       <Col span={8}>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" disabled={!footer.isPrev}>
           Prev
         </Button>
       </Col>
@@ -30,7 +30,7 @@ const HostFooter = ({ revealAnswer, footer }: Props) => {
       </Col>
       <Col span={8}>
         <Row justify="end">
-          <Button type="primary" size="large">
+          <Button type="primary" size="large"disabled={!footer.isNext}>
             Next
           </Button>
         </Row>

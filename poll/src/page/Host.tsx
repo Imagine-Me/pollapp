@@ -24,6 +24,8 @@ interface StatusProps {
 export interface FooterProps {
   isLoading: boolean;
   isRevealDisabled: boolean;
+  isPrev: boolean;
+  isNext: boolean;
 }
 
 const HostComponent = () => {
@@ -31,6 +33,8 @@ const HostComponent = () => {
   const [footer, setFooter] = useState<FooterProps>({
     isLoading: false,
     isRevealDisabled: false,
+    isPrev: false,
+    isNext: false,
   });
   const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const [questions, setQuestions] = useState<QuestionInterface[]>([]);
@@ -76,10 +80,21 @@ const HostComponent = () => {
           const tempQuestions = data.result.questions as QuestionInterface[];
           const tempSelectedQuestion = data.result.selectedQuestion;
           setQuestions(tempQuestions);
+          const tempFooter = {
+            isPrev: false,
+            isNext: tempQuestions.length > 1,
+          } as Partial<FooterProps>;
+
           if (tempSelectedQuestion !== undefined) {
-            console.log(tempSelectedQuestion);
+            if (tempSelectedQuestion < tempQuestions.length) {
+              tempFooter.isNext = false;
+            }
+            if (tempSelectedQuestion > 0) {
+              tempFooter.isPrev = false;
+            }
             setSelectedQuestion(tempSelectedQuestion);
             setStatus((prev) => ({ ...prev, isPollStarted: true }));
+            setFooter((prev) => ({ ...prev, ...tempFooter }));
           }
           return;
         }
@@ -140,6 +155,7 @@ const HostComponent = () => {
   if (status.isSocketConnected && status.isPollStarted) {
     content = (
       <PollContent
+        questionLegend={`${selectedQuestion + 1}/${questions.length}`}
         question={questions[selectedQuestion]}
         footer={<HostFooter revealAnswer={revealAnswer} footer={footer} />}
       />
