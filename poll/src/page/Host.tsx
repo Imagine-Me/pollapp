@@ -1,5 +1,5 @@
 import { Button, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useSocket } from "utils/hooks/socket";
@@ -10,6 +10,7 @@ import {
   QuestionInterface,
 } from "../common.interface";
 import CenterComponent from "../components/Center";
+import HostFooter from "../components/HostFooter";
 import PollContent from "../components/Poll";
 
 const { Title } = Typography;
@@ -20,8 +21,17 @@ interface StatusProps {
   isUsersJoined: boolean;
 }
 
+export interface FooterProps {
+  isLoading: boolean;
+  isRevealDisabled: boolean;
+}
+
 const HostComponent = () => {
   const [userCount, setUserCount] = useState<number>(0);
+  const [footer, setFooter] = useState<FooterProps>({
+    isLoading: false,
+    isRevealDisabled: false,
+  });
   const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const [questions, setQuestions] = useState<QuestionInterface[]>([]);
   const [status, setStatus] = useState<StatusProps>({
@@ -34,6 +44,7 @@ const HostComponent = () => {
   const socket = useSocket({ id: roomId, type: "host" });
   useEffect(() => {
     if (socket) {
+      socket.removeAllListeners();
       socket.on("connect", () => {
         setStatus((prev) => ({
           ...prev,
@@ -44,9 +55,8 @@ const HostComponent = () => {
         console.log("SOMETHING HAPPENING IN ROOM", data);
         processData(data);
       });
-      socket.emit("room", { msg: "hello baby" });
     }
-  }, [socket]);
+  }, [socket, questions]);
 
   useEffect(() => {
     setStatus((prev) => ({
@@ -55,25 +65,44 @@ const HostComponent = () => {
     }));
   }, [userCount]);
 
-  const processData = (data: DataInterface) => {
-    switch (data.code) {
-      case codes.USER_COUNT: {
-        setUserCount(data.result - 1);
-        return;
-      }
-      case codes.INITIAL_HOST_DATA: {
-        const tempQuestions = data.result.questions as QuestionInterface[];
-        const tempSelectedQuestion = data.result.selectedQuestion;
-        setQuestions(tempQuestions);
-        if (tempSelectedQuestion !== undefined) {
-          console.log(tempSelectedQuestion);
-          setSelectedQuestion(tempSelectedQuestion);
-          setStatus((prev) => ({ ...prev, isPollStarted: true }));
+  const processData = useCallback(
+    (data: DataInterface) => {
+      switch (data.code) {
+        case codes.USER_COUNT: {
+          setUserCount(data.result - 1);
+          return;
         }
-        return;
+        case codes.INITIAL_HOST_DATA: {
+          const tempQuestions = data.result.questions as QuestionInterface[];
+          const tempSelectedQuestion = data.result.selectedQuestion;
+          setQuestions(tempQuestions);
+          if (tempSelectedQuestion !== undefined) {
+            console.log(tempSelectedQuestion);
+            setSelectedQuestion(tempSelectedQuestion);
+            setStatus((prev) => ({ ...prev, isPollStarted: true }));
+          }
+          return;
+        }
+        case codes.PACKET: {
+          setFooter((prev) => ({
+            ...prev,
+            isLoading: false,
+            isRevealDisabled: true,
+          }));
+          const result = data.result as QuestionInterface;
+          const tempQuestions = questions.map((question) => {
+            if (question.id === result.id) {
+              return result;
+            }
+            return question;
+          });
+          setQuestions(tempQuestions);
+          return;
+        }
       }
-    }
-  };
+    },
+    [questions]
+  );
 
   const startPoll = () => {
     setStatus((prev) => ({ ...prev, isPollStarted: true }));
@@ -90,13 +119,31 @@ const HostComponent = () => {
     } as PacketInterface);
   };
 
+  const revealAnswer = () => {
+    setFooter((prev) => ({
+      ...prev,
+      isLoading: true,
+    }));
+    socket.emit("room", {
+      execute: {
+        function: "getPollAnswer",
+        args: [questions[selectedQuestion].id],
+      },
+    } as PacketInterface);
+  };
+
   let content = (
     <CenterComponent>
       <Title level={3}>Connecting.....</Title>
     </CenterComponent>
   );
   if (status.isSocketConnected && status.isPollStarted) {
-    content = <PollContent question={questions[selectedQuestion]} footer={<>asdasdas</>} />;
+    content = (
+      <PollContent
+        question={questions[selectedQuestion]}
+        footer={<HostFooter revealAnswer={revealAnswer} footer={footer} />}
+      />
+    );
   } else if (status.isSocketConnected) {
     content = (
       <CenterComponent>

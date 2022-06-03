@@ -9,6 +9,7 @@ const AnswerCard = styled(Card)`
   width: 100%;
   margin-top: 10px !important;
   position: relative;
+  border-width: 2px;
   .ant-card-body {
     padding: 10px !important;
   }
@@ -48,7 +49,10 @@ const QuestionComponent = ({
       <MDEditor.Markdown source={question.question} />
       <Radio.Group onChange={onSelectOption} value={value}>
         {question.options.map((option, id) => (
-          <AnswerCard key={`option_id_${id}`}>
+          <AnswerCard
+            key={`option_id_${id}`}
+            className={question.answer === id + 1 ? "active" : ""}
+          >
             {isHost ? (
               <div style={{ marginRight: "22px" }}>
                 <MDEditor.Markdown source={option} />
