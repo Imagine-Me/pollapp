@@ -49,6 +49,10 @@ const JoinComponent = () => {
     }
   };
 
+  const poll = () => {
+    setShowChart(true);
+  };
+
   let content = (
     <CenterComponent>
       <div>
@@ -66,8 +70,13 @@ const JoinComponent = () => {
       <PollContent
         question={question}
         isHost={false}
-        showChart={showChart}
-        footer={<JoinFooter canPoll={answer !== null} />}
+        showChart={showChart || question.answer !== undefined}
+        footer={
+          <JoinFooter
+            canPoll={answer !== null && question.answer === undefined && !showChart}
+            poll={poll}
+          />
+        }
         answer={answer}
         selectOption={selectOption}
       />

@@ -39,7 +39,7 @@ const PollContent = ({
   showChart = true,
   answer,
   selectOption,
-  questionLegend
+  questionLegend,
 }: Props) => {
   const onSelectOption = (e: RadioChangeEvent) => {
     if (selectOption && e.target.value !== undefined) {
@@ -58,6 +58,7 @@ const PollContent = ({
               onSelectOption={onSelectOption}
               value={answer}
               questionLegend={questionLegend}
+              showSelected={showChart}
             />
             {footer}
           </QuestionContent>

@@ -79,12 +79,12 @@ const HostComponent = () => {
         case codes.INITIAL_HOST_DATA: {
           const tempQuestions = data.result.questions as QuestionInterface[];
           const tempSelectedQuestion = data.result.selectedQuestion;
-          setQuestions(tempQuestions);
+          const tempAnswer = data.result.answer as number;
           const tempFooter = {
-            isPrev: false,
             isNext: tempQuestions.length > 1,
           } as Partial<FooterProps>;
 
+          setQuestions(tempQuestions);
           if (tempSelectedQuestion !== undefined) {
             if (tempSelectedQuestion >= tempQuestions.length - 1) {
               tempFooter.isNext = false;
@@ -94,6 +94,19 @@ const HostComponent = () => {
             }
             setSelectedQuestion(tempSelectedQuestion);
             setStatus((prev) => ({ ...prev, isPollStarted: true }));
+            if (tempAnswer !== undefined) {
+              const updatedQuestions = tempQuestions.map((question, id) => {
+                if (id === tempSelectedQuestion) {
+                  return {
+                    ...question,
+                    answer: tempAnswer,
+                  };
+                }
+                return question;
+              });
+              tempFooter.isRevealDisabled = true;
+              setQuestions(updatedQuestions);
+            }
           }
           setFooter((prev) => ({ ...prev, ...tempFooter }));
           return;
@@ -142,7 +155,7 @@ const HostComponent = () => {
     socket.emit("room", {
       execute: {
         function: "getPollAnswer",
-        args: [questions[selectedQuestion].id],
+        args: [roomId, questions[selectedQuestion].id],
       },
     } as PacketInterface);
   };

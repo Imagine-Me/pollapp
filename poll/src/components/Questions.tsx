@@ -13,8 +13,14 @@ const AnswerCard = styled(Card)`
   .ant-card-body {
     padding: 10px !important;
   }
-  &.active {
+  &.success {
     border-color: #00ff00 !important;
+  }
+  &.info {
+    border-color: #785df0 !important;
+  }
+  &.error {
+    border-color: #ff0000 !important;
   }
   label.ant-radio-wrapper {
     width: 100%;
@@ -37,6 +43,7 @@ interface Props {
   onSelectOption?: (e: RadioChangeEvent) => void;
   value?: any;
   questionLegend?: string;
+  showSelected?: boolean;
 }
 
 const QuestionComponent = ({
@@ -45,7 +52,18 @@ const QuestionComponent = ({
   onSelectOption,
   value,
   questionLegend,
+  showSelected,
 }: Props) => {
+  const getClassName = (id: number) => {
+    if (showSelected && question.answer !== undefined) {
+      if (id + 1 === question.answer) {
+        return "success";
+      } else {
+        if (id + 1 === value) return "error";
+      }
+    }
+    return "";
+  };
   return (
     <>
       <Row justify="end">
@@ -54,11 +72,8 @@ const QuestionComponent = ({
       <MDEditor.Markdown source={question.question} />
       <Radio.Group onChange={onSelectOption} value={value}>
         {question.options.map((option, id) => (
-          <AnswerCard
-            key={`option_id_${id}`}
-            className={question.answer === id + 1 ? "active" : ""}
-          >
-            {isHost ? (
+          <AnswerCard key={`option_id_${id}`} className={getClassName(id)}>
+            {isHost || question.answer !== undefined ? (
               <div style={{ marginRight: "22px" }}>
                 <MDEditor.Markdown source={option} />
               </div>

@@ -63,6 +63,8 @@ export default function initializeSocket(app: Express) {
         if (selectedQuestion.selectedQuestion !== undefined) {
           questionList.result.selectedQuestion =
             selectedQuestion.selectedQuestion;
+            questionList.result.answer =
+            selectedQuestion.answer;
         }
 
         socket.emit("update", questionList);
@@ -70,11 +72,7 @@ export default function initializeSocket(app: Express) {
         if (selectedQuestion.question && selectedQuestion.options) {
           const result = {
             code: codes.PACKET,
-            result: {
-              question: selectedQuestion.question,
-              options: selectedQuestion.options,
-              id: selectedQuestion.id,
-            },
+            result: selectedQuestion,
           } as DataInterface;
           socket.emit("update", result);
         }

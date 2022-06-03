@@ -12,7 +12,8 @@ const functions = {
     return { shouldEmit: false } as ExecuteFunctionResult;
   },
   async getPollAnswer(args: any[]) {
-    const result = await getQuestion(args[0]);
+    const result = await getQuestion(args[1]);
+    await updateRedisRoom(args[0], result?.get({ plain: true }));
     return {
       shouldEmit: true,
       data: {
