@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +11,8 @@ import {
 } from "../common.interface";
 import CenterComponent from "../components/Center";
 import UserCountComponent from "../components/UserCount";
+
+const { Title } = Typography;
 
 interface StatusProps {
   isSocketConnected: boolean;
@@ -64,6 +66,7 @@ const HostComponent = () => {
         const tempSelectedQuestion = data.result.selectedQuestion;
         setQuestions(tempQuestions);
         if (tempSelectedQuestion !== undefined) {
+          console.log(tempSelectedQuestion);
           setSelectedQuestion(tempSelectedQuestion);
           setStatus((prev) => ({ ...prev, isPollStarted: true }));
         }
@@ -79,7 +82,7 @@ const HostComponent = () => {
       ...questions[selectedQuestion],
     };
     socket.emit("room", {
-      data: questions[selectedQuestion],
+      data: { result: questions[selectedQuestion] },
       execute: {
         function: "createPollRoom",
         args: [roomId, data],
@@ -87,33 +90,37 @@ const HostComponent = () => {
     } as PacketInterface);
   };
 
-  let content = <>Please wait....</>;
 
-  console.log(status);
-
+  let content = (
+    <CenterComponent>
+      <Title level={3}>Connecting.....</Title>
+    </CenterComponent>
+  );
   if (status.isSocketConnected && status.isPollStarted) {
     content = <>Poll started</>;
   } else if (status.isSocketConnected) {
     content = (
-      <Button
-        size="large"
-        disabled={!status.isUsersJoined}
-        style={{ margin: "auto", display: "block" }}
-        onClick={startPoll}
-      >
-        {status.isUsersJoined ? "Start Poll" : "Waiting for atleast two users"}
-      </Button>
+      <CenterComponent>
+        <div>
+          <Title level={2} style={{ textAlign: "center" }}>
+            Users joined : {userCount}
+          </Title>
+          <Button
+            size="large"
+            disabled={!status.isUsersJoined}
+            style={{ margin: "auto", display: "block" }}
+            onClick={startPoll}
+          >
+            {status.isUsersJoined
+              ? "Start Poll"
+              : "Waiting for atleast two users"}
+          </Button>
+        </div>
+      </CenterComponent>
     );
   }
 
-  return (
-    <CenterComponent>
-      <div>
-        <UserCountComponent userCount={userCount} />
-        {content}
-      </div>
-    </CenterComponent>
-  );
+  return content;
 };
 
 export default HostComponent;

@@ -60,10 +60,11 @@ export default function initializeSocket(app: Express) {
       if (query.type === "host") {
         // SEND QUESTION
         const questionList = await getQuestionList(query);
-        if (selectedQuestion.selectedQuestion) {
+        if (selectedQuestion.selectedQuestion !== undefined) {
           questionList.result.selectedQuestion =
             selectedQuestion.selectedQuestion;
         }
+
         socket.emit("update", questionList);
       } else {
         if (selectedQuestion.question && selectedQuestion.options) {
