@@ -73,7 +73,6 @@ const HostComponent = () => {
   };
 
   const startPoll = () => {
-    console.log("CURRENT QUESTION IS", questions[selectedQuestion]);
     setStatus((prev) => ({ ...prev, isPollStarted: true }));
     const data = {
       selectedQuestion,

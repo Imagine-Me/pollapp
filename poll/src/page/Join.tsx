@@ -30,12 +30,22 @@ const JoinComponent = () => {
         setUserCount(data.result - 1);
         return;
       }
+      case codes.PACKET: {
+        setQuestion(data.result);
+        return;
+      }
     }
   };
+
+  let content = <>Waiting to admin to start poll</>;
+  if (question) {
+    content = <>Poll started {question.question}</>;
+  }
 
   return (
     <CenterComponent>
       <UserCountComponent userCount={userCount} />
+      {content}
     </CenterComponent>
   );
 };

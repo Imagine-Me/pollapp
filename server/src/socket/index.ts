@@ -60,12 +60,23 @@ export default function initializeSocket(app: Express) {
       if (query.type === "host") {
         // SEND QUESTION
         const questionList = await getQuestionList(query);
-        if (selectedQuestion.question) {
-          questionList.result.selectedQuestion = selectedQuestion.selectedQuestion;
+        if (selectedQuestion.selectedQuestion) {
+          questionList.result.selectedQuestion =
+            selectedQuestion.selectedQuestion;
         }
-        io.to(roomId).emit("update", questionList);
+        socket.emit("update", questionList);
       } else {
-        console.log("JOIN JOINED", roomId);
+        if (selectedQuestion.question && selectedQuestion.options) {
+          const result = {
+            code: codes.PACKET,
+            result: {
+              question: selectedQuestion.question,
+              options: selectedQuestion.options,
+              id: selectedQuestion.id,
+            },
+          } as DataInterface;
+          socket.emit("update", result);
+        }
       }
 
       socket.on(
@@ -87,7 +98,7 @@ export default function initializeSocket(app: Express) {
                 execute.args
               );
               if (executeResult.shouldEmit) {
-                socket.broadcast.to(roomId).emit("update", executeResult.data);
+                io.to(roomId).emit("update", executeResult.data);
               }
             }
           }
