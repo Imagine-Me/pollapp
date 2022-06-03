@@ -52,10 +52,10 @@ const JoinComponent = () => {
   let content = (
     <CenterComponent>
       <div>
-        <Title level={3} style={{ margin: "auto" }}>
+        <Title level={3} style={{ textAlign: "center" }}>
           Users joined: {userCount}
         </Title>
-        <Title level={4} style={{ margin: "auto" }}>
+        <Title level={4} style={{ textAlign: "center" }}>
           Waiting for host to begin poll
         </Title>
       </div>

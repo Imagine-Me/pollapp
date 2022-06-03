@@ -86,7 +86,7 @@ const HostComponent = () => {
           } as Partial<FooterProps>;
 
           if (tempSelectedQuestion !== undefined) {
-            if (tempSelectedQuestion < tempQuestions.length) {
+            if (tempSelectedQuestion >= tempQuestions.length - 1) {
               tempFooter.isNext = false;
             }
             if (tempSelectedQuestion > 0) {
@@ -94,8 +94,8 @@ const HostComponent = () => {
             }
             setSelectedQuestion(tempSelectedQuestion);
             setStatus((prev) => ({ ...prev, isPollStarted: true }));
-            setFooter((prev) => ({ ...prev, ...tempFooter }));
           }
+          setFooter((prev) => ({ ...prev, ...tempFooter }));
           return;
         }
         case codes.PACKET: {
