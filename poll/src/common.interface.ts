@@ -3,7 +3,6 @@ export interface DataInterface {
   result: any;
 }
 
-
 export interface PacketInterface {
   execute?: {
     function: string;
@@ -12,9 +11,9 @@ export interface PacketInterface {
   data: any;
 }
 
-
 export interface QuestionInterface {
   id: number;
   question: string;
   options: string[];
+  answer?: number;
 }

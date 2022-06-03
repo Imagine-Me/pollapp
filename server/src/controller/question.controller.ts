@@ -36,6 +36,15 @@ export const getFirstQuestionId = (pollId: string) => {
   });
 };
 
+export const getQuestion = (id: string) => {
+  return db.question.findOne({
+    where: {
+      id,
+    },
+    attributes: ["id", "question", "options", "answer"],
+  });
+};
+
 export const createQuestion = (data: QuestionModelType) => {
   return db.question.upsert({ ...data });
 };

@@ -1,9 +1,7 @@
 import { Router } from "express";
 import {
   getQuestionsLength,
-  getFirstQuestionId,
 } from "../../controller/question.controller";
-import { createRedisRoom } from "./../../redis/index";
 import { createRoom, joinRoom } from "../../controller/room.controller";
 
 const router = Router();
