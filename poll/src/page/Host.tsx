@@ -28,6 +28,8 @@ export interface FooterProps {
   isNext: boolean;
 }
 
+export type QuestionChangeType = "next" | "prev";
+
 const HostComponent = () => {
   const [userCount, setUserCount] = useState<number>(0);
   const [footer, setFooter] = useState<FooterProps>({
@@ -90,7 +92,7 @@ const HostComponent = () => {
               tempFooter.isNext = false;
             }
             if (tempSelectedQuestion > 0) {
-              tempFooter.isPrev = false;
+              tempFooter.isPrev = true;
             }
             setSelectedQuestion(tempSelectedQuestion);
             setStatus((prev) => ({ ...prev, isPollStarted: true }));
@@ -147,6 +149,43 @@ const HostComponent = () => {
     } as PacketInterface);
   };
 
+  const changeQuestion = (type: QuestionChangeType) => {
+    let tempQuestionSelected: number | null = null;
+    if (type === "next") {
+      if (selectedQuestion + 1 < questions.length) {
+        tempQuestionSelected = selectedQuestion + 1;
+      }
+    } else {
+      if (selectedQuestion - 1 >= 0) {
+        tempQuestionSelected = selectedQuestion - 1;
+      }
+    }
+    if (tempQuestionSelected !== null) {
+      const isNext = tempQuestionSelected < questions.length - 1;
+      const isPrev = tempQuestionSelected > 0;
+      const isRevealDisabled =
+        questions[tempQuestionSelected].answer !== undefined;
+      setFooter((prev) => ({
+        ...prev,
+        isNext,
+        isPrev,
+        isRevealDisabled,
+      }));
+      setSelectedQuestion(tempQuestionSelected);
+      const data = {
+        selectedQuestion: tempQuestionSelected,
+        ...questions[tempQuestionSelected],
+      } as QuestionInterface & { selectedQuestion: number };
+      socket.emit("room", {
+        data: { result: data },
+        execute: {
+          function: "setPollQuestion",
+          args: [roomId, data],
+        },
+      } as PacketInterface);
+    }
+  };
+
   const revealAnswer = () => {
     setFooter((prev) => ({
       ...prev,
@@ -170,7 +209,13 @@ const HostComponent = () => {
       <PollContent
         questionLegend={`${selectedQuestion + 1}/${questions.length}`}
         question={questions[selectedQuestion]}
-        footer={<HostFooter revealAnswer={revealAnswer} footer={footer} />}
+        footer={
+          <HostFooter
+            revealAnswer={revealAnswer}
+            changeQuestion={changeQuestion}
+            footer={footer}
+          />
+        }
       />
     );
   } else if (status.isSocketConnected) {

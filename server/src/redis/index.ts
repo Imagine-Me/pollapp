@@ -31,6 +31,7 @@ export const updateRedisRoom = async (
   data: Record<string, any>
 ) => {
   const roomData = await getRedisRoom(roomId);
+  delete roomData.answer;
   const newData = {
     ...roomData,
     ...data,
