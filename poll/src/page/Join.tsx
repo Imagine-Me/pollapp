@@ -7,19 +7,21 @@ import { DataInterface, QuestionInterface } from "../common.interface";
 import CenterComponent from "../components/Center";
 import PollContent from "../components/Poll";
 import JoinFooter from "../components/JoinFooter";
+import { useRecoilState } from "recoil";
+import { data } from "../recoil/data";
 
 const { Title } = Typography;
 
 const JoinComponent = () => {
+  const [pollData, setPollData] = useRecoilState(data);
   const [showChart, setShowChart] = useState<boolean>(false);
   const [answer, setAnswer] = useState<number | null>(null);
-  const [userCount, setUserCount] = useState<number>(0);
-  const [question, setQuestion] = useState<QuestionInterface>();
   const params = useParams();
   const socket = useSocket({ id: params.pollId as string, type: "join" });
 
   useEffect(() => {
     if (socket) {
+      socket.removeAllListeners();
       socket.on("connect", () => {
         console.log("SOCKET CONNECTED");
       });
@@ -29,15 +31,34 @@ const JoinComponent = () => {
       });
     }
   }, [socket]);
+  useEffect(() => {
+    setPollData((currVal) => ({
+      ...currVal,
+      isHost: false,
+    }));
+  }, []);
 
   const processData = (data: DataInterface) => {
     switch (data.code) {
       case codes.USER_COUNT: {
-        setUserCount(data.result - 1);
+        setPollData((currVal) => ({
+          ...currVal,
+          userCount: data.result - 1,
+        }));
         return;
       }
       case codes.PACKET: {
-        setQuestion(data.result);
+        setPollData((currVal) => ({
+          ...currVal,
+          question: data.result,
+        }));
+        return;
+      }
+      case codes.META: {
+        setPollData((currVal) => ({
+          ...currVal,
+          title: data.result.title,
+        }));
         return;
       }
     }
@@ -56,8 +77,11 @@ const JoinComponent = () => {
   let content = (
     <CenterComponent>
       <div>
+        <Title level={1} style={{ textAlign: "center" }}>
+          {pollData.title}
+        </Title>
         <Title level={3} style={{ textAlign: "center" }}>
-          Users joined: {userCount}
+          Users joined: {pollData.userCount}
         </Title>
         <Title level={4} style={{ textAlign: "center" }}>
           Waiting for host to begin poll
@@ -65,15 +89,18 @@ const JoinComponent = () => {
       </div>
     </CenterComponent>
   );
-  if (question) {
+  if (pollData.question && Object.keys(pollData.question).length > 0) {
     content = (
       <PollContent
-        question={question}
         isHost={false}
-        showChart={showChart || question.answer !== undefined}
+        showChart={showChart || pollData.question.answer !== undefined}
         footer={
           <JoinFooter
-            canPoll={answer !== null && question.answer === undefined && !showChart}
+            canPoll={
+              answer !== null &&
+              pollData.question.answer === undefined &&
+              !showChart
+            }
             poll={poll}
           />
         }

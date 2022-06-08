@@ -1,6 +1,7 @@
 import { Button, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
@@ -12,6 +13,7 @@ import {
 import CenterComponent from "../components/Center";
 import HostFooter from "../components/HostFooter";
 import PollContent from "../components/Poll";
+import { data } from "../recoil/data";
 
 const { Title } = Typography;
 
@@ -31,7 +33,7 @@ export interface FooterProps {
 export type QuestionChangeType = "next" | "prev";
 
 const HostComponent = () => {
-  const [userCount, setUserCount] = useState<number>(0);
+  const [pollData, setPollData] = useRecoilState(data);
   const [footer, setFooter] = useState<FooterProps>({
     isLoading: false,
     isRevealDisabled: false,
@@ -67,15 +69,27 @@ const HostComponent = () => {
   useEffect(() => {
     setStatus((prev) => ({
       ...prev,
-      isUsersJoined: userCount > 1,
+      isUsersJoined: pollData.userCount > 1,
     }));
-  }, [userCount]);
+  }, [pollData.userCount]);
+
+  useEffect(() => {
+    if (selectedQuestion < questions.length) {
+      setPollData((currVal) => ({
+        ...currVal,
+        question: questions[selectedQuestion],
+      }));
+    }
+  }, [questions, selectedQuestion]);
 
   const processData = useCallback(
     (data: DataInterface) => {
       switch (data.code) {
         case codes.USER_COUNT: {
-          setUserCount(data.result - 1);
+          setPollData((currVal) => ({
+            ...currVal,
+            userCount: data.result - 1,
+          }));
           return;
         }
         case codes.INITIAL_HOST_DATA: {
@@ -87,6 +101,10 @@ const HostComponent = () => {
           } as Partial<FooterProps>;
 
           setQuestions(tempQuestions);
+          setPollData((currVal) => ({
+            ...currVal,
+            question: tempQuestions[tempSelectedQuestion],
+          }));
           if (tempSelectedQuestion !== undefined) {
             if (tempSelectedQuestion >= tempQuestions.length - 1) {
               tempFooter.isNext = false;
@@ -129,6 +147,13 @@ const HostComponent = () => {
           setQuestions(tempQuestions);
           return;
         }
+        case codes.META: {
+          setPollData((currVal) => ({
+            ...currVal,
+            title: data.result.title,
+          }));
+          return;
+        }
       }
     },
     [questions]
@@ -138,10 +163,11 @@ const HostComponent = () => {
     setStatus((prev) => ({ ...prev, isPollStarted: true }));
     const data = {
       selectedQuestion,
-      ...questions[selectedQuestion],
+      ...pollData.question,
     };
+    console.log(pollData.question);
     socket.emit("room", {
-      data: { result: questions[selectedQuestion] },
+      data: { result: pollData.question },
       execute: {
         function: "createPollRoom",
         args: [roomId, data],
@@ -194,7 +220,7 @@ const HostComponent = () => {
     socket.emit("room", {
       execute: {
         function: "getPollAnswer",
-        args: [roomId, questions[selectedQuestion].id],
+        args: [roomId, pollData.question.id],
       },
     } as PacketInterface);
   };
@@ -208,7 +234,6 @@ const HostComponent = () => {
     content = (
       <PollContent
         questionLegend={`${selectedQuestion + 1}/${questions.length}`}
-        question={questions[selectedQuestion]}
         footer={
           <HostFooter
             revealAnswer={revealAnswer}
@@ -222,8 +247,11 @@ const HostComponent = () => {
     content = (
       <CenterComponent>
         <div>
-          <Title level={2} style={{ textAlign: "center" }}>
-            Users joined : {userCount}
+          <Title level={1} style={{ textAlign: "center" }}>
+            {pollData.title}
+          </Title>
+          <Title level={3} style={{ textAlign: "center" }}>
+            Users joined : {pollData.userCount}
           </Title>
           <Button
             size="large"

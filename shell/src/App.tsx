@@ -17,6 +17,10 @@ const App = () => {
       setUserState(JSON.parse(userData));
     }
   }, []);
+
+  React.useEffect(() => {
+    console.log("SESSION STORAGE CHANGED");
+  }, [sessionStorage.getItem("pollapp")]);
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <Routes>

@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { QuestionInterface } from "../common.interface";
 import QuestionComponent from "./Questions";
+import ChartComponent from "./Chart/Chart";
 
 const RowStyled = styled(Row)`
   min-height: 100vh;
@@ -23,7 +24,6 @@ const QuestionContent = styled((props) => <div {...props} />)`
 `;
 
 interface Props {
-  question: QuestionInterface;
   isHost?: boolean;
   showChart?: boolean;
   footer: React.ReactNode;
@@ -33,7 +33,6 @@ interface Props {
 }
 
 const PollContent = ({
-  question,
   footer,
   isHost = true,
   showChart = true,
@@ -48,12 +47,15 @@ const PollContent = ({
   };
   return (
     <RowStyled align="middle">
-      {showChart && <Col xs={10}>Chart Content</Col>}
+      {showChart && (
+        <Col xs={10}>
+          <ChartComponent />
+        </Col>
+      )}
       <Col flex="auto">
         <CardStyled>
           <QuestionContent>
             <QuestionComponent
-              question={question}
               isHost={isHost}
               onSelectOption={onSelectOption}
               value={answer}

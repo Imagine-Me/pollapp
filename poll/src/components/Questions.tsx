@@ -1,8 +1,9 @@
 import React from "react";
 import MDEditor from "@uiw/react-md-editor";
-import { QuestionInterface } from "../common.interface";
 import styled from "styled-components";
 import { Card, Radio, RadioChangeEvent, Row, Typography } from "antd";
+import { useRecoilValue } from "recoil";
+import { data } from "../recoil/data";
 
 const AnswerCard = styled(Card)`
   box-sizing: border-size;
@@ -37,9 +38,18 @@ const AnswerCard = styled(Card)`
   }
 `;
 
+const DivContainer = styled((props) => <div {...props} />)`
+  display: flex;
+  align-items: center;
+  >div: first-child {
+    font-weight: bold;
+  }
+`;
+
+const ASCII_START_CODE = 65;
+
 interface Props {
   isHost?: boolean;
-  question: QuestionInterface;
   onSelectOption?: (e: RadioChangeEvent) => void;
   value?: any;
   questionLegend?: string;
@@ -47,13 +57,14 @@ interface Props {
 }
 
 const QuestionComponent = ({
-  question,
   isHost = true,
   onSelectOption,
   value,
   questionLegend,
   showSelected,
 }: Props) => {
+  const { question } = useRecoilValue(data);
+
   const getClassName = (id: number) => {
     if (showSelected && question.answer !== undefined) {
       if (id + 1 === question.answer) {
@@ -74,15 +85,25 @@ const QuestionComponent = ({
         {question.options.map((option, id) => (
           <AnswerCard key={`option_id_${id}`} className={getClassName(id)}>
             {isHost || question.answer !== undefined ? (
-              <div style={{ marginRight: "22px" }}>
-                <MDEditor.Markdown source={option} />
-              </div>
-            ) : (
-              <Radio value={id + 1}>
+              <DivContainer>
+                <div>
+                  {String.fromCharCode(ASCII_START_CODE + id)}.&nbsp;&nbsp;
+                </div>
                 <div style={{ marginRight: "22px" }}>
                   <MDEditor.Markdown source={option} />
                 </div>
-              </Radio>
+              </DivContainer>
+            ) : (
+              <DivContainer>
+                <div>
+                  {String.fromCharCode(ASCII_START_CODE + id)}.&nbsp;&nbsp;
+                </div>
+                <Radio value={id + 1}>
+                  <div style={{ marginRight: "22px" }}>
+                    <MDEditor.Markdown source={option} />
+                  </div>
+                </Radio>
+              </DivContainer>
             )}
           </AnswerCard>
         ))}

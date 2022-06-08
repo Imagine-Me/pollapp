@@ -15,6 +15,8 @@ axiosInstance.interceptors.response.use(
   (onReject) => {
     if (onReject.response.status == 401) {
       notify("ERROR", "Authorization error");
+      sessionStorage.setItem("pollapp", "");
+      return;
     }
     return onReject;
   }

@@ -1,3 +1,5 @@
+import { updateRedisRoom } from "./../redis/index";
+import { getPoll } from "./../controller/polls.controller";
 import { createServer } from "http";
 import { Server as Socket } from "socket.io";
 import { Express } from "express";
@@ -57,14 +59,18 @@ export default function initializeSocket(app: Express) {
       } as DataInterface);
 
       const selectedQuestion = await getRedisRoom(roomId);
+      let roomTitle = selectedQuestion.roomTitle;
       if (query.type === "host") {
+        // CHECK IF ROOM TITLE IS SET OR NOT
+        if (selectedQuestion.roomTitle === undefined && query.userId) {
+          roomTitle = await setRoomTitle(roomId, query.userId);
+        }
         // SEND QUESTION
         const questionList = await getQuestionList(query);
         if (selectedQuestion.selectedQuestion !== undefined) {
           questionList.result.selectedQuestion =
             selectedQuestion.selectedQuestion;
-            questionList.result.answer =
-            selectedQuestion.answer;
+          questionList.result.answer = selectedQuestion.answer;
         }
 
         socket.emit("update", questionList);
@@ -76,6 +82,15 @@ export default function initializeSocket(app: Express) {
           } as DataInterface;
           socket.emit("update", result);
         }
+      }
+      if (roomTitle) {
+        const result = {
+          code: codes.META,
+          result: {
+            title: roomTitle,
+          },
+        };
+        socket.emit("update", result);
       }
 
       socket.on(
@@ -145,4 +160,17 @@ const getQuestionList = async (query: ConnectionQuery) => {
       questions: result,
     },
   } as DataInterface;
+};
+
+const setRoomTitle = async (id: string, userId: string) => {
+  const roomDetails = await getRoom(id, userId);
+  const pollId = roomDetails?.get("pollId");
+  if (pollId) {
+    const pollDetails = await getPoll(userId, pollId as string);
+    await updateRedisRoom(id, {
+      roomTitle: pollDetails?.get("title"),
+    });
+    return pollDetails?.get("title");
+  }
+  return "";
 };

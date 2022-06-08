@@ -15,7 +15,7 @@ router.get("", async (req, res, next) => {
     const allPolls = await getPolls(userId);
     res.send(allPolls);
   } catch (e) {
-    next(e);
+    next(res.send());
   }
 });
 router.get("/:pollId", async (req, res, next) => {
