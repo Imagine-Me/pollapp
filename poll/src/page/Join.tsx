@@ -9,13 +9,13 @@ import PollContent from "../components/Poll";
 import JoinFooter from "../components/JoinFooter";
 import { useRecoilState } from "recoil";
 import { data } from "../recoil/data";
+import { joinUserData } from "../recoil/join";
 
 const { Title } = Typography;
 
 const JoinComponent = () => {
   const [pollData, setPollData] = useRecoilState(data);
-  const [showChart, setShowChart] = useState<boolean>(false);
-  const [answer, setAnswer] = useState<number | null>(null);
+  const [joinData, setJoinData] = useRecoilState(joinUserData);
   const params = useParams();
   const socket = useSocket({ id: params.pollId as string, type: "join" });
 
@@ -52,6 +52,14 @@ const JoinComponent = () => {
           ...currVal,
           question: data.result,
         }));
+        if (data.result.answer === undefined) {
+          setJoinData((currVal) => ({
+            ...currVal,
+            isPolled: false,
+            answer: null,
+            showChart: false,
+          }));
+        }
         return;
       }
       case codes.META: {
@@ -66,12 +74,19 @@ const JoinComponent = () => {
 
   const selectOption = (ans: number) => {
     if (ans !== undefined) {
-      setAnswer(ans);
+      setJoinData((currVal) => ({
+        ...currVal,
+        answer: ans,
+      }));
     }
   };
 
   const poll = () => {
-    setShowChart(true);
+    setJoinData((currVal) => ({
+      ...currVal,
+      showChart: true,
+      isPolled: true,
+    }));
   };
 
   let content = (
@@ -92,19 +107,8 @@ const JoinComponent = () => {
   if (pollData.question && Object.keys(pollData.question).length > 0) {
     content = (
       <PollContent
-        isHost={false}
-        showChart={showChart || pollData.question.answer !== undefined}
-        footer={
-          <JoinFooter
-            canPoll={
-              answer !== null &&
-              pollData.question.answer === undefined &&
-              !showChart
-            }
-            poll={poll}
-          />
-        }
-        answer={answer}
+        showChart={joinData.showChart || pollData.question.answer !== undefined}
+        footer={<JoinFooter poll={poll} />}
         selectOption={selectOption}
       />
     );

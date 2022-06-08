@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Card, Radio, RadioChangeEvent, Row, Typography } from "antd";
 import { useRecoilValue } from "recoil";
 import { data } from "../recoil/data";
+import { joinUserData } from "../recoil/join";
 
 const AnswerCard = styled(Card)`
   box-sizing: border-size;
@@ -49,28 +50,25 @@ const DivContainer = styled((props) => <div {...props} />)`
 const ASCII_START_CODE = 65;
 
 interface Props {
-  isHost?: boolean;
   onSelectOption?: (e: RadioChangeEvent) => void;
-  value?: any;
   questionLegend?: string;
   showSelected?: boolean;
 }
 
 const QuestionComponent = ({
-  isHost = true,
   onSelectOption,
-  value,
   questionLegend,
   showSelected,
 }: Props) => {
-  const { question } = useRecoilValue(data);
+  const { question, isHost } = useRecoilValue(data);
+  const { answer, isPolled } = useRecoilValue(joinUserData);
 
   const getClassName = (id: number) => {
     if (showSelected && question.answer !== undefined) {
       if (id + 1 === question.answer) {
         return "success";
-      } else {
-        if (id + 1 === value) return "error";
+      } else if (id + 1 === answer && isPolled) {
+        return "error";
       }
     }
     return "";
@@ -81,7 +79,7 @@ const QuestionComponent = ({
         <Typography.Title level={5}>{questionLegend}</Typography.Title>
       </Row>
       <MDEditor.Markdown source={question.question} />
-      <Radio.Group onChange={onSelectOption} value={value}>
+      <Radio.Group onChange={onSelectOption} value={answer}>
         {question.options.map((option, id) => (
           <AnswerCard key={`option_id_${id}`} className={getClassName(id)}>
             {isHost || question.answer !== undefined ? (

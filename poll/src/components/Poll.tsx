@@ -38,19 +38,15 @@ const HeaderDiv = styled(Row)`
 `;
 
 interface Props {
-  isHost?: boolean;
   showChart?: boolean;
   footer: React.ReactNode;
-  answer?: number | null;
   selectOption?: (ans: number) => void;
   questionLegend?: string;
 }
 
 const PollContent = ({
   footer,
-  isHost = true,
   showChart = true,
-  answer,
   selectOption,
   questionLegend,
 }: Props) => {
@@ -81,9 +77,7 @@ const PollContent = ({
           <CardStyled>
             <QuestionContent>
               <QuestionComponent
-                isHost={isHost}
                 onSelectOption={onSelectOption}
-                value={answer}
                 questionLegend={questionLegend}
                 showSelected={showChart}
               />
