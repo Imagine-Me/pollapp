@@ -16,4 +16,5 @@ export interface QuestionInterface {
   question: string;
   options: string[];
   answer?: number;
+  poll?: number[];
 }

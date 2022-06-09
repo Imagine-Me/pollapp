@@ -93,7 +93,11 @@ const HostComponent = () => {
           return;
         }
         case codes.INITIAL_HOST_DATA: {
-          const tempQuestions = data.result.questions as QuestionInterface[];
+          const temp = data.result.questions as QuestionInterface[];
+          const tempQuestions = temp.map((val) => ({
+            ...val,
+            poll: Array.from({ length: val.options.length }, () => 0),
+          }));
           const tempSelectedQuestion = data.result.selectedQuestion;
           const tempAnswer = data.result.answer as number;
           const tempFooter = {
@@ -132,12 +136,14 @@ const HostComponent = () => {
           return;
         }
         case codes.PACKET: {
-          setFooter((prev) => ({
-            ...prev,
-            isLoading: false,
-            isRevealDisabled: true,
-          }));
           const result = data.result as QuestionInterface;
+          if (result.answer !== null) {
+            setFooter((prev) => ({
+              ...prev,
+              isLoading: false,
+              isRevealDisabled: true,
+            }));
+          }
           const tempQuestions = questions.map((question) => {
             if (question.id === result.id) {
               return result;

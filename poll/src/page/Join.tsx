@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom";
 import { Typography } from "antd";
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
-import { DataInterface, QuestionInterface } from "../common.interface";
+import {
+  DataInterface,
+  PacketInterface,
+} from "../common.interface";
 import CenterComponent from "../components/Center";
 import PollContent from "../components/Poll";
 import JoinFooter from "../components/JoinFooter";
@@ -17,7 +20,8 @@ const JoinComponent = () => {
   const [pollData, setPollData] = useRecoilState(data);
   const [joinData, setJoinData] = useRecoilState(joinUserData);
   const params = useParams();
-  const socket = useSocket({ id: params.pollId as string, type: "join" });
+  const roomId = params.pollId as string;
+  const socket = useSocket({ id: roomId as string, type: "join" });
 
   useEffect(() => {
     if (socket) {
@@ -87,6 +91,17 @@ const JoinComponent = () => {
       showChart: true,
       isPolled: true,
     }));
+    const poll = [...(pollData.question.poll ?? [])];
+    const index = joinData.answer ?? 1;
+    poll[index - 1] = poll[index - 1] + 1;
+    const temp = { ...pollData.question };
+    temp.poll = poll;
+    socket.emit("room", {
+      execute: {
+        function: "addPoll",
+        args: [roomId, temp],
+      },
+    } as PacketInterface);
   };
 
   let content = (
