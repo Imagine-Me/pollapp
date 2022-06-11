@@ -2,6 +2,7 @@ import { Button, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { CopyOutlined } from "@ant-design/icons";
 
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
@@ -14,6 +15,7 @@ import CenterComponent from "../components/Center";
 import HostFooter from "../components/HostFooter";
 import PollContent from "../components/Poll";
 import { data } from "../recoil/data";
+import copyToClipboard from "../utils/copyUrl";
 
 const { Title } = Typography;
 
@@ -171,7 +173,6 @@ const HostComponent = () => {
       selectedQuestion,
       ...pollData.question,
     };
-    console.log(pollData.question);
     socket.emit("room", {
       data: { result: pollData.question },
       execute: {
@@ -268,6 +269,14 @@ const HostComponent = () => {
             {status.isUsersJoined
               ? "Start Poll"
               : "Waiting for atleast two users"}
+          </Button>
+          <Button
+            icon={<CopyOutlined />}
+            type="text"
+            onClick={copyToClipboard}
+            style={{ margin: "auto", display: "block", marginTop: "15px" }}
+          >
+            Copy poll url and share to your friends
           </Button>
         </div>
       </CenterComponent>
