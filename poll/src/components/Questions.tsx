@@ -70,6 +70,8 @@ const QuestionComponent = ({
       } else if (id + 1 === answer && isPolled) {
         return "error";
       }
+    } else if (id + 1 === answer) {
+      return "info";
     }
     return "";
   };
@@ -82,7 +84,7 @@ const QuestionComponent = ({
       <Radio.Group onChange={onSelectOption} value={answer}>
         {question.options.map((option, id) => (
           <AnswerCard key={`option_id_${id}`} className={getClassName(id)}>
-            {isHost || question.answer !== undefined ? (
+            {isHost || question.answer !== undefined || isPolled ? (
               <DivContainer>
                 <div>
                   {String.fromCharCode(ASCII_START_CODE + id)}.&nbsp;&nbsp;

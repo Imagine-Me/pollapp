@@ -44,6 +44,7 @@ module.exports = {
         "./axios/instance": "./src/axiosInstance",
         "./notify": "./src/notify",
         "./hooks/socket": "./src/useSocket",
+        "./localStorage": "./src/tokenId",
       },
       remotes: {
         authentication: "authentication@http://localhost:3002/remoteEntry.js",

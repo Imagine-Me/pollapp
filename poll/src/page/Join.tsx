@@ -6,13 +6,15 @@ import { codes } from "../codes";
 import {
   DataInterface,
   PacketInterface,
+  QuestionInterface,
 } from "../common.interface";
 import CenterComponent from "../components/Center";
 import PollContent from "../components/Poll";
 import JoinFooter from "../components/JoinFooter";
 import { useRecoilState } from "recoil";
 import { data } from "../recoil/data";
-import { joinUserData } from "../recoil/join";
+import { JoinDataProps, joinUserData } from "../recoil/join";
+import { getFromLocalStorage, updateLocalStorage } from "utils/localStorage";
 
 const { Title } = Typography;
 
@@ -22,6 +24,23 @@ const JoinComponent = () => {
   const params = useParams();
   const roomId = params.pollId as string;
   const socket = useSocket({ id: roomId as string, type: "join" });
+
+  useEffect(() => {
+    const { question, ...localJoinData } = getFromLocalStorage(
+      roomId
+    ) as JoinDataProps & {
+      question: QuestionInterface;
+    };
+    setJoinData((currVal) => ({
+      ...currVal,
+      ...localJoinData,
+    }));
+    setPollData((currVal) => ({
+      ...currVal,
+      isHost: false,
+      question: question ?? {},
+    }));
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -34,13 +53,7 @@ const JoinComponent = () => {
         processData(data);
       });
     }
-  }, [socket]);
-  useEffect(() => {
-    setPollData((currVal) => ({
-      ...currVal,
-      isHost: false,
-    }));
-  }, []);
+  }, [socket, pollData]);
 
   const processData = (data: DataInterface) => {
     switch (data.code) {
@@ -52,18 +65,26 @@ const JoinComponent = () => {
         return;
       }
       case codes.PACKET: {
-        setPollData((currVal) => ({
-          ...currVal,
-          question: data.result,
-        }));
-        if (data.result.answer === undefined) {
-          setJoinData((currVal) => ({
-            ...currVal,
+        const question = data.result as QuestionInterface;
+        if (question.id !== pollData.question.id) {
+          const defaultJoinData = {
             isPolled: false,
             answer: null,
             showChart: false,
+          } as JoinDataProps;
+          updateLocalStorage(roomId, {
+            question,
+            ...defaultJoinData,
+          });
+          setJoinData((currVal) => ({
+            ...currVal,
+            ...defaultJoinData,
           }));
         }
+        setPollData((currVal) => ({
+          ...currVal,
+          question,
+        }));
         return;
       }
       case codes.META: {
@@ -86,11 +107,16 @@ const JoinComponent = () => {
   };
 
   const poll = () => {
-    setJoinData((currVal) => ({
-      ...currVal,
+    const tempJoinData = {
       showChart: true,
       isPolled: true,
+      answer: joinData.answer,
+    } as JoinDataProps;
+    setJoinData((currVal) => ({
+      ...currVal,
+      ...tempJoinData,
     }));
+    updateLocalStorage(roomId, tempJoinData);
     const poll = [...(pollData.question.poll ?? [])];
     const index = joinData.answer ?? 1;
     poll[index - 1] = poll[index - 1] + 1;

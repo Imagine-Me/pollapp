@@ -139,7 +139,9 @@ const HostComponent = () => {
         }
         case codes.PACKET: {
           const result = data.result as QuestionInterface;
-          if (result.answer !== null) {
+          console.log(result, result.answer);
+
+          if (result.answer !== undefined) {
             setFooter((prev) => ({
               ...prev,
               isLoading: false,

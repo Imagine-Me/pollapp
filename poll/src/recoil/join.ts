@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface JoinDataProps {
+export interface JoinDataProps {
   answer: number | null;
   isPolled: boolean;
   showChart: boolean;
