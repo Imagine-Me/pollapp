@@ -7,9 +7,9 @@ import App from "./App";
 const root = document.getElementById("root");
 
 createRoot(root).render(
-    <Router>
-      <RecoilRoot>
-        <App />
-      </RecoilRoot>
-    </Router>
+  <Router>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+  </Router>
 );

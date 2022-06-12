@@ -1,19 +1,27 @@
 import { Breadcrumb, Col, notification, Row, Modal, Input } from "antd";
 import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { UserProps, userState } from "authentication/recoil/user";
+import { axiosInstance } from "utils/axios/instance";
 import styled from "styled-components";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 import PollCard from "./PollCard";
-import { axiosInstance } from "../../axios/instance";
 
-const BreadCrumpStyled = () => (
-  <Breadcrumb>
+const BreadCrumpStyled = styled((props) => (
+  <Breadcrumb {...props} separator="">
     <Breadcrumb.Item>Profile</Breadcrumb.Item>
+    <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
     <Breadcrumb.Item>Poll</Breadcrumb.Item>
   </Breadcrumb>
-);
+))`
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: center;
+  }
+`;
 const AddPollButton = styled((props) => <div {...props} />)`
   height: 100%;
   background: white;
@@ -46,7 +54,7 @@ const Polls = () => {
   const [pollNameError, setPollNameError] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [pollLoading, setPollLoading] = useState<boolean>(false);
-  
+
   useEffect(() => {
     fetchPolls();
   }, []);

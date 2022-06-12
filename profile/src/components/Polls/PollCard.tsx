@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Card, Col, Modal, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PollsType } from "./Polls";
 import styled from "styled-components";
-import { axiosInstance } from "../../axios/instance";
-import notify from "../notify";
+import { axiosInstance } from "utils/axios/instance";
+import { notify } from "utils/notify";
 
 const { Title } = Typography;
 const CardStyled = styled(Card)`
@@ -20,6 +20,10 @@ interface PollCardInterface {
 }
 
 const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
   const deletePoll = (id: string) => {
     Modal.error({
       title: "Caution",
@@ -34,6 +38,24 @@ const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
       },
     });
   };
+
+  const createPoll = async (id: string) => {
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.post(`/room/create`, {
+        pollId: id,
+      });
+      if (data.status) {
+        const roomId = data.id;
+        navigate(`/poll/${roomId}`);
+      } else {
+        notify("Error", data.msg);
+      }
+    } catch (e) {
+      notify("Error", "Server error");
+    }
+    setLoading(false);
+  };
   return (
     <Col xs={6}>
       <CardStyled bordered={false}>
@@ -46,7 +68,14 @@ const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
         <Link style={{ marginRight: "10px" }} to={`${poll.id}`}>
           <Button>Edit</Button>
         </Link>
-        <Button style={{ marginRight: "10px" }}>Create Poll</Button>
+        <Button
+          loading={loading}
+          disabled={loading}
+          style={{ marginRight: "10px" }}
+          onClick={() => createPoll(poll.id)}
+        >
+          Create Poll
+        </Button>
         <Button danger onClick={() => deletePoll(poll.id)}>
           delete
         </Button>

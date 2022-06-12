@@ -18,8 +18,10 @@ const initializeDatabase = async () => {
   for (let i = 0; i < modelKeys.length; i++) {
     const model = modelKeys[i];
     db[model] = models[model].model(sequelize);
-    if (models[model].hasMany) {
-      db[models[model].hasMany].hasMany(db[model]);
+    if (models[model].hasMany && Array.isArray(models[model].hasMany)) {
+      models[model].hasMany.forEach((hasManyModel: string) => {
+        db[hasManyModel].hasMany(db[model]);
+      });
     }
     await db[model].sync();
   }

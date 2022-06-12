@@ -19,14 +19,16 @@ const App = () => {
     if (response.profileObj) {
       const { tokenId, profileObj } = response;
       const { name, email, imageUrl } = profileObj;
-      setUser({
+      const data = {
         name,
         isLoggedIn: true,
         userImage: imageUrl,
         email,
         isLoading: false,
         tokenId,
-      });
+      };
+      sessionStorage.setItem("pollapp", JSON.stringify(data));
+      setUser(data);
     }
   };
 

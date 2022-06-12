@@ -6,10 +6,13 @@ import v1Routes from "./routes/v1/index.route";
 import authMiddleware from "./middlewares/auth.middelware";
 import userMiddleWare from "./middlewares/user.middleware";
 import errorMiddleware from "./middlewares/error.middleware";
+import initializeSocket from "./socket";
+import { connectRedis } from "./redis/index";
 
 dotenv.config();
-
 const app = express();
+
+connectRedis();
 
 const whiteList = [
   "http://localhost:3000",
@@ -45,4 +48,5 @@ app.get("/", (req, res) => {
 initializeDatabase();
 
 app.use(errorMiddleware);
-export default app;
+const httpServer = initializeSocket(app);
+export default httpServer;

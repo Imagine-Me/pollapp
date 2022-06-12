@@ -1,21 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import axios from "axios";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client();
 
 const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // ? JUST FOR TESTING
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer"
-  ) {
-    const bearerToken = req.headers.authorization.split(" ")[1];
-    console.log(bearerToken);
-  }
-
-
   if (
     process.env.NODE_ENV === "test" ||
     process.env.NODE_ENV === "development"
@@ -29,21 +21,24 @@ const authMiddleware = async (
       req.headers.authorization.split(" ")[0] === "Bearer"
     ) {
       const bearerToken = req.headers.authorization.split(" ")[1];
+      console.log(bearerToken);
+
       try {
-        const { data } = await axios({
-          url: `https://oauth2.googleapis.com/tokeninfo?id_token=${bearerToken}`,
-          method: "GET",
+        const ticket = await client.verifyIdToken({
+          idToken: bearerToken,
+          audience: process.env.CLIENT_ID ?? "",
         });
-        const { email, name } = data;
-        res.locals.email = email;
-        res.locals.name = name;
+        const data = ticket.getPayload();
+        res.locals.email = data?.email;
+        res.locals.name = data?.name;
         next();
-      } catch (e) {
-        next(e);
+      } catch (e: any) {
+        res.status(401);
+        next();
       }
     } else {
-      const error = new Error("Invalid credentials");
-      next(error);
+      console.log("NO BEARER TOKEN");
+      next();
     }
   }
 };

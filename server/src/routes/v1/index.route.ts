@@ -2,6 +2,7 @@ import { Router } from "express";
 import userRoute from "./user.route";
 import pollsRoute from "./polls.route";
 import questionRoute from "./question.route";
+import roomRoute from "./room.route";
 
 interface RouteInterface {
   route: Router;
@@ -22,6 +23,10 @@ const defaultRoutes: RouteInterface[] = [
   {
     route: questionRoute,
     path: "/question",
+  },
+  {
+    route: roomRoute,
+    path: "/room",
   },
 ];
 

@@ -10,6 +10,41 @@ export const getQuestions = (pollId: string) => {
   });
 };
 
+export const getQuestionIds = (pollId: string) => {
+  return db.question.findAll({
+    where: { pollId },
+    attributes: ["id", "question", "options"],
+    order: [["createdAt", "ASC"]],
+    raw: true,
+  });
+};
+
+export const getQuestionsLength = (pollId: string) => {
+  return db.question.findAndCountAll({
+    where: {
+      pollId,
+    },
+  });
+};
+
+export const getFirstQuestionId = (pollId: string) => {
+  return db.question.findOne({
+    where: {
+      pollId,
+    },
+    attributes: ["id"],
+  });
+};
+
+export const getQuestion = (id: string) => {
+  return db.question.findOne({
+    where: {
+      id,
+    },
+    attributes: ["id", "question", "options", "answer"],
+  });
+};
+
 export const createQuestion = (data: QuestionModelType) => {
   return db.question.upsert({ ...data });
 };

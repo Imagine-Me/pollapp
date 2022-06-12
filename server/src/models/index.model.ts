@@ -1,6 +1,7 @@
 import UserModel from "./user.model";
 import PollModel from "./poll.model";
 import QuestionModel from "./question.model";
+import RoomModel from "./room.model";
 
 export default {
   user: {
@@ -9,10 +10,14 @@ export default {
   },
   poll: {
     model: PollModel,
-    hasMany: "user",
+    hasMany: ["user"],
   },
   question: {
     model: QuestionModel,
-    hasMany: "poll",
+    hasMany: ["poll"],
+  },
+  room: {
+    model: RoomModel,
+    hasMany: ["user", "poll"],
   },
 } as any;
