@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "utils/axios/instance";
-import { notify } from "utils/notify";
 import { Route, Routes, useParams } from "react-router-dom";
 import { Typography } from "antd";
 

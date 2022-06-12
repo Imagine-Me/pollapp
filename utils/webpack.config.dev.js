@@ -47,7 +47,7 @@ module.exports = {
         "./localStorage": "./src/tokenId",
       },
       remotes: {
-        authentication: `authentication@${parsedEnv.AUTHENTICATION_APP_URL}/remoteEntry.js`,
+        authentication: "authentication@http://localhost:3002/remoteEntry.js",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.0.0" },
