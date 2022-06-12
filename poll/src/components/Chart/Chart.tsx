@@ -1,43 +1,38 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJs,
-  CategoryScale,
-  LinearScale,
-  ChartOptions,
-  ChartData,
-  BarElement,
-} from "chart.js";
+import React, { useState } from "react";
+import { Col, Row, Select } from "antd";
+import BarChart from "./Bar";
+import Title from "antd/lib/typography/Title";
+import { useRecoilValue } from "recoil";
+import { data } from "../../recoil/data";
 
-ChartJs.register(CategoryScale, LinearScale, BarElement);
+const { Option } = Select;
 
-export const options = {
-  indexAxis: "y",
-  elements: {
-    bar: {
-      borderWidth: 2,
-    },
-  },
-  responsive: true,
-  scales: {
-    x: { display: false },
-    y: { grid: { display: false } },
-  },
-} as ChartOptions<"bar">;
-
-const labels = ["A", "B", "C", "D"];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      data: [4, 3, 5],
-    },
-  ],
-} as ChartData<"bar">;
+export type ChartType = "bar" | "pie";
 
 const ChartComponent = () => {
-  return <Bar options={options} data={data} />;
+  const [chartType, setChartType] = useState<ChartType>("bar");
+  const { userCount, question } = useRecoilValue(data);
+  console.log(question.poll);
+  const totalPolled = question.poll?.reduce((acc, val) => acc + val, 0);
+  return (
+    <Row>
+      <Col span={12}>
+        <Title level={3} style={{ textAlign: "center" }}>
+          {totalPolled && totalPolled > userCount ? userCount : totalPolled}/
+          {userCount}
+        </Title>
+      </Col>
+      <Col span={12}>
+        <Select style={{ width: "150px", margin: "auto", display: "block" }}>
+          <Option>Bar Chart</Option>
+          <Option>Pie Chart</Option>
+        </Select>
+      </Col>
+      <Col span={24}>
+        <BarChart />
+      </Col>
+    </Row>
+  );
 };
 
 export default ChartComponent;

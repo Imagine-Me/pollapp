@@ -1,22 +1,17 @@
-import { updateRedisRoom } from "./../redis/index";
-import { getPoll } from "./../controller/polls.controller";
 import { createServer } from "http";
 import { Server as Socket } from "socket.io";
 import { Express } from "express";
 import { authMiddleware } from "./../middlewares/authSocket.middleware";
-import { getRoom } from "../controller/room.controller";
-import { getQuestionIds } from "./../controller/question.controller";
 import { codes } from "./codes";
-import { getRedisRoom } from "../redis";
-import pollFunctions from "./poll";
+import pollFunctions, { onConnect } from "./poll";
 
-interface ConnectionQuery {
+export interface ConnectionQuery {
   id: string;
   type: "host" | "join";
   [x: string]: string;
 }
 
-interface DataInterface {
+export interface DataInterface {
   code: number;
   result: any;
 }
@@ -58,40 +53,10 @@ export default function initializeSocket(app: Express) {
         result: userCount,
       } as DataInterface);
 
-      const selectedQuestion = await getRedisRoom(roomId);
-      let roomTitle = selectedQuestion.roomTitle;
-      if (query.type === "host") {
-        // CHECK IF ROOM TITLE IS SET OR NOT
-        if (selectedQuestion.roomTitle === undefined && query.userId) {
-          roomTitle = await setRoomTitle(roomId, query.userId);
-        }
-        // SEND QUESTION
-        const questionList = await getQuestionList(query);
-        if (selectedQuestion.selectedQuestion !== undefined) {
-          questionList.result.selectedQuestion =
-            selectedQuestion.selectedQuestion;
-          questionList.result.answer = selectedQuestion.answer;
-        }
-
-        socket.emit("update", questionList);
-      } else {
-        if (selectedQuestion.question && selectedQuestion.options) {
-          const result = {
-            code: codes.PACKET,
-            result: selectedQuestion,
-          } as DataInterface;
-          socket.emit("update", result);
-        }
-      }
-      if (roomTitle) {
-        const result = {
-          code: codes.META,
-          result: {
-            title: roomTitle,
-          },
-        };
-        socket.emit("update", result);
-      }
+      const initialConnection = await onConnect(query);
+      initialConnection.forEach((each) => {
+        socket.emit("update", each);
+      });
 
       socket.on(
         "room",
@@ -139,38 +104,3 @@ export default function initializeSocket(app: Express) {
 
   return httpServer;
 }
-
-const getQuestionList = async (query: ConnectionQuery) => {
-  let result: any = [];
-  const { id, userId } = query;
-  if (userId) {
-    const room = await getRoom(id, userId);
-    if (room && room.get("pollId")) {
-      const questions = await getQuestionIds(room.get("pollId") as string);
-      result = questions.map(({ id, question, options }: any) => ({
-        id,
-        question,
-        options,
-      }));
-    }
-  }
-  return {
-    code: codes.INITIAL_HOST_DATA,
-    result: {
-      questions: result,
-    },
-  } as DataInterface;
-};
-
-const setRoomTitle = async (id: string, userId: string) => {
-  const roomDetails = await getRoom(id, userId);
-  const pollId = roomDetails?.get("pollId");
-  if (pollId) {
-    const pollDetails = await getPoll(userId, pollId as string);
-    await updateRedisRoom(id, {
-      roomTitle: pollDetails?.get("title"),
-    });
-    return pollDetails?.get("title");
-  }
-  return "";
-};

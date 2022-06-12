@@ -96,22 +96,34 @@ const HostComponent = () => {
         }
         case codes.INITIAL_HOST_DATA: {
           const temp = data.result.questions as QuestionInterface[];
-          const tempQuestions = temp.map((val) => ({
-            ...val,
-            poll: Array.from({ length: val.options.length }, () => 0),
-          }));
+          let poll = data.result.poll;
           const tempSelectedQuestion = data.result.selectedQuestion;
           const tempAnswer = data.result.answer as number;
-          const tempFooter = {
-            isNext: tempQuestions.length > 1,
-          } as Partial<FooterProps>;
+          const tempFooter = {} as Partial<FooterProps>;
+          const tempQuestions = temp.map((val, id) => {
+            const temp = {
+              ...val,
+            };
+            if (poll && id === tempSelectedQuestion) {
+              temp.poll = poll;
+            } else {
+              temp.poll = Array.from({ length: val.options.length }, () => 0);
+            }
+            if (tempAnswer !== undefined) {
+              temp.answer = tempAnswer;
+              tempFooter.isRevealDisabled = true;
+            }
+            return temp;
+          });
+          console.log("TempQuestions", tempQuestions);
+          tempFooter.isNext = tempQuestions.length > 1;
 
           setQuestions(tempQuestions);
-          setPollData((currVal) => ({
-            ...currVal,
-            question: tempQuestions[tempSelectedQuestion],
-          }));
           if (tempSelectedQuestion !== undefined) {
+            setPollData((currVal) => ({
+              ...currVal,
+              question: tempQuestions[tempSelectedQuestion],
+            }));
             if (tempSelectedQuestion >= tempQuestions.length - 1) {
               tempFooter.isNext = false;
             }
@@ -120,19 +132,6 @@ const HostComponent = () => {
             }
             setSelectedQuestion(tempSelectedQuestion);
             setStatus((prev) => ({ ...prev, isPollStarted: true }));
-            if (tempAnswer !== undefined) {
-              const updatedQuestions = tempQuestions.map((question, id) => {
-                if (id === tempSelectedQuestion) {
-                  return {
-                    ...question,
-                    answer: tempAnswer,
-                  };
-                }
-                return question;
-              });
-              tempFooter.isRevealDisabled = true;
-              setQuestions(updatedQuestions);
-            }
           }
           setFooter((prev) => ({ ...prev, ...tempFooter }));
           return;
