@@ -1,11 +1,13 @@
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
 
-const path = require("path");
+const parsedEnv = config({ path: "./.env" }).parsed;
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
@@ -14,13 +16,6 @@ module.exports = {
       os: false,
       path: false,
     },
-  },
-  devServer: {
-    port: 3000,
-  },
-  output: {
-    publicPath: "auto",
-    clean: true,
   },
   module: {
     rules: [
@@ -35,6 +30,10 @@ module.exports = {
         use: "ts-loader",
       },
     ],
+  },
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -57,6 +56,7 @@ module.exports = {
         "socket.io-client": { singleton: true, requiredVersion: "4.5.1" },
       },
     }),
+    new CleanWebpackPlugin(),
     new DefinePlugin({
       "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
     }),
