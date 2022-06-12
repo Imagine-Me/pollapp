@@ -2,7 +2,7 @@ import { Button, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { CopyOutlined } from "@ant-design/icons";
+import { CopyOutlined, LoadingOutlined } from "@ant-design/icons";
 
 import { useSocket } from "utils/hooks/socket";
 import { codes } from "../codes";
@@ -16,6 +16,7 @@ import HostFooter from "../components/HostFooter";
 import PollContent from "../components/Poll";
 import { data } from "../recoil/data";
 import copyToClipboard from "../utils/copyUrl";
+import FixedAlert from "../components/FixedAlert";
 
 const { Title } = Typography;
 
@@ -284,7 +285,22 @@ const HostComponent = () => {
     );
   }
 
-  return content;
+  return (
+    <>
+      {content}
+      {!status.isUsersJoined && (
+        <FixedAlert
+          type="info"
+          message={
+            <>
+              <LoadingOutlined spin style={{ marginRight: "15px" }} />
+              There is only {pollData.userCount} user
+            </>
+          }
+        />
+      )}{" "}
+    </>
+  );
 };
 
 export default HostComponent;
