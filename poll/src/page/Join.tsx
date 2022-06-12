@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Typography } from "antd";
 import { useSocket } from "utils/hooks/socket";
+import { LoadingOutlined } from "@ant-design/icons";
 import { codes } from "../codes";
 import {
   DataInterface,
@@ -15,10 +16,12 @@ import { useRecoilState } from "recoil";
 import { data } from "../recoil/data";
 import { JoinDataProps, joinUserData } from "../recoil/join";
 import { getFromLocalStorage, updateLocalStorage } from "utils/localStorage";
+import FixedAlert from "../components/FixedAlert";
 
 const { Title } = Typography;
 
 const JoinComponent = () => {
+  const [isHostDisconnected, setIsHostDisconnected] = useState<boolean>(false);
   const [pollData, setPollData] = useRecoilState(data);
   const [joinData, setJoinData] = useRecoilState(joinUserData);
   const params = useParams();
@@ -94,6 +97,14 @@ const JoinComponent = () => {
         }));
         return;
       }
+      case codes.HOST_DISCONNECTED: {
+        setIsHostDisconnected(true);
+        return;
+      }
+      case codes.HOST_CONNECTED: {
+        setIsHostDisconnected(false);
+        return;
+      }
     }
   };
 
@@ -155,7 +166,22 @@ const JoinComponent = () => {
     );
   }
 
-  return content;
+  return (
+    <>
+      {content}
+      {isHostDisconnected && (
+        <FixedAlert
+          type="error"
+          message={
+            <>
+              <LoadingOutlined spin style={{ marginRight: "15px" }} />
+              Host disconnected. Waiting for host
+            </>
+          }
+        />
+      )}
+    </>
+  );
 };
 
 export default JoinComponent;

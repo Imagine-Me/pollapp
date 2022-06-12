@@ -53,6 +53,12 @@ export default function initializeSocket(app: Express) {
         result: userCount,
       } as DataInterface);
 
+      if (query.type === "host") {
+        io.to(roomId).emit("update", {
+          code: codes.HOST_CONNECTED,
+        } as DataInterface);
+      }
+
       const initialConnection = await onConnect(query);
       initialConnection.forEach((each) => {
         socket.emit("update", each);
@@ -93,9 +99,9 @@ export default function initializeSocket(app: Express) {
         } as DataInterface);
         if (query) {
           if (query.type === "host") {
-            console.log("HOST DISCONNECTED");
-          } else {
-            console.log("JOIN DISCONNECTED");
+            io.to(roomId).emit("update", {
+              code: codes.HOST_DISCONNECTED,
+            } as DataInterface);
           }
         }
       });

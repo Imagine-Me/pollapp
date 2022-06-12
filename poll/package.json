@@ -46,6 +46,7 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@react-spring/web": "^9.4.4",
     "@uiw/react-md-editor": "^3.14.1",
     "antd": "^4.19.5",

@@ -4,4 +4,6 @@ export const codes = {
   USER_COUNT: 1002,
   META: 1003,
   GAME_DATA: 1004,
+  HOST_CONNECTED: 2000,
+  HOST_DISCONNECTED: 4000,
 };
