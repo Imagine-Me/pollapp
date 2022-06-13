@@ -1,18 +1,11 @@
 version: '3'
 
 services:
-  redis:
-    image: 'redis:alpine'
-    restart: always
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - POSTGRES_DB=${PG_DATABASE}
-      - POSTGRES_HOST_AUTH_METHOD=trust
   pollapp-backend:
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "${PORT}:${PORT}"
     volumes:
@@ -28,8 +21,15 @@ services:
       - PORT=${PORT}
       - CLIENT_ID=${CLIENT_ID}
       - NODE_ENV=development
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    depends_on:
-      - redis
-      - postgres
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    networks:
+      - database-network
+      - redis-network
+networks:
+  database-network:
+    external:
+      name: ${DATABASE_NETWORK}
+  redis-network:
+    external:
+      name: ${REDIS_NETWORK}

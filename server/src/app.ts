@@ -20,6 +20,7 @@ const whiteList = [
   "http://localhost:3002",
   "http://localhost:3003",
   "http://localhost:3004",
+  "http://localhost:9000",
 ];
 
 const corsOptions: CorsOptions = {

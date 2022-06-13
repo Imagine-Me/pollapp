@@ -1,0 +1,17 @@
+FROM node:16-alpine
+
+WORKDIR /home/pollapp
+
+COPY ./package.json .
+
+RUN yarn install
+
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+COPY . .
+
+RUN chown node:node .
+
+USER node
+
+CMD [ "yarn", "run", "start" ]

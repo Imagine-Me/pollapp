@@ -2,10 +2,10 @@
   "name": "pollapp-server",
   "version": "1.0.0",
   "description": "Backend for pollapp",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
-    "start": "cross-env NODE_ENV=development nodemon ./src/index.ts",
+    "start": "cross-env NODE_ENV=production ts-node ./src/index.ts",
     "dev": "cross-env NODE_ENV=dev nodemon ./src/index.ts"
   },
   "author": "Prince Thomas",
