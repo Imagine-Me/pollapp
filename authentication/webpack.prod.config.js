@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.ts"),
@@ -110,6 +111,9 @@ module.exports = {
     }),
     new DefinePlugin({
       "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
+    }),
+    new Dotenv({
+      systemvars: true,
     }),
   ],
   stats: "errors-only",
