@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
 const Dotenv = require("dotenv-webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const configEnv = config({ path: "./.env" }).parsed;
 
@@ -115,6 +116,16 @@ module.exports = {
     }),
     new Dotenv({
       systemvars: true,
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "./public",
+          globOptions: {
+            ignore: ["**/index.html"],
+          },
+        },
+      ],
     }),
   ],
   stats: "errors-only",
