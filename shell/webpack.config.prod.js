@@ -8,7 +8,7 @@ const { config } = require("dotenv");
 const Dotenv = require("dotenv-webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 
-const configEnv = config({ path: "./.env" }).parsed;
+const parsedEnv = config({ path: "./.env" }).parsed;
 
 let PROFILE_APP_URL = "",
   POLL_APP_URL = "",
@@ -125,7 +125,7 @@ module.exports = {
       chunkFilename: "[id].css",
     }),
     new DefinePlugin({
-      "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
+      "process.env": JSON.stringify(parsedEnv),
     }),
     new Dotenv({
       systemvars: true,
