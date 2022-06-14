@@ -9,6 +9,16 @@ const Dotenv = require("dotenv-webpack");
 
 const configEnv = config({ path: "./.env" }).parsed;
 
+let PROFILE_APP_URL = "",
+  UTILS_APP_URL = "";
+if (parsedEnv) {
+  PROFILE_APP_URL = parsedEnv.PROFILE_APP_URL;
+  UTILS_APP_URL = parsedEnv.UTILS_APP_URL;
+} else {
+  PROFILE_APP_URL = process.env.PROFILE_APP_URL;
+  UTILS_APP_URL = process.env.UTILS_APP_URL;
+}
+
 module.exports = {
   entry: path.resolve(__dirname, "src", "index.ts"),
   resolve: {
@@ -94,8 +104,8 @@ module.exports = {
         "./App": "./src/App",
       },
       remotes: {
-        profile: `profile@${configEnv.PROFILE_APP_URL}/remoteEntry.js`,
-        utils: `utils@${configEnv.UTILS_APP_URL}/remoteEntry.js`,
+        profile: `profile@${PROFILE_APP_URL}/remoteEntry.js`,
+        utils: `utils@${UTILS_APP_URL}/remoteEntry.js`,
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.1.0" },

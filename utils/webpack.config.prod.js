@@ -10,7 +10,6 @@ let AUTHENTICATION_URL = "";
 if (parsedEnv) {
   AUTHENTICATION_URL = parsedEnv.AUTHENTICATION_APP_URL;
 } else {
-  console.log(process.env.AUTHENTICATION_APP_URL);
   AUTHENTICATION_URL = process.env.AUTHENTICATION_APP_URL;
 }
 
