@@ -65,7 +65,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new DefinePlugin({
-      "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
+      "process.env": JSON.stringify(parsedEnv),
     }),
     new Dotenv({
       systemvars: true,
