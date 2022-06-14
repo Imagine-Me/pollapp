@@ -5,6 +5,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
+const Dotenv = require("dotenv-webpack");
 
 const configEnv = config({ path: "./.env" }).parsed;
 
@@ -93,10 +94,10 @@ module.exports = {
         poll: `poll@${configEnv.POLL_APP_URL}/remoteEntry.js`,
       },
       shared: {
-        react: { singleton: true, requiredVersion: "18.0.0" },
-        "react-dom": { singleton: true, requiredVersion: "18.0.0" },
-        antd: { singleton: true, requiredVersion: "4.19.5" },
-        recoil: { singleton: true, requiredVersion: "0.7.2" },
+        react: { singleton: true, requiredVersion: "18.1.0" },
+        "react-dom": { singleton: true, requiredVersion: "18.1.0" },
+        antd: { singleton: true, requiredVersion: "4.21.1" },
+        recoil: { singleton: true, requiredVersion: "0.7.3" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
       },
@@ -111,6 +112,9 @@ module.exports = {
     }),
     new DefinePlugin({
       "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
+    }),
+    new Dotenv({
+      systemvars: true,
     }),
   ],
   stats: "errors-only",

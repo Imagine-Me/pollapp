@@ -103,12 +103,12 @@ module.exports = {
         utils: "utils@http://localhost:3000/remoteEntry.js"
       },
       shared: {
-        react: { singleton: true, requiredVersion: "18.0.0" },
-        "react-dom": { singleton: true, requiredVersion: "18.0.0" },
-        antd: { singleton: true, requiredVersion: "4.19.5" },
-        recoil: { singleton: true, requiredVersion: "0.7.2" },
+        react: { singleton: true, requiredVersion: "18.1.0" },
+        "react-dom": { singleton: true, requiredVersion: "18.1.0" },
+        antd: { singleton: true, requiredVersion: "4.21.1" },
+        recoil: { singleton: true, requiredVersion: "0.7.3" },
         axios: { singleton: true, requiredVersion: "0.27.2" },
-        "@uiw/react-md-editor": { singleton: true, requiredVersion: "3.12.1" },
+        "@uiw/react-md-editor": { singleton: true, requiredVersion: "3.14.1" },
         "styled-components": { singleton: true, requiredVersion: "5.3.5" },
         "react-router-dom": { singleton: true, requiredVersion: "6.3.0" },
         "socket.io-client": { singleton: true, requiredVersion: "4.5.1" },
