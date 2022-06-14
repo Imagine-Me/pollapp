@@ -6,6 +6,13 @@ const { config } = require("dotenv");
 const Dotenv = require("dotenv-webpack");
 
 const parsedEnv = config({ path: "./.env" }).parsed;
+let AUTHENTICATION_URL = "";
+if (parsedEnv) {
+  AUTHENTICATION_URL = parsedEnv.AUTHENTICATION_APP_URL;
+} else {
+  console.log(process.env.AUTHENTICATION_APP_URL);
+  AUTHENTICATION_URL = process.env.AUTHENTICATION_APP_URL;
+}
 
 module.exports = {
   mode: "production",
@@ -47,7 +54,7 @@ module.exports = {
         "./localStorage": "./src/tokenId",
       },
       remotes: {
-        authentication: `authentication@${parsedEnv.AUTHENTICATION_APP_URL}/remoteEntry.js`,
+        authentication: `authentication@${AUTHENTICATION_URL}/remoteEntry.js`,
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.1.0" },
