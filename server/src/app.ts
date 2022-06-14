@@ -21,6 +21,8 @@ const whiteList = [
   "http://localhost:3003",
   "http://localhost:3004",
   "http://localhost:9000",
+  "https://pollapp-profile.netlify.app",
+  "https://pollapp-shell.netlify.app",
 ];
 
 const corsOptions: CorsOptions = {
