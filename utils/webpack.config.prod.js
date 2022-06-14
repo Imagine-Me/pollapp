@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 const { DefinePlugin } = require("webpack");
 const { config } = require("dotenv");
+const Dotenv = require("dotenv-webpack");
 
 const parsedEnv = config({ path: "./.env" }).parsed;
 
@@ -49,9 +50,9 @@ module.exports = {
         authentication: `authentication@${parsedEnv.AUTHENTICATION_APP_URL}/remoteEntry.js`,
       },
       shared: {
-        react: { singleton: true, requiredVersion: "18.0.0" },
-        "react-dom": { singleton: true, requiredVersion: "18.0.0" },
-        antd: { singleton: true, requiredVersion: "4.19.5" },
+        react: { singleton: true, requiredVersion: "18.1.0" },
+        "react-dom": { singleton: true, requiredVersion: "18.1.0" },
+        antd: { singleton: true, requiredVersion: "4.21.1" },
         axios: { singleton: true, requiredVersion: "0.27.2" },
         "socket.io-client": { singleton: true, requiredVersion: "4.5.1" },
       },
@@ -59,6 +60,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new DefinePlugin({
       "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
+    }),
+    new Dotenv({
+      systemvars: true,
     }),
   ],
 };
