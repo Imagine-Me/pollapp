@@ -71,4 +71,8 @@ module.exports = {
       systemvars: true,
     }),
   ],
+  optimization: {
+    minimize: true,
+    sideEffects: false,
+  },
 };
