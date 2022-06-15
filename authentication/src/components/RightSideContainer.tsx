@@ -46,7 +46,7 @@ export const RightSideContent = ({
         </Title>
       </Typography>
       {isLoggedIn ? (
-        <Link to="/user/profile">
+        <Link to="/user/polls">
           <Button size="large" shape="round" type="primary">
             PROFILE
           </Button>
