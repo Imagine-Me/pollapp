@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push: 
+    branches:
+      - "main"
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connecting server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{ secrets.SSH_USERNAME }}
+          script: |
+            echo "Connected to server"
+            cd Projects/pollapp
+            echo "Updating repo"
+            git pull
+            cd server
+            echo "Stopping server"
+            docker-compose stop
+            echo "Restarting"
+            docker-compose up -d --build

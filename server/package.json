@@ -6,7 +6,9 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "start": "cross-env NODE_ENV=production ts-node ./src/index.ts",
-    "dev": "cross-env NODE_ENV=dev nodemon ./src/index.ts"
+    "dev": "cross-env NODE_ENV=dev nodemon ./src/index.ts",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all"
   },
   "author": "Prince Thomas",
   "license": "ISC",

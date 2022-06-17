@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { db, sequelize } from "../db/index.db";
 import { PollsModelType } from "../models/poll.model";
 
@@ -13,7 +14,7 @@ export const getPolls = (id: string) => {
         ],
       ],
     },
-    where: { userId: id },
+    where: { [Op.or]: [{ userId: id }, { type: "public" }] },
     order: [["createdAt", "DESC"]],
   });
 };
@@ -21,7 +22,7 @@ export const getPolls = (id: string) => {
 export const getPoll = (id: string, pollId: string) => {
   return db.poll.findOne({
     where: {
-      userId: id,
+      [Op.or]: [{ userId: id }, { type: "public" }],
       id: pollId,
     },
   });

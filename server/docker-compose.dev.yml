@@ -30,6 +30,7 @@ services:
       - NODE_ENV=development
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - WAIT_HOSTS=postgres:5432
     depends_on:
       - redis
       - postgres
