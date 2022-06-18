@@ -26,6 +26,11 @@ const PollModel = (sequelize: Sequelize) => {
         key: "id",
       },
     },
+    type: {
+      type: DataTypes.ENUM,
+      values: ["public", "private"],
+      defaultValue: "private",
+    },
   });
 };
 

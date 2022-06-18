@@ -5,13 +5,31 @@ import { PollsType } from "./Polls";
 import styled from "styled-components";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
-const CardStyled = styled(Card)`
-  transition: transform 0.3s ease-in-out;
-  &:hover {
-    transform: scale(1.01);
+const { Title, Text } = Typography;
+const ButtonContainer = styled((props) => <div {...props} />)`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+`;
+const TextStyled = styled(Text)`
+  padding: 5px 7px;
+  border: none;
+  font-size: 10px;
+  text-transform: uppercase;
+  &.private {
+    background-color: #76dc5130;
   }
+  &.public {
+    background-color: #ff000020;
+  }
+`;
+
+const QuestionNumberText = styled(Title)`
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
 `;
 
 interface PollCardInterface {
@@ -21,7 +39,6 @@ interface PollCardInterface {
 
 const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   const deletePoll = (id: string) => {
@@ -57,29 +74,54 @@ const PollCard = ({ poll, fetchPolls }: PollCardInterface) => {
     setLoading(false);
   };
   return (
-    <Col xs={6}>
-      <CardStyled bordered={false}>
+    <Col xs={24} sm={12} md={8} lg={6}>
+      <Card bordered={false} hoverable>
+        {poll.type === "private" && (
+          <ButtonContainer>
+            <Link to={`${poll.id}`}>
+              <Button shape="circle" icon={<EditOutlined />} title="Edit" />
+            </Link>
+            <Button
+              style={{ marginLeft: "7px" }}
+              shape="circle"
+              icon={<DeleteOutlined />}
+              danger
+              title="Delete"
+              onClick={() => deletePoll(poll.id)}
+            />
+          </ButtonContainer>
+        )}
+        <QuestionNumberText title="Question count" level={1}>
+          {poll.questionCount}
+        </QuestionNumberText>
         <Typography>
-          <Title ellipsis level={4}>
+          <Title ellipsis level={3}>
             {poll.title}
           </Title>
-          <Title level={5}>Questions - {poll.questionCount}</Title>
         </Typography>
-        <Link style={{ marginRight: "10px" }} to={`${poll.id}`}>
-          <Button>Edit</Button>
-        </Link>
+        <Typography>
+          <TextStyled
+            className={poll.type}
+            title={
+              poll.type === "private"
+                ? "Poll created by you"
+                : "Common polls (you can't edit this)"
+            }
+          >
+            #{poll.type}
+          </TextStyled>
+        </Typography>
         <Button
           loading={loading}
           disabled={loading}
-          style={{ marginRight: "10px" }}
+          style={{ marginTop: "10px" }}
+          type="primary"
+          size="large"
           onClick={() => createPoll(poll.id)}
         >
           Create Poll
         </Button>
-        <Button danger onClick={() => deletePoll(poll.id)}>
-          delete
-        </Button>
-      </CardStyled>
+      </Card>
     </Col>
   );
 };
