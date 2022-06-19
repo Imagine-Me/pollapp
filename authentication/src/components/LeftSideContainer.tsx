@@ -17,7 +17,7 @@ const LeftSideContainer = styled((props) => {
     right: -100px;
     height: 100%;
     background-color: #526685;
-    width: 100px;
+    width: 101px;
     clip-path: polygon(0 0, 0 100%, 100% 0, 100% 0);
   }
   .title-left {
@@ -35,6 +35,7 @@ const LeftSideContainer = styled((props) => {
     width: 100%;
     justify-content: start;
     align-items: flex-start;
+    flex-flow: column;
     .title-left {
       text-align: left;
       padding: 30px;
@@ -46,15 +47,16 @@ const LeftSideContainer = styled((props) => {
 `;
 
 export const LeftSideUserContent = styled((props) => {
-    return <div {...props} />;
-  })`
-    display: none;
-    padding: 30px;
-    @media (max-width: 1020px) {
-      display: block;
-      & h3 {
-        color: white;
-      }
+  return <div {...props} />;
+})`
+  display: none;
+  padding: 30px;
+  z-index: 10;
+  @media (max-width: 1020px) {
+    display: block;
+    & h3 {
+      color: white;
     }
-  `;
+  }
+`;
 export default LeftSideContainer;
