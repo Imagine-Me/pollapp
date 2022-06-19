@@ -92,6 +92,7 @@ const AnimatedPoll = styled((props) => {
 
 const Container = styled((props) => <div {...props} />)`
   position: absolute;
+  z-index: 0;
   @media (min-width: 1019px) {
     left: 0;
     top: 50%;
