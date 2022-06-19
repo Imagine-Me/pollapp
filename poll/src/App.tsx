@@ -8,8 +8,8 @@ import HostComponent from "./page/Host";
 import JoinComponent from "./page/Join";
 import CenterComponent from "./components/Center";
 
-if (process.env.NODE_ENV) {
-  // import("./App.css");
+if (location.host === process.env.APP_URL) {
+  import("./App.css");
 }
 
 const { Title } = Typography;

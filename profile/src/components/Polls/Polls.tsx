@@ -43,6 +43,7 @@ export interface PollsType {
   id: string;
   title: string;
   userId: string;
+  type: "private" | "public";
   createdAt: string;
   updatedAt: string;
   questionCount: string;
@@ -91,7 +92,7 @@ const Polls = () => {
     <>
       <BreadCrumpStyled />
       <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
-        <Col xs={6}>
+        <Col xs={24} sm={12} md={8} lg={6}>
           <AddPollButton onClick={() => setModalVisible(true)}>
             <div>
               <PlusOutlined size={24} /> Add Poll
