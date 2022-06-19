@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import { userState, UserProps } from "authentication/recoil/user";
-
+import { userState } from "authentication/recoil/user";
 import { useSetRecoilState } from "recoil";
+
+import Loading from "./components/Loading";
 
 const Authentication = React.lazy(() => import("authentication/App"));
 const Profile = React.lazy(() => import("profile/App"));
@@ -18,11 +19,8 @@ const App = () => {
     }
   }, []);
 
-  React.useEffect(() => {
-    console.log("SESSION STORAGE CHANGED");
-  }, [sessionStorage.getItem("pollapp")]);
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Authentication />} />
         <Route path="/user/*" element={<Profile />} />
