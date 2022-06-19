@@ -63,6 +63,9 @@ const Polls = () => {
   const fetchPolls = async () => {
     try {
       const { data } = await axiosInstance.get("/polls");
+      if (data === undefined || !Array.isArray(data)) {
+        throw Error("Server error");
+      }
       setPolls(data);
     } catch (e) {
       notification.error({
