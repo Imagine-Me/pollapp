@@ -43,6 +43,12 @@ const JoinComponent = () => {
       isHost: false,
       question: question ?? {},
     }));
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {

@@ -24,6 +24,7 @@ const whiteList = [
   "http://localhost:8001",
   "http://localhost:8002",
   "http://localhost:8003",
+  "http://localhost:8004",
   "https://pollapp-profile.netlify.app",
   "https://pollapp-shell.netlify.app",
 ];

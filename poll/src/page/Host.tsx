@@ -53,6 +53,15 @@ const HostComponent = () => {
   const params = useParams();
   const roomId = params.pollId as string;
   const socket = useSocket({ id: roomId, type: "host" });
+
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (socket) {
       socket.removeAllListeners();
@@ -67,11 +76,6 @@ const HostComponent = () => {
         processData(data);
       });
     }
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, [socket, questions]);
 
   useEffect(() => {

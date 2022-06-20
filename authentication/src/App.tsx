@@ -9,7 +9,9 @@ import RightSideContainer, {
 } from "./components/RightSideContainer";
 import LeftSideContent from "./components/LeftSideContent";
 
-import "./App.css";
+if (process.env.NODE_ENV === "dev" || location.host === process.env.APP_URL) {
+  require("./App.css");
+}
 
 const App = () => {
   const [user, setUser] = useRecoilState(userState);

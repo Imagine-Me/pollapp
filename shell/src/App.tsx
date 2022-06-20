@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import { userState, UserProps } from "authentication/recoil/user";
+import { userState } from "authentication/recoil/user";
 
-import "./App.css";
+
 import { useSetRecoilState } from "recoil";
 
 import Loading from "./components/Loading";
+import "./App.css";
 
 const Authentication = React.lazy(() => import("authentication/App"));
 const Profile = React.lazy(() => import("profile/App"));
