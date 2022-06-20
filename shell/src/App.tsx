@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import { userState } from "authentication/recoil/user";
+import { userState, UserProps } from "authentication/recoil/user";
+
+import "./App.css";
 import { useSetRecoilState } from "recoil";
 
 import Loading from "./components/Loading";
@@ -8,7 +10,6 @@ import Loading from "./components/Loading";
 const Authentication = React.lazy(() => import("authentication/App"));
 const Profile = React.lazy(() => import("profile/App"));
 const Poll = React.lazy(() => import("poll/App"));
-import "./App.css";
 
 const App = () => {
   const setUserState = useSetRecoilState(userState);
