@@ -17,6 +17,7 @@ export interface QuestionsType {
 }
 
 const Questions = () => {
+  const [showDrawer, setShowDrawer] = useState<boolean>(true);
   const [questions, setQuestions] = useState<QuestionsType[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<number>(0);
   const { pollId } = useParams();
@@ -86,7 +87,8 @@ const Questions = () => {
 
   const showDialog = (id: number) => {
     const questionId = questions[id].id;
-    if (id && questionId) {
+    if (id !== undefined && questionId !== undefined) {
+      console.log("DELETING QUESTION", questions[id], id);
       Modal.error({
         title: "Are you sure you want to delete following question?",
         content: <MDEditor.Markdown source={questions[id].question} />,
@@ -95,16 +97,23 @@ const Questions = () => {
     }
   };
 
+  const toggleDrawer = () => {
+    setShowDrawer((prev) => !prev);
+  };
+
   return (
     <>
       <BreadCrumpStyled pollId={pollId} />
       <QuestionContent
+        toggleDrawer={toggleDrawer}
+        showDrawer={showDrawer}
         addNewQuestion={addNewQuestion}
         question={questions[selectedQuestion]}
         fetchQuestions={fetchQuestions}
         questionRef={questionRef}
       />
       <SiderStyled
+        showDrawer={showDrawer}
         selectedQuestion={selectedQuestion}
         setSelectQuestion={selectQuestion}
         addNewQuestion={addNewQuestion}

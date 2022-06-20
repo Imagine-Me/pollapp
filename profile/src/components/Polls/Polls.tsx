@@ -8,8 +8,6 @@ import PollCard from "./PollCard";
 
 const BreadCrumpStyled = styled((props) => (
   <Breadcrumb {...props} separator="">
-    <Breadcrumb.Item>Profile</Breadcrumb.Item>
-    <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
     <Breadcrumb.Item>Poll</Breadcrumb.Item>
   </Breadcrumb>
 ))`
@@ -63,6 +61,9 @@ const Polls = () => {
   const fetchPolls = async () => {
     try {
       const { data } = await axiosInstance.get("/polls");
+      if (data === undefined || !Array.isArray(data)) {
+        throw Error("Server error");
+      }
       setPolls(data);
     } catch (e) {
       notification.error({
@@ -89,7 +90,7 @@ const Polls = () => {
   };
 
   return (
-    <>
+    <div style={{ padding: "10px 30px" }}>
       <BreadCrumpStyled />
       <Row gutter={[16, 16]} style={{ marginTop: "10px" }}>
         <Col xs={24} sm={12} md={8} lg={6}>
@@ -117,7 +118,7 @@ const Polls = () => {
           status={(pollNameError && "error") || ""}
         />
       </Modal>
-    </>
+    </div>
   );
 };
 

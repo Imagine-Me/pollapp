@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "./recoil/atom/user";
 import HomePageWrapper from "./components/HomePageWrapper";
@@ -9,13 +9,12 @@ import RightSideContainer, {
 } from "./components/RightSideContainer";
 import LeftSideContent from "./components/LeftSideContent";
 
-if (location.host === process.env.APP_URL) {
-  import("./App.css");
+if (process.env.NODE_ENV === "dev" || location.host === process.env.APP_URL) {
+  require("./App.css");
 }
 
 const App = () => {
   const [user, setUser] = useRecoilState(userState);
-  const [_, setShow] = useState<boolean>(false);
 
   const responseGoogle = (response: any) => {
     if (response.profileObj) {
@@ -33,13 +32,6 @@ const App = () => {
       setUser(data);
     }
   };
-
-  //? This is required in order to work react spring from React v18. IDK why?
-  useEffect(() => {
-    setTimeout(() => {
-      setShow(true);
-    });
-  }, []);
 
   return (
     <HomePageWrapper>

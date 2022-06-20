@@ -25,14 +25,14 @@ const TopButton = styled((props) => {
     </div>
   );
 })`
-  position: absolute;
-  right: 10px;
+  display: flex;
+  justify-content: end;
+  margin-bottom: 10px;
   > button {
     &:last-child {
       margin-left: 10px;
     }
   }
-  z-index: 1000;
 `;
 
 interface Props {
