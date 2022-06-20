@@ -62,11 +62,6 @@ const JoinComponent = () => {
         processData(data);
       });
     }
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
   }, [socket, pollData]);
 
   const processData = (data: DataInterface) => {
