@@ -67,6 +67,11 @@ const HostComponent = () => {
         processData(data);
       });
     }
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
   }, [socket, questions]);
 
   useEffect(() => {

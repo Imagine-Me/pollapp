@@ -1,13 +1,14 @@
+import { LeftOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Drawer, Typography } from "antd";
 import React from "react";
+import styled from "styled-components";
 import DeleteButton from "../DeleteButton";
 
 import { QuestionsType } from "../Question";
 import QuestionCard from "./QuestionCard";
-
-const { Title } = Typography;
 interface Props {
+  showDrawer: boolean;
   questions: QuestionsType[];
   selectedQuestion: number;
   setSelectQuestion: (id: number) => void;
@@ -17,6 +18,7 @@ interface Props {
 
 const QuestionSider = (props: Props) => {
   const {
+    showDrawer,
     questions,
     selectedQuestion,
     addNewQuestion,
@@ -24,7 +26,7 @@ const QuestionSider = (props: Props) => {
     deleteQuestion,
   } = props;
   return (
-    <Drawer closeIcon visible mask={false} placement="right">
+    <Drawer closeIcon visible={showDrawer} mask={false} placement="right">
       {questions.map((question, id) => (
         <QuestionCard
           key={`question_card_${id}`}

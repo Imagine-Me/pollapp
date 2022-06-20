@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const { Paragraph } = Typography;
 
@@ -53,9 +54,9 @@ const BreadCrumpStyled = styled(({ pollId, ...props }: Props) => {
 
   return (
     <Breadcrumb {...props} separator="">
-      <Breadcrumb.Item>Profile</Breadcrumb.Item>
-      <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
-      <Breadcrumb.Item>Poll</Breadcrumb.Item>
+      <Breadcrumb.Item>
+        <Link to="/user/polls">Poll</Link>
+      </Breadcrumb.Item>
       <Breadcrumb.Separator>{">"}</Breadcrumb.Separator>
       <Breadcrumb.Item>
         {edit ? (
@@ -68,7 +69,7 @@ const BreadCrumpStyled = styled(({ pollId, ...props }: Props) => {
           />
         ) : (
           <>
-            {title}{" "}
+            {title}
             <Button
               icon={<EditOutlined />}
               type="text"
@@ -84,7 +85,7 @@ const BreadCrumpStyled = styled(({ pollId, ...props }: Props) => {
     display: flex;
     flex-wrap: wrap;
     margin: 0;
-    padding: 0;
+    padding: 10px 30px;
     list-style: none;
     align-items: center;
   }

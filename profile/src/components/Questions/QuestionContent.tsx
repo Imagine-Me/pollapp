@@ -4,12 +4,22 @@ import { Typography, Button } from "antd";
 
 import { QuestionsType } from "./Question";
 import Content from "./QuestionContent/Content";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
+const DrawerButton = styled(Button)`
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
 interface Props {
+  showDrawer: boolean;
   question: QuestionsType;
   questionRef: React.MutableRefObject<QuestionsType | undefined>;
+  toggleDrawer: () => void;
   addNewQuestion: () => void;
   fetchQuestions: () => Promise<void>;
 }
@@ -17,14 +27,20 @@ interface Props {
 const QuestionContent = styled((props: Props) => {
   const {
     question,
+    showDrawer,
     addNewQuestion,
     fetchQuestions,
+    toggleDrawer,
     questionRef,
     ...styledProps
   } = props;
 
   return (
     <div {...styledProps}>
+      <DrawerButton
+        icon={showDrawer ? <RightOutlined /> : <LeftOutlined />}
+        onClick={toggleDrawer}
+      />
       <div>
         {question ? (
           <Content
@@ -44,10 +60,12 @@ const QuestionContent = styled((props: Props) => {
     </div>
   );
 })`
+  transition: all 0.2s;
+  ${(props) => `margin: 0 ${props.showDrawer ? "378px" : "0"} 0 0;`}
   overflow-y: auto;
-  margin: 30px 350px 30px 0;
   position: relative;
-  height: calc(100% - 35px);
+  height: calc(100% - 55px);
+  padding: 0 30px 0 30px;
   > div {
     max-width: 720px;
     margin: auto;

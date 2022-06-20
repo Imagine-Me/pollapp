@@ -4,7 +4,5 @@ import styled from "styled-components";
 
 const { Content } = Layout;
 
-const ContentStyled = styled((props) => <Content {...props} />)`
-  padding: 30px
-`;
+const ContentStyled = styled((props) => <Content {...props} />)``;
 export default ContentStyled;
