@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Col, Row, Select } from "antd";
 import BarChart from "./Bar";
+import PieChart from "./Pie";
 import Title from "antd/lib/typography/Title";
 import { useRecoilValue } from "recoil";
 import { data } from "../../recoil/data";
@@ -29,6 +30,7 @@ const ChartComponent = () => {
       alert = <AlertStyled message="Wrong" type="error" showIcon />;
     }
   }
+
   return (
     <Row>
       <Col span={12}>
@@ -38,13 +40,23 @@ const ChartComponent = () => {
         </Title>
       </Col>
       <Col span={12}>
-        <Select style={{ width: "150px", margin: "auto", display: "block" }}>
-          <Option>Bar Chart</Option>
-          <Option>Pie Chart</Option>
+        <Select
+          style={{ width: "150px", margin: "auto", display: "block" }}
+          value={chartType}
+          onChange={setChartType}
+        >
+          <Option value="bar" key="bar">
+            Bar Chart
+          </Option>
+          <Option value="pie" key="pie">
+            Pie Chart
+          </Option>
         </Select>
       </Col>
       <Col span={24}>
-        <BarChart />
+        {chartType === "bar" && <BarChart />}
+        {chartType === "pie" && <PieChart />}
+        
         {alert}
       </Col>
     </Row>
