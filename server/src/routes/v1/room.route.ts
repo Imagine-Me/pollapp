@@ -4,9 +4,10 @@ import {
 } from "../../controller/question.controller";
 import { createRoom, joinRoom } from "../../controller/room.controller";
 
-const router = Router();
+const protectedRoute = Router();
+const unProtectedRoute = Router();
 
-router.post("/create", async (req, res, next) => {
+protectedRoute.post("/create", async (req, res, next) => {
   const userId = res.locals.userId as string;
   const pollId = req.body.pollId;
   const data = {
@@ -26,7 +27,7 @@ router.post("/create", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+unProtectedRoute.get("/:id", async (req, res, next) => {
   const userId = res.locals.userId as string;
   try {
     const result = await joinRoom(req.params.id);
@@ -40,4 +41,5 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-export default router;
+export default protectedRoute;
+export {unProtectedRoute};

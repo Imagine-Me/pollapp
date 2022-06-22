@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import { initializeDatabase } from "./db/index.db";
-import v1Routes from "./routes/v1/index.route";
+import v1ProtectedRoutes, {
+  unProtectedRoutes as v1UnProtectedRoutes,
+} from "./routes/v1/index.route";
 import authMiddleware from "./middlewares/auth.middelware";
+import protectedRouteMiddleware from "./middlewares/protectedRoute.middleware";
 import userMiddleWare from "./middlewares/user.middleware";
 import errorMiddleware from "./middlewares/error.middleware";
 import initializeSocket from "./socket";
@@ -46,7 +49,8 @@ const corsOptions: CorsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(authMiddleware, userMiddleWare);
-app.use("/api/v1", v1Routes);
+app.use("/api/v1", v1UnProtectedRoutes);
+app.use("/api/v1", protectedRouteMiddleware, v1ProtectedRoutes);
 
 app.get("/", (req, res) => {
   res.send("HELLO WORLD");
