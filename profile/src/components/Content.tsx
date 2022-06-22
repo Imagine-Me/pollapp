@@ -4,5 +4,7 @@ import styled from "styled-components";
 
 const { Content } = Layout;
 
-const ContentStyled = styled((props) => <Content {...props} />)``;
+const ContentStyled = styled((props) => <Content {...props} />)`
+  overflow: auto;
+`;
 export default ContentStyled;

@@ -1,4 +1,4 @@
-import { LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Drawer, Typography } from "antd";
 import React from "react";
@@ -14,7 +14,14 @@ interface Props {
   setSelectQuestion: (id: number) => void;
   addNewQuestion: () => void;
   deleteQuestion: (id: number) => void;
+  toggleDrawer: () => void;
 }
+const DrawerButton = styled(Button)`
+  position: absolute;
+  left: 0;
+  top: calc(50% - 18px);
+  // transform: translateY(-50%);
+`;
 
 const QuestionSider = (props: Props) => {
   const {
@@ -24,9 +31,15 @@ const QuestionSider = (props: Props) => {
     addNewQuestion,
     setSelectQuestion,
     deleteQuestion,
+    toggleDrawer,
   } = props;
   return (
     <Drawer closeIcon visible={showDrawer} mask={false} placement="right">
+      <DrawerButton
+        icon={showDrawer ? <RightOutlined /> : <LeftOutlined />}
+        onClick={toggleDrawer}
+      />
+
       {questions.map((question, id) => (
         <QuestionCard
           key={`question_card_${id}`}

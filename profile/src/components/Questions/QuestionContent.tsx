@@ -4,14 +4,14 @@ import { Typography, Button } from "antd";
 
 import { QuestionsType } from "./Question";
 import Content from "./QuestionContent/Content";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
 const DrawerButton = styled(Button)`
   position: absolute;
   right: 0;
-  top: 50%;
+  top: calc(50% - 60px);
   transform: translateY(-50%);
 `;
 
@@ -37,10 +37,9 @@ const QuestionContent = styled((props: Props) => {
 
   return (
     <div {...styledProps}>
-      <DrawerButton
-        icon={showDrawer ? <RightOutlined /> : <LeftOutlined />}
-        onClick={toggleDrawer}
-      />
+      {!showDrawer && (
+        <DrawerButton icon={<LeftOutlined />} onClick={toggleDrawer} />
+      )}
       <div>
         {question ? (
           <Content
