@@ -58,7 +58,6 @@ const JoinComponent = () => {
         console.log("SOCKET CONNECTED");
       });
       socket.on("update", (data: DataInterface) => {
-        console.log("SOMETHING HAPPENED", data);
         processData(data);
       });
     }

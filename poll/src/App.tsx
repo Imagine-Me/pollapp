@@ -40,7 +40,6 @@ const App = () => {
       setLoading(true);
       try {
         const { data } = await axiosInstance.get(`/room/${pollId}`);
-        console.log("USER TYPE", data.type);
         setUserType(data.type);
       } catch (e) {}
       setLoading(false);
