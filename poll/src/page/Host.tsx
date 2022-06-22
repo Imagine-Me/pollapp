@@ -72,7 +72,6 @@ const HostComponent = () => {
         }));
       });
       socket.on("update", (data: DataInterface) => {
-        console.log("SOMETHING HAPPENING IN ROOM", data);
         processData(data);
       });
     }
@@ -116,16 +115,16 @@ const HostComponent = () => {
             };
             if (poll && id === tempSelectedQuestion) {
               temp.poll = poll;
+              if (tempAnswer !== undefined) {
+                temp.answer = tempAnswer;
+                tempFooter.isRevealDisabled = true;
+              }
             } else {
               temp.poll = Array.from({ length: val.options.length }, () => 0);
             }
-            if (tempAnswer !== undefined) {
-              temp.answer = tempAnswer;
-              tempFooter.isRevealDisabled = true;
-            }
             return temp;
           });
-          console.log("TempQuestions", tempQuestions);
+          
           tempFooter.isNext = tempQuestions.length > 1;
 
           setQuestions(tempQuestions);
@@ -148,8 +147,6 @@ const HostComponent = () => {
         }
         case codes.PACKET: {
           const result = data.result as QuestionInterface;
-          console.log(result, result.answer);
-
           if (result.answer !== undefined) {
             setFooter((prev) => ({
               ...prev,

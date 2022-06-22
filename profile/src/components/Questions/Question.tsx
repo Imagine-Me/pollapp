@@ -88,7 +88,6 @@ const Questions = () => {
   const showDialog = (id: number) => {
     const questionId = questions[id].id;
     if (id !== undefined && questionId !== undefined) {
-      console.log("DELETING QUESTION", questions[id], id);
       Modal.error({
         title: "Are you sure you want to delete following question?",
         content: <MDEditor.Markdown source={questions[id].question} />,
