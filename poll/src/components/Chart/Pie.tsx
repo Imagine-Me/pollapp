@@ -12,12 +12,12 @@ import { joinUserData } from "../../recoil/join";
 import { data } from "../../recoil/data";
 import styled from "styled-components";
 
-const Container = styled((props) => <div {...props} />)`
-  max-width: 400px;
-  margin: 15px auto;
-`;
-
 ChartJs.register(ArcElement, Tooltip);
+
+const Container = styled((props) => <div {...props} />)`
+  max-width: 350px;
+  margin: auto;
+`;
 
 const ASCII_START_CODE = 65;
 const BACKGROUND_COLOR = [

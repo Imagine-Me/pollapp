@@ -17,8 +17,24 @@ import { data } from "../recoil/data";
 import { JoinDataProps, joinUserData } from "../recoil/join";
 import { getFromLocalStorage, updateLocalStorage } from "utils/localStorage";
 import FixedAlert from "../components/FixedAlert";
+import styled, { keyframes } from "styled-components";
 
 const { Title } = Typography;
+const fadeInOut = keyframes`
+0% {
+    opacity: 1;
+}
+50%{
+    opacity: 0;
+}
+100%{
+    opacity: 1;
+}
+`;
+const AnimatedTitle = styled(Title)`
+  animation: ${fadeInOut} 2s infinite;
+  text-align: center;
+`;
 
 const JoinComponent = () => {
   const [isHostDisconnected, setIsHostDisconnected] = useState<boolean>(false);
@@ -155,9 +171,7 @@ const JoinComponent = () => {
         <Title level={3} style={{ textAlign: "center" }}>
           Users joined: {pollData.userCount}
         </Title>
-        <Title level={4} style={{ textAlign: "center" }}>
-          Waiting for host to begin poll
-        </Title>
+        <AnimatedTitle level={4}>Waiting for host to begin poll</AnimatedTitle>
       </div>
     </CenterComponent>
   );

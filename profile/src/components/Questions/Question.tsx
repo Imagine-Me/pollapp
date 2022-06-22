@@ -32,7 +32,12 @@ const Questions = () => {
       try {
         const { data } = await axiosInstance.get(`/question/${pollId}`);
         setQuestions(data);
-        questionRef.current = data[selectedQuestion];
+        let tempSelectedQuestion = selectedQuestion;
+        if (selectedQuestion >= data.length) {
+          tempSelectedQuestion = data.length - 1;
+          setSelectedQuestion(tempSelectedQuestion);
+        }
+        questionRef.current = data[tempSelectedQuestion];
       } catch (e) {
         notify("Server error", `${e}`);
       }
@@ -79,9 +84,7 @@ const Questions = () => {
   const deleteQuestion = async (id: number | undefined) => {
     if (id) {
       await axiosInstance.delete(`/question/delete/${id}`);
-      const questionLength = questions.length - 2;
       await fetchQuestions();
-      setSelectedQuestion(questionLength);
     }
   };
 
@@ -113,6 +116,7 @@ const Questions = () => {
       />
       <SiderStyled
         showDrawer={showDrawer}
+        toggleDrawer={toggleDrawer}
         selectedQuestion={selectedQuestion}
         setSelectQuestion={selectQuestion}
         addNewQuestion={addNewQuestion}
