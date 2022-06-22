@@ -9,7 +9,7 @@ const errorMiddleware = (
   if (res.headersSent) {
     return next(err);
   }
-  res.status(500);
+  if (res.statusCode !== 401) res.status(500);
   res.send({ message: err });
 };
 
