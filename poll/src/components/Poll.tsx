@@ -8,8 +8,15 @@ import { data } from "../recoil/data";
 
 const { Title } = Typography;
 
+const Container = styled((props) => <div {...props} />)`
+  max-width: 600px;
+  margin: 15px auto;
+  min-width: 200px;
+  width: 80%;
+`;
+
 const RowStyled = styled(Row)`
-  min-height: 100vh;
+  min-height: calc(100vh - 70.5px);
 `;
 
 const CardStyled = styled(Card)`
@@ -27,12 +34,9 @@ const QuestionContent = styled((props) => <div {...props} />)`
 `;
 
 const HeaderDiv = styled(Row)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   padding: 15px;
-  > h3, h2 {
+  > h4,
+  h3 {
     margin: 0 !important;
   }
 `;
@@ -60,17 +64,17 @@ const PollContent = ({
   return (
     <>
       <HeaderDiv align="middle" justify="space-between">
-        <Title level={2}>
+        <Title level={3} ellipsis style={{ maxWidth: "60%" }}>
           {`>`} {title}
         </Title>
-        <Title level={3}>
-          Users: {userCount}
-        </Title>
+        <Title level={4}>Users: {userCount}</Title>
       </HeaderDiv>
       <RowStyled align="middle">
         {showChart && (
-          <Col xs={10}>
-            <ChartComponent />
+          <Col xs={24} lg={10}>
+            <Container>
+              <ChartComponent />
+            </Container>
           </Col>
         )}
         <Col flex="auto">

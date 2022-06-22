@@ -124,7 +124,7 @@ const HostComponent = () => {
             }
             return temp;
           });
-          
+
           tempFooter.isNext = tempQuestions.length > 1;
 
           setQuestions(tempQuestions);
@@ -262,7 +262,10 @@ const HostComponent = () => {
     content = (
       <CenterComponent>
         <div>
-          <Title level={1} style={{ textAlign: "center" }}>
+          <Title
+            level={1}
+            style={{ textAlign: "center"}}
+          >
             {pollData.title}
           </Title>
           <Title level={3} style={{ textAlign: "center" }}>
