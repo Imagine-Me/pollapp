@@ -11,4 +11,4 @@ do
         npx sequelize-cli db:seed --seed "./src/seeders/$line"
     fi
 done < ./seed_details/files.txt
-yarn start
+yarn dev
