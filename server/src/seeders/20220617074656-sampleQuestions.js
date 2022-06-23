@@ -124,6 +124,7 @@ module.exports = {
      * }], {});
      */
     await queryInterface.bulkInsert("questions", data, {});
+    await queryInterface.sequelize.query('ALTER SEQUENCE questions_id_seq RESTART WITH 11')
   },
 
   async down(queryInterface, Sequelize) {
