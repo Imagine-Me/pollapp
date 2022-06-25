@@ -113,6 +113,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "public", "index.html"),
+      favicon: './public/favicon.ico',
     }),
     new DefinePlugin({
       "process.env": JSON.stringify(config({ path: "./.env" }).parsed),
