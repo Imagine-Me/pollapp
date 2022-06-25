@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
 
-import BreadCrumpStyled from "./QuestionContent/BreadCrump";
-import SiderStyled from "./QuestionList/Sider";
-import QuestionContent from "./QuestionContent";
+import BreadCrumpStyled from "../components/Questions/QuestionContent/BreadCrump";
+import SiderStyled from "../components/Questions/QuestionList/Sider";
+import QuestionContent from "../components/Questions/QuestionContent";
 import { Modal } from "antd";
 import MDEditor from "@uiw/react-md-editor";
 

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Typography, Button } from "antd";
 
-import { QuestionsType } from "./Question";
+import { QuestionsType } from "../../pages/Question";
 import Content from "./QuestionContent/Content";
 import { LeftOutlined } from "@ant-design/icons";
 

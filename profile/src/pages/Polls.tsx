@@ -1,10 +1,18 @@
-import { Breadcrumb, Col, notification, Row, Modal, Input } from "antd";
+import {
+  Breadcrumb,
+  Col,
+  notification,
+  Row,
+  Modal,
+  Input,
+  Skeleton,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "utils/axios/instance";
 import styled from "styled-components";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
-import PollCard from "./PollCard";
+import PollCard from "../components/Polls/PollCard";
 
 const BreadCrumpStyled = styled((props) => (
   <Breadcrumb {...props} separator="">
@@ -48,6 +56,7 @@ export interface PollsType {
 }
 
 const Polls = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [polls, setPolls] = useState<PollsType[]>([]);
   const [pollName, setPollName] = useState<string>("");
   const [pollNameError, setPollNameError] = useState<boolean>(false);
@@ -71,6 +80,7 @@ const Polls = () => {
         description: `${e}`,
       });
     }
+    setIsLoading(false);
   };
 
   const createPoll = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -103,6 +113,18 @@ const Polls = () => {
         {polls.map((poll) => (
           <PollCard key={poll.id} poll={poll} fetchPolls={fetchPolls} />
         ))}
+        {isLoading &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <Col
+              key={`poll_loading_skelton_${i}`}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+            >
+              <Skeleton.Input size="large" active block />
+            </Col>
+          ))}
       </Row>
       <Modal
         title="Create poll"

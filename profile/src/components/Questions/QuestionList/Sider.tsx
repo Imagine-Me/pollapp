@@ -5,7 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import DeleteButton from "../DeleteButton";
 
-import { QuestionsType } from "../Question";
+import { QuestionsType } from "../../../pages/Question";
 import QuestionCard from "./QuestionCard";
 interface Props {
   showDrawer: boolean;

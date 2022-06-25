@@ -1,13 +1,26 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { QuestionsType } from "../Question";
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+import { QuestionsType } from "../../../pages/Question";
 import Editor from "./Editor";
 import Options from "./Options";
+
+const QuestionContainer = styled((props) => <div {...props} />)`
+  position: relative;
+  .tool-tip-button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+`;
 
 const TopButton = styled((props) => {
   const { isPreview, loading, saveQuestion, setPreview, ...styles } = props;
@@ -143,12 +156,23 @@ const Content = ({ question, questionRef, fetchQuestions }: Props) => {
         loading={loading}
         isPreview={isPreview}
       />
-      <Editor
-        onSourceChange={questionChange}
-        source={data.question}
-        isPreview={isPreview}
-        height="large"
-      />
+      <QuestionContainer>
+        <Editor
+          onSourceChange={questionChange}
+          source={data.question}
+          isPreview={isPreview}
+          height="large"
+        />
+        <Tooltip placement="top" title="Edit in Markdown format">
+          <Button
+            target="_blank"
+            href="https://www.markdownguide.org/basic-syntax/"
+            className="tool-tip-button"
+            type="link"
+            icon={<QuestionCircleOutlined />}
+          ></Button>
+        </Tooltip>
+      </QuestionContainer>
       <Options
         options={data.options}
         answer={data.answer}
