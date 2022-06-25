@@ -4,7 +4,7 @@ import { axiosInstance } from "utils/axios/instance";
 import styled from "styled-components";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
-import PollCard from "./PollCard";
+import PollCard from "../components/Polls/PollCard";
 
 const BreadCrumpStyled = styled((props) => (
   <Breadcrumb {...props} separator="">

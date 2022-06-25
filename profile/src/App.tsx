@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Layout, Typography } from "antd";
 import { Routes, Route } from "react-router-dom";
-import Polls from "./components/Polls/Polls";
-import Questions from "./components/Questions/Question";
+import Polls from "./pages/Polls";
+import Questions from "./pages/Question";
 import ContentStyled from "./components/Content";
 import styled from "styled-components";
 

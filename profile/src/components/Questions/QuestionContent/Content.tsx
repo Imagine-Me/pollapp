@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { QuestionsType } from "../Question";
+import { QuestionsType } from "../../../pages/Question";
 import Editor from "./Editor";
 import Options from "./Options";
 

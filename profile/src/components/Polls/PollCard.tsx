@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Modal, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { PollsType } from "./Polls";
+import { PollsType } from "../../pages/Polls";
 import styled from "styled-components";
 import { axiosInstance } from "utils/axios/instance";
 import { notify } from "utils/notify";
