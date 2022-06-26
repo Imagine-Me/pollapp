@@ -4,11 +4,13 @@ A web application to create polls implemented using webpack module federation. T
 ## :hammer: Development
 #### Frontend
 1. Installing packages
+   
    Install all the dependecies in each of the microfrontends. In folders `authentication`,`poll`,`profile`,`utils` and `shell`
    ```sh
     yarn install
    ```
 2. Running
+   
    Same as above, in all the folders, run following command
    ```sh
    yarn dev
@@ -38,7 +40,8 @@ docker-compose -f docker-compose.dev.yml up
 > CREATE DATABASE <DATABASE NAME>
 > ```
 
-
+# Microfrontends
+These are the different frontends used:
 
 ## Authentication
 This is the home page of the app. To see more details click [here](authentication)
