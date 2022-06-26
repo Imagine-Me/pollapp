@@ -1,5 +1,5 @@
 # Authentication
-This is the starting page of the app, where user will authenticate using gmail. `react-google-login` is used for the google signin.
+This is the starting page of the app, where user will authenticate using gmail. `react-google-login` is used for the google signin. The user details is stored in session storage.
 ## :hammer: Development
 
 ### Creating .env file
